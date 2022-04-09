@@ -1,15 +1,16 @@
 ﻿namespace ClinicManagement.Infrastructure.Data;
 
-public abstract class EfRepositoryBase<TEntity> : IReadRepository<TEntity>, IChangeRepository<TEntity> where TEntity : Entity
+public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChangeRepository<TEntity> where TEntity : Entity
 {
     protected readonly ClinicManagementContext dbContext;
 
-    public EfRepositoryBase(ClinicManagementContext dbContext)
+    public RepositoryBase(ClinicManagementContext dbContext)
     {
-        this.dbContext = dbContext ?? throw new ArgumentNullException("Repository - Context");
+        Guard.Against.Null(dbContext);
+        this.dbContext = dbContext;
     }
 
-    public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async virtual Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, nameof(entity));
 
@@ -18,19 +19,19 @@ public abstract class EfRepositoryBase<TEntity> : IReadRepository<TEntity>, ICha
         return entity;
     }
 
-    public virtual async Task<int> CountAsync(CancellationToken cancellationToken = default)
+    public async virtual Task<int> CountAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.Set<TEntity>().CountAsync(cancellationToken);
     }
 
-    public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
+    public async virtual Task<int> CountAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(filter, nameof(filter));
 
         return await dbContext.Set<TEntity>().CountAsync(filter, cancellationToken);
     }
 
-    public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, nameof(entity));
 
@@ -39,22 +40,22 @@ public abstract class EfRepositoryBase<TEntity> : IReadRepository<TEntity>, ICha
         await UpdateAsync(entity, cancellationToken);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await GetValidRecords().ToListAsync(cancellationToken);
     }
 
-    public virtual async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async virtual Task<TEntity?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
     {
         return await dbContext.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
     }
 
-    public virtual async Task<TEntity?> GetByVanityIdAsync(Guid vanityId, CancellationToken cancellationToken = default)
+    public async virtual Task<TEntity?> GetByVanityIdAsync(Guid vanityId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Set<TEntity>().Where(q => q.VanityId == vanityId).SingleOrDefaultAsync(cancellationToken);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetReadOnlyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
+    public async virtual Task<IEnumerable<TEntity>> GetReadOnlyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
         var records = GetValidRecords();
 
@@ -66,12 +67,12 @@ public abstract class EfRepositoryBase<TEntity> : IReadRepository<TEntity>, ICha
         return await records.ToListAsync(cancellationToken);
     }
 
-    public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async virtual Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, nameof(entity));
 
