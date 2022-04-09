@@ -2,34 +2,37 @@
 
 namespace MedicApp.SharedKernel;
 
-public abstract class ValueObject<T> : IEquatable<T>
-  where T : ValueObject<T>
+public abstract class ValueObject<T> : IEquatable<T> where T : ValueObject<T>
 {
     public override bool Equals(object obj)
     {
         if (obj == null)
+        {
             return false;
+        }
 
-        T other = obj as T;
+        var other = obj as T;
 
         return Equals(other);
     }
 
     public override int GetHashCode()
     {
-        IEnumerable<FieldInfo> fields = GetFields();
+        var fields = GetFields();
 
-        int startValue = 17;
-        int multiplier = 59;
+        var startValue = 17;
+        var multiplier = 59;
 
-        int hashCode = startValue;
+        var hashCode = startValue;
 
-        foreach (FieldInfo field in fields)
+        foreach (var field in fields)
         {
-            object value = field.GetValue(this);
+            var value = field.GetValue(this);
 
             if (value != null)
-                hashCode = hashCode * multiplier + value.GetHashCode();
+            {
+                hashCode = (hashCode * multiplier) + value.GetHashCode();
+            }
         }
 
         return hashCode;
@@ -38,28 +41,36 @@ public abstract class ValueObject<T> : IEquatable<T>
     public virtual bool Equals(T other)
     {
         if (other == null)
+        {
             return false;
+        }
 
-        Type t = GetType();
-        Type otherType = other.GetType();
+        var t = GetType();
+        var otherType = other.GetType();
 
         if (t != otherType)
-            return false;
-
-        FieldInfo[] fields = t.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-
-        foreach (FieldInfo field in fields)
         {
-            object value1 = field.GetValue(other);
-            object value2 = field.GetValue(this);
+            return false;
+        }
+
+        var fields = t.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+        foreach (var field in fields)
+        {
+            var value1 = field.GetValue(other);
+            var value2 = field.GetValue(this);
 
             if (value1 == null)
             {
                 if (value2 != null)
+                {
                     return false;
+                }
             }
             else if (!value1.Equals(value2))
+            {
                 return false;
+            }
         }
 
         return true;
@@ -67,14 +78,13 @@ public abstract class ValueObject<T> : IEquatable<T>
 
     private IEnumerable<FieldInfo> GetFields()
     {
-        Type t = GetType();
+        var t = GetType();
 
-        List<FieldInfo> fields = new List<FieldInfo>();
+        var fields = new List<FieldInfo>();
 
         while (t != typeof(object))
         {
             fields.AddRange(t.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
-
             t = t.BaseType;
         }
 
