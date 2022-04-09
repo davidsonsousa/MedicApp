@@ -41,7 +41,7 @@ public class ClinicManagementContext : DbContext
         ChangeTracker.DetectChanges();
 
         var timeStamp = DateTime.Now;
-        var entries = ChangeTracker.Entries().Where(e => e.Entity is Entity && (e.State == EntityState.Added || e.State == EntityState.Modified));
+        var entries = ChangeTracker.Entries().Where(e => e.Entity is EntityBase && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         // TODO: Get the user who triggered the operation
         //var currentUsername = httpContextAccessor.HttpContext.User.Identity.Name;

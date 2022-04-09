@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Entities;
 
-public class Department : Entity
+public class Department : EntityBase
 {
     [Column(Order = 2)]
     public string Name { get; set; } = string.Empty;

@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.Infrastructure.Data;
 
-public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChangeRepository<TEntity> where TEntity : Entity
+public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChangeRepository<TEntity> where TEntity : EntityBase
 {
     protected readonly ClinicManagementContext dbContext;
 

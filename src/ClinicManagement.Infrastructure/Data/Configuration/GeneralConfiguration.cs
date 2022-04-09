@@ -2,7 +2,7 @@
 
 public static class GeneralConfiguration
 {
-    public static void AddPropertiesForAuditing<T>(EntityTypeBuilder<T> builder) where T : Entity
+    public static void AddPropertiesForAuditing<T>(EntityTypeBuilder<T> builder) where T : EntityBase
     {
         builder.Property<DateTime>("DateCreated");
         builder.Property<DateTime>("DateModified");
@@ -10,7 +10,7 @@ public static class GeneralConfiguration
         builder.Property<string>("UserModified").HasMaxLength(50);
     }
 
-    public static void AddVanityId<T>(EntityTypeBuilder<T> builder) where T : Entity
+    public static void AddVanityId<T>(EntityTypeBuilder<T> builder) where T : EntityBase
     {
         builder.Property(model => model.VanityId)
                .ValueGeneratedOnAdd()

@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Entities;
 
-public abstract class ScheduleItem : Entity
+public abstract class ScheduleItem : EntityBase
 {
     public DateTimeRange DateTimeSchedule { get; set; } = new DateTimeRange();
 
