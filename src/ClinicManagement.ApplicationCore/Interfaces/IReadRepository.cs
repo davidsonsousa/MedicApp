@@ -7,7 +7,7 @@ public interface IReadRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="id">Value of the Id</param>
     /// <returns></returns>
-    Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<TEntity?> GetByIdAsync(long id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get entity by VanityId
