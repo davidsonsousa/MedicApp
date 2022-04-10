@@ -2,38 +2,48 @@
 
 public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChangeRepository<TEntity> where TEntity : EntityBase
 {
-    protected readonly ClinicManagementContext dbContext;
+    protected readonly ClinicManagementContext DbContext;
+    protected readonly ILogger Logger;
 
-    public RepositoryBase(ClinicManagementContext dbContext)
+    public RepositoryBase(ClinicManagementContext dbContext, LoggerFactory loggerFactory)
     {
         Guard.Against.Null(dbContext);
-        this.dbContext = dbContext;
+        DbContext = dbContext;
+        Logger = loggerFactory.CreateLogger("RepositoryBase");
     }
 
     public async virtual Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, nameof(entity));
 
-        dbContext.Set<TEntity>().Add(entity);
+        Logger.LogDebug($"{nameof(AddAsync)}({nameof(entity)}): {entity}");
+
+        DbContext.Set<TEntity>().Add(entity);
         await SaveChangesAsync(cancellationToken);
         return entity;
     }
 
     public async virtual Task<int> CountAsync(CancellationToken cancellationToken = default)
     {
-        return await dbContext.Set<TEntity>().CountAsync(cancellationToken);
+        Logger.LogDebug($"{nameof(CountAsync)}()");
+
+        return await DbContext.Set<TEntity>().CountAsync(cancellationToken);
     }
 
     public async virtual Task<int> CountAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(filter, nameof(filter));
 
-        return await dbContext.Set<TEntity>().CountAsync(filter, cancellationToken);
+        Logger.LogDebug($"{nameof(CountAsync)}({filter})");
+
+        return await DbContext.Set<TEntity>().CountAsync(filter, cancellationToken);
     }
 
     public async virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, nameof(entity));
+
+        Logger.LogDebug($"{nameof(DeleteAsync)}({nameof(entity)}): {entity}");
 
         // We never delete anything, only update the IsDelete flag
         entity.IsDeleted = true;
@@ -42,21 +52,29 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
 
     public async virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
+        Logger.LogDebug($"{nameof(GetAllAsync)}()");
+
         return await GetValidRecords().ToListAsync(cancellationToken);
     }
 
     public async virtual Task<TEntity?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
+        Logger.LogDebug($"{nameof(GetByIdAsync)}({id})");
+
+        return await DbContext.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
     }
 
     public async virtual Task<TEntity?> GetByVanityIdAsync(Guid vanityId, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Set<TEntity>().Where(q => q.VanityId == vanityId).SingleOrDefaultAsync(cancellationToken);
+        Logger.LogDebug($"{nameof(GetByVanityIdAsync)}({vanityId})");
+
+        return await DbContext.Set<TEntity>().Where(q => q.VanityId == vanityId).SingleOrDefaultAsync(cancellationToken);
     }
 
     public async virtual Task<IEnumerable<TEntity>> GetReadOnlyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
+        Logger.LogDebug($"{nameof(GetReadOnlyAsync)}({filter})");
+
         var records = GetValidRecords();
 
         if (filter != null)
@@ -69,19 +87,25 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
 
     public async virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return await dbContext.SaveChangesAsync(cancellationToken);
+        Logger.LogDebug($"{nameof(SaveChangesAsync)}()");
+
+        return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async virtual Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, nameof(entity));
 
-        dbContext.Update(entity);
+        Logger.LogDebug($"{nameof(UpdateAsync)}({nameof(entity)}): {entity}");
+
+        DbContext.Update(entity);
         await SaveChangesAsync(cancellationToken);
     }
 
     private IQueryable<TEntity> GetValidRecords()
     {
-        return dbContext.Set<TEntity>().Where(q => q.IsDeleted == false);
+        Logger.LogDebug($"{nameof(GetValidRecords)}()");
+
+        return DbContext.Set<TEntity>().Where(q => q.IsDeleted == false);
     }
 }
