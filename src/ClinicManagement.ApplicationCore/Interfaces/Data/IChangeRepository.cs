@@ -1,4 +1,4 @@
-﻿namespace ClinicManagement.ApplicationCore.Interfaces;
+﻿namespace ClinicManagement.ApplicationCore.Interfaces.Data;
 
 public interface IChangeRepository<TEntity> where TEntity : class
 {
