@@ -1,31 +1,35 @@
-﻿using Newtonsoft.Json;
+﻿namespace MedicApp.SharedKernel;
 
-namespace MedicApp.SharedKernel;
-
-public class ReturnValue : ValueObject<ReturnValue>
+public class ReturnValue : ValueObject<ReturnValue>, IReturnValue
 {
-    public ReturnValue(string message, bool isError = false)
+    public ReturnValue(string message, bool hasError = false)
     {
         Message = message;
-        IsError = isError;
+        HasError = hasError;
     }
 
     [JsonProperty(PropertyName = "message")]
-    public string Message { get; private set; }
+    public string Message { get; private set; } = string.Empty;
 
     [JsonProperty(PropertyName = "isError")]
-    public bool IsError { get; private set; }
+    public bool HasError { get; private set; }
 
-    [JsonProperty(PropertyName = "exception")]
-    public string Exception { get; private set; } = string.Empty;
-
-    [JsonProperty(PropertyName = "value")]
-    public object Value { get; set; } = string.Empty;
-
-    public void SetErrorMessage(string message, string exception = "")
+    public void SetErrorMessage(string message)
     {
         Message = message;
-        Exception = exception;
-        IsError = true;
+        HasError = true;
+    }
+}
+
+public class ReturnValue<T> : ValueObject<ReturnValue<T>>, IReturnValue where T : class
+{
+    public bool HasError { get; private set; } = false;
+
+    [JsonProperty(PropertyName = "value")]
+    public T? Value { get; set; }
+
+    public ReturnValue SetErrorMessage(string message)
+    {
+        return new ReturnValue(message, true);
     }
 }
