@@ -2,18 +2,18 @@
 
 public abstract class ServiceBase<T> : IService<T> where T : EntityBase
 {
-    private readonly IRepository<T> _repository;
-    protected readonly ILogger logger;
+    protected readonly IRepository<T> Repository;
+    protected readonly ILogger Logger;
 
     public ServiceBase(IRepository<T> repository, ILoggerFactory loggerFactory)
     {
-        _repository = repository;
-        logger = loggerFactory.CreateLogger(nameof(ServiceBase<T>));
+        Repository = repository;
+        Logger = loggerFactory.CreateLogger(nameof(ServiceBase<T>));
     }
 
-    public async Task<ReturnValue> Delete(long id)
+    public async virtual Task<ReturnValue> Delete(long id)
     {
-        var item = await _repository.GetByIdAsync(id);
+        var item = await Repository.GetByIdAsync(id);
 
         Guard.Against.Null(item);
 
@@ -21,21 +21,21 @@ public abstract class ServiceBase<T> : IService<T> where T : EntityBase
 
         try
         {
-            await _repository.DeleteAsync(item);
-            await _repository.SaveChangesAsync();
+            await Repository.DeleteAsync(item);
+            await Repository.SaveChangesAsync();
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            Logger.LogError(ex, ex.Message);
             returnValue.SetErrorMessage("An error has occurred while deleting the item");
         }
 
         return returnValue;
     }
 
-    public async Task<T> GetById(long id)
+    public async virtual Task<T> GetById(long id)
     {
-        var item = await _repository.GetByIdAsync(id);
+        var item = await Repository.GetByIdAsync(id);
 
         Guard.Against.Null(item);
 
