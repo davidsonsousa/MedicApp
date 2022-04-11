@@ -2,5 +2,7 @@
 
 public interface IClinicService
 {
-    Task<ReturnValue> SaveAsync(ClinicEditModel model);
+    Task<IReturnValue> GetClinicById(Guid id);
+
+    Task<IReturnValue> SaveAsync(ClinicEditModel model);
 }

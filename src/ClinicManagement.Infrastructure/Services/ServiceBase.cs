@@ -15,7 +15,7 @@ public abstract class ServiceBase<T> : IService<T> where T : EntityBase
     {
         var item = await Repository.GetByIdAsync(id);
 
-        Guard.Against.Null(item);
+        Guard.Against.Null(item, nameof(item));
 
         var returnValue = new ReturnValue($"Item '{item.Id}' deleted at {DateTime.Now:T}.");
 
@@ -26,20 +26,10 @@ public abstract class ServiceBase<T> : IService<T> where T : EntityBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, ex.Message);
+            Logger.LogError(ex, Constants.DebugMessages.ClassMethod, nameof(ServiceBase<T>), nameof(Delete));
             returnValue.SetErrorMessage("An error has occurred while deleting the item");
         }
 
         return returnValue;
-    }
-
-    public async virtual Task<T> GetById(long id)
-    {
-        var item = await Repository.GetByIdAsync(id);
-
-        Guard.Against.Null(item);
-
-        // TODO: Map to DTO
-        return item;
     }
 }
