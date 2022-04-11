@@ -64,11 +64,11 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
         return await DbContext.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken);
     }
 
-    public async virtual Task<TEntity?> GetByVanityIdAsync(Guid vanityId, CancellationToken cancellationToken = default)
+    public async virtual Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        Logger.LogDebug($"{nameof(GetByVanityIdAsync)}({vanityId})");
+        Logger.LogDebug($"{nameof(GetByIdAsync)}({id})");
 
-        return await DbContext.Set<TEntity>().Where(q => q.VanityId == vanityId).SingleOrDefaultAsync(cancellationToken);
+        return await DbContext.Set<TEntity>().Where(q => q.VanityId == id).SingleOrDefaultAsync(cancellationToken);
     }
 
     public async virtual Task<IEnumerable<TEntity>> GetReadOnlyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
