@@ -1,0 +1,4 @@
+# Silenting some rules locally so it doesn't clash with the main .editorconfig
+[*.cs]
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_style_expression_bodied_lambdas = true:silent
