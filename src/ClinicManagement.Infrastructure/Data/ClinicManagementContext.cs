@@ -30,6 +30,7 @@ public class ClinicManagementContext : DbContext
         new BranchEntityConfiguration().Configure(modelBuilder.Entity<Branch>());
         new DepartmentEntityConfiguration().Configure(modelBuilder.Entity<Department>());
         new DoctorEntityConfiguration().Configure(modelBuilder.Entity<Doctor>());
+        new PersonEntityConfiguration().Configure(modelBuilder.Entity<Person>());
         new NurseEntityConfiguration().Configure(modelBuilder.Entity<Nurse>());
         new WorkScheduleEntityConfiguration().Configure(modelBuilder.Entity<WorkSchedule>());
         new PatientEntityConfiguration().Configure(modelBuilder.Entity<Patient>());

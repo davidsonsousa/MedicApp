@@ -1,11 +1,10 @@
-﻿namespace ClinicManagement.Infrastructure.Data.Configuration
+﻿namespace ClinicManagement.Infrastructure.Data.Configuration;
+
+public class PatientEntityConfiguration : IEntityTypeConfiguration<Patient>
 {
-    public class PatientEntityConfiguration : IEntityTypeConfiguration<Patient>
+    public void Configure(EntityTypeBuilder<Patient> builder)
     {
-        public void Configure(EntityTypeBuilder<Patient> builder)
-        {
-            GeneralConfiguration.AddPropertiesForAuditing(builder);
-            GeneralConfiguration.AddVanityId(builder);
-        }
+        GeneralConfiguration.AddPropertiesForAuditing(builder);
+        GeneralConfiguration.AddVanityId(builder);
     }
 }
