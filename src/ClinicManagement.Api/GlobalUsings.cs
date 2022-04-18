@@ -1,0 +1,10 @@
+﻿global using ClinicManagement.ApplicationCore.Interfaces.Data;
+global using ClinicManagement.ApplicationCore.Interfaces.Services;
+global using ClinicManagement.ApplicationCore.Models.EditModels;
+global using ClinicManagement.ApplicationCore.Models.ViewModels;
+global using ClinicManagement.Infrastructure.Data;
+global using ClinicManagement.Infrastructure.Services;
+global using MedicApp.SharedKernel.Extensions;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Serilog;
