@@ -20,7 +20,6 @@ public class ClinicController : ControllerBase
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task PostAsync(ClinicEditModel clinicEditModel, CancellationToken cancellationToken)
     {
         await clinicService.SaveAsync(clinicEditModel, cancellationToken);

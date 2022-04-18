@@ -7,9 +7,7 @@ Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configurat
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ClinicManagementContext>(options => options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
-                                                                  .UseSqlServer(connectionString,
-                                                                                o => o.MigrationsAssembly("ClinicManagement.Infrastructure")
-                                                                                      .UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
+                                                                  .UseSqlServer(connectionString));
 
 // Configure DI
 builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
