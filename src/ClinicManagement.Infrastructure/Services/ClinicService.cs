@@ -7,6 +7,28 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
 
     }
 
+    public async Task<IReturnValue> GetAllClinics(CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetAllClinics));
+        var returnValue = new ReturnValue<IEnumerable<ClinicViewModel>>();
+
+        try
+        {
+            var clinics = await Repository.GetAllAsync(cancellationToken);
+            Guard.Against.Null(clinics, nameof(clinics));
+
+            returnValue.Value = clinics.MapToViewModel();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(ClinicService), nameof(GetAllClinics));
+            returnValue.SetErrorMessage("An error has occurred while loading the clinics");
+        }
+
+        return returnValue;
+    }
+
+
     public async Task<IReturnValue> GetClinicById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(GetClinicById), id);

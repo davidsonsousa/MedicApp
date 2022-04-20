@@ -11,9 +11,9 @@ public abstract class ServiceBase<T> : IService<T> where T : EntityBase
         Logger = loggerFactory.CreateLogger(nameof(ServiceBase<T>));
     }
 
-    public async virtual Task<ReturnValue> Delete(long id)
+    public async virtual Task<ReturnValue> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var item = await Repository.GetByIdAsync(id);
+        var item = await Repository.GetByIdAsync(id, cancellationToken);
 
         Guard.Against.Null(item, nameof(item));
 
@@ -21,12 +21,12 @@ public abstract class ServiceBase<T> : IService<T> where T : EntityBase
 
         try
         {
-            await Repository.DeleteAsync(item);
-            await Repository.SaveChangesAsync();
+            await Repository.DeleteAsync(item, cancellationToken);
+            await Repository.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, Constants.DebugMessages.ClassMethod, nameof(ServiceBase<T>), nameof(Delete));
+            Logger.LogError(ex, Constants.DebugMessages.ClassMethod, nameof(ServiceBase<T>), nameof(DeleteAsync));
             returnValue.SetErrorMessage("An error has occurred while deleting the item");
         }
 

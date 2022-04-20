@@ -2,5 +2,5 @@
 
 public interface IService<T> where T : EntityBase
 {
-    Task<ReturnValue> Delete(long id);
+    Task<ReturnValue> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 }
