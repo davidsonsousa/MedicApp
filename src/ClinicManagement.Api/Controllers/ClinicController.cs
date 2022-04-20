@@ -14,17 +14,24 @@ public class ClinicController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
-        var returnValue = await clinicService.GetAllClinics(cancellationToken);
+        var result = await clinicService.GetAllClinics(cancellationToken);
 
-        return returnValue.HasError ? NotFound() : Ok(returnValue.As<IEnumerable<ClinicViewModel>>());
+        if (result.HasError)
+        {
+            return NotFound();
+        }
+
+        var items = result.As<IEnumerable<ClinicViewModel>>();
+
+        return !items.Any() ? NotFound() : Ok(items);
     }
 
     [HttpGet("id")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
-        var returnValue = await clinicService.GetClinicById(id, cancellationToken);
+        var result = await clinicService.GetClinicById(id, cancellationToken);
 
-        return returnValue.HasError ? NotFound() : Ok(returnValue.As<ClinicViewModel>());
+        return result.HasError ? NotFound() : Ok(result.As<ClinicViewModel>());
     }
 
     [HttpPost]

@@ -7,53 +7,53 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
 
     }
 
-    public async Task<IReturnValue> GetAllClinics(CancellationToken cancellationToken = default)
+    public async Task<IResult> GetAllClinics(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllClinics));
-        var returnValue = new ReturnValue<IEnumerable<ClinicViewModel>>();
+        var result = new Result<IEnumerable<ClinicViewModel>>();
 
         try
         {
             var clinics = await Repository.GetAllAsync(cancellationToken);
             Guard.Against.Null(clinics, nameof(clinics));
 
-            returnValue.Value = clinics.MapToViewModel();
+            result.Value = clinics.MapToViewModel();
         }
         catch (Exception ex)
         {
             Logger.ErrorMethodCall(ex, nameof(ClinicService), nameof(GetAllClinics));
-            returnValue.SetErrorMessage("An error has occurred while loading the clinics");
+            result.SetErrorMessage("An error has occurred while loading the clinics");
         }
 
-        return returnValue;
+        return result;
     }
 
 
-    public async Task<IReturnValue> GetClinicById(Guid id, CancellationToken cancellationToken = default)
+    public async Task<IResult> GetClinicById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(GetClinicById), id);
-        var returnValue = new ReturnValue<ClinicViewModel>();
+        var result = new Result<ClinicViewModel>();
 
         try
         {
             var clinic = await Repository.GetByIdAsync(id, cancellationToken);
             Guard.Against.Null(clinic, nameof(clinic));
 
-            returnValue.Value = clinic.MapToViewModel();
+            result.Value = clinic.MapToViewModel();
         }
         catch (Exception ex)
         {
             Logger.ErrorMethodCall(ex, nameof(ClinicService), nameof(GetClinicById));
-            returnValue.SetErrorMessage("An error has occurred while loading the clinic");
+            result.SetErrorMessage("An error has occurred while loading the clinic");
         }
 
-        return returnValue;
+        return result;
     }
 
-    public async Task<IReturnValue> SaveAsync(ClinicEditModel model, CancellationToken cancellationToken = default)
+    public async Task<IResult> SaveAsync(ClinicEditModel model, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(SaveAsync), model);
-        var returnValue = new ReturnValue($"Clinic '{model.Name}' saved.");
+        var result = new Result($"Clinic '{model.Name}' saved.");
 
         try
         {
@@ -63,10 +63,10 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
         catch (Exception ex)
         {
             Logger.ErrorMethodCall(ex, nameof(ClinicService), nameof(GetClinicById));
-            returnValue.SetErrorMessage("An error has occurred while saving the clinic");
+            result.SetErrorMessage("An error has occurred while saving the clinic");
         }
 
-        return returnValue;
+        return result;
     }
 
     private async Task AddOrUpdateAsync(ClinicEditModel model, CancellationToken cancellationToken = default)

@@ -2,9 +2,9 @@
 
 public interface IClinicService : IService<Clinic>
 {
-    Task<IReturnValue> GetAllClinics(CancellationToken cancellationToken = default);
+    Task<IResult> GetAllClinics(CancellationToken cancellationToken = default);
 
-    Task<IReturnValue> GetClinicById(Guid id, CancellationToken cancellationToken = default);
+    Task<IResult> GetClinicById(Guid id, CancellationToken cancellationToken = default);
 
-    Task<IReturnValue> SaveAsync(ClinicEditModel model, CancellationToken cancellationToken = default);
+    Task<IResult> SaveAsync(ClinicEditModel model, CancellationToken cancellationToken = default);
 }

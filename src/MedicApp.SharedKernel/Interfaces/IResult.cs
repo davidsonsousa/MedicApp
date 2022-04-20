@@ -1,6 +1,6 @@
 ﻿namespace MedicApp.SharedKernel.Interfaces;
 
-public interface IReturnValue
+public interface IResult
 {
     bool HasError { get; }
 }
