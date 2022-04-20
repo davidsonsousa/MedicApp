@@ -15,5 +15,8 @@ public static class GeneralConfiguration
         builder.Property(model => model.VanityId)
                .ValueGeneratedOnAdd()
                .HasDefaultValueSql("newid()");
+
+        builder.HasIndex(model => model.VanityId)
+               .IsUnique();
     }
 }
