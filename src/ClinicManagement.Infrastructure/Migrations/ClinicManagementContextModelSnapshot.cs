@@ -64,6 +64,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasIndex("PersonId");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Appointments");
                 });
 
@@ -111,6 +114,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasIndex("ClinicId");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Branches");
                 });
 
@@ -152,6 +158,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .HasDefaultValueSql("newid()");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("VanityId")
+                        .IsUnique();
 
                     b.ToTable("Clinics");
                 });
@@ -210,6 +219,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasIndex("NurseId");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Departments");
                 });
 
@@ -265,6 +277,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Person");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Person");
@@ -313,6 +328,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("PersonId");
+
+                    b.HasIndex("VanityId")
+                        .IsUnique();
 
                     b.ToTable("WorkSchedules");
                 });

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20220418100529_InitialCreate")]
+    [Migration("20220420193719_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasIndex("PersonId");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Appointments");
                 });
 
@@ -113,6 +116,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasIndex("ClinicId");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Branches");
                 });
 
@@ -154,6 +160,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .HasDefaultValueSql("newid()");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("VanityId")
+                        .IsUnique();
 
                     b.ToTable("Clinics");
                 });
@@ -212,6 +221,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasIndex("NurseId");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Departments");
                 });
 
@@ -267,6 +279,9 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("VanityId")
+                        .IsUnique();
+
                     b.ToTable("Person");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Person");
@@ -315,6 +330,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("PersonId");
+
+                    b.HasIndex("VanityId")
+                        .IsUnique();
 
                     b.ToTable("WorkSchedules");
                 });

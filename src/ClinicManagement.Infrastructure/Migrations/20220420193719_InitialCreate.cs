@@ -194,9 +194,27 @@ namespace ClinicManagement.Infrastructure.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Appointments_VanityId",
+                table: "Appointments",
+                column: "VanityId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Branches_ClinicId",
                 table: "Branches",
                 column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Branches_VanityId",
+                table: "Branches",
+                column: "VanityId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clinics_VanityId",
+                table: "Clinics",
+                column: "VanityId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Departments_BranchId",
@@ -214,6 +232,18 @@ namespace ClinicManagement.Infrastructure.Migrations
                 column: "NurseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Departments_VanityId",
+                table: "Departments",
+                column: "VanityId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Person_VanityId",
+                table: "Person",
+                column: "VanityId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WorkSchedules_DepartmentId",
                 table: "WorkSchedules",
                 column: "DepartmentId");
@@ -222,6 +252,12 @@ namespace ClinicManagement.Infrastructure.Migrations
                 name: "IX_WorkSchedules_PersonId",
                 table: "WorkSchedules",
                 column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkSchedules_VanityId",
+                table: "WorkSchedules",
+                column: "VanityId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
