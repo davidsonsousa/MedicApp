@@ -37,6 +37,25 @@ public static class ClinicExtensions
     }
 
     /// <summary>
+    /// Maps IEnumerable&lt;Clinic&gt; to IEnumerable&lt;ClinicViewModel&gt; object
+    /// </summary>
+    /// <param name="items"></param>
+    /// <returns></returns>
+    public static IEnumerable<ClinicViewModel> MapToViewModel(this IEnumerable<Clinic>? items)
+    {
+        Guard.Against.Null(items, nameof(items));
+
+        return items.Select(clinic => new ClinicViewModel
+        {
+            Id = clinic.Id,
+            VanityId = clinic.VanityId,
+            Name = clinic.Name,
+            SelectedBranches = clinic.Branches.Select(b => b.VanityId).ToArray()
+        });
+
+    }
+
+    /// <summary>
     /// Maps a ClinicEditModel to a Clinic entity
     /// </summary>
     /// <param name="item"></param>
@@ -60,8 +79,6 @@ public static class ClinicExtensions
     {
         Guard.Against.Null(clinic, nameof(clinic));
 
-        clinic.Id = item.Id;
-        clinic.VanityId = item.VanityId;
         clinic.Name = item.Name;
 
         return clinic;
