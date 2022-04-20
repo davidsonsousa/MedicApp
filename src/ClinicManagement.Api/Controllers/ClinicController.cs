@@ -11,6 +11,14 @@ public class ClinicController : ControllerBase
         this.clinicService = clinicService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Get(CancellationToken cancellationToken)
+    {
+        var returnValue = await clinicService.GetAllClinics(cancellationToken);
+
+        return returnValue.HasError ? NotFound() : Ok(returnValue.As<IEnumerable<ClinicViewModel>>());
+    }
+
     [HttpGet("id")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
@@ -23,5 +31,17 @@ public class ClinicController : ControllerBase
     public async Task PostAsync(ClinicEditModel clinicEditModel, CancellationToken cancellationToken)
     {
         await clinicService.SaveAsync(clinicEditModel, cancellationToken);
+    }
+
+    [HttpPut]
+    public async Task PutAsync(ClinicEditModel clinicEditModel, CancellationToken cancellationToken)
+    {
+        await clinicService.SaveAsync(clinicEditModel, cancellationToken);
+    }
+
+    [HttpDelete]
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        await clinicService.DeleteAsync(id, cancellationToken);
     }
 }
