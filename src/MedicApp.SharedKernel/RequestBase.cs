@@ -12,10 +12,7 @@ public abstract class RequestBase
 
     public override string ToString()
     {
-        var jsonResult = new JObject(
-                                    new JProperty("VanityId", VanityId)
-                                );
-        return jsonResult.ToString();
+        return JsonConvert.SerializeObject(this);
     }
 
 }

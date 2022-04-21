@@ -11,7 +11,9 @@ builder.Services.AddDbContext<ClinicManagementContext>(options => options.Enable
 
 // Configure DI
 builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IClinicService, ClinicService>();
+builder.Services.AddScoped<IBranchService, BranchService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

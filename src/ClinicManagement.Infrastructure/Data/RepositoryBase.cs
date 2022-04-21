@@ -18,7 +18,7 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
 
         Logger.DebugMethodCall(nameof(AddAsync), entity);
 
-        DbContext.Set<TEntity>().Add(entity);
+        await DbContext.AddAsync(entity, cancellationToken);
         await SaveChangesAsync(cancellationToken);
         return entity;
     }
