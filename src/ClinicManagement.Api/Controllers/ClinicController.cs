@@ -21,7 +21,7 @@ public class ClinicController : ControllerBase
             return NotFound();
         }
 
-        var items = result.As<IEnumerable<ClinicViewModel>>();
+        var items = result.As<IEnumerable<ClinicResponse>>();
 
         return !items.Any() ? NotFound() : Ok(items);
     }
@@ -31,19 +31,19 @@ public class ClinicController : ControllerBase
     {
         var result = await clinicService.GetClinicById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<ClinicViewModel>());
+        return result.HasError ? NotFound() : Ok(result.As<ClinicResponse>());
     }
 
     [HttpPost]
-    public async Task PostAsync(ClinicEditModel clinicEditModel, CancellationToken cancellationToken)
+    public async Task PostAsync(ClinicRequest clinicRequest, CancellationToken cancellationToken)
     {
-        await clinicService.SaveAsync(clinicEditModel, cancellationToken);
+        await clinicService.SaveAsync(clinicRequest, cancellationToken);
     }
 
     [HttpPut]
-    public async Task PutAsync(ClinicEditModel clinicEditModel, CancellationToken cancellationToken)
+    public async Task PutAsync(ClinicRequest clinicRequest, CancellationToken cancellationToken)
     {
-        await clinicService.SaveAsync(clinicEditModel, cancellationToken);
+        await clinicService.SaveAsync(clinicRequest, cancellationToken);
     }
 
     [HttpDelete]

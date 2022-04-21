@@ -10,7 +10,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
     public async Task<IResult> GetAllClinics(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllClinics));
-        var result = new Result<IEnumerable<ClinicViewModel>>();
+        var result = new Result<IEnumerable<ClinicResponse>>();
 
         try
         {
@@ -32,7 +32,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
     public async Task<IResult> GetClinicById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(GetClinicById), id);
-        var result = new Result<ClinicViewModel>();
+        var result = new Result<ClinicResponse>();
 
         try
         {
@@ -50,7 +50,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
         return result;
     }
 
-    public async Task<IResult> SaveAsync(ClinicEditModel model, CancellationToken cancellationToken = default)
+    public async Task<IResult> SaveAsync(ClinicRequest model, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(SaveAsync), model);
         var result = new Result($"Clinic '{model.Name}' saved.");
@@ -69,7 +69,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
         return result;
     }
 
-    private async Task AddOrUpdateAsync(ClinicEditModel model, CancellationToken cancellationToken = default)
+    private async Task AddOrUpdateAsync(ClinicRequest model, CancellationToken cancellationToken = default)
     {
         if (model.IsNew)
         {

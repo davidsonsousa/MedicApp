@@ -1,6 +1,6 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.EditModels;
+﻿namespace ClinicManagement.ApplicationCore.Models.Requests;
 
-public class ClinicEditModel : EditModelBase
+public class ClinicRequest : RequestBase
 {
     public string Name { get; set; } = string.Empty;
 
@@ -9,7 +9,6 @@ public class ClinicEditModel : EditModelBase
     public override string ToString()
     {
         var jsonResult = new JObject(
-                                    new JProperty("Id", Id),
                                     new JProperty("VanityId", VanityId),
                                     new JProperty("Name", Name),
                                     new JProperty("SelectedBranches", string.Join(',', SelectedBranches))

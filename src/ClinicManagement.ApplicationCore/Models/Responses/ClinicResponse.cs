@@ -1,6 +1,6 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.ViewModels;
+﻿namespace ClinicManagement.ApplicationCore.Models.Responses;
 
-public class ClinicViewModel : ViewModelBase
+public class ClinicResponse : ResponseBase
 {
     public string Name { get; set; } = string.Empty;
 

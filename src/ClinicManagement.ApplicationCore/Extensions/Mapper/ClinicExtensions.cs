@@ -7,11 +7,10 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static ClinicEditModel MapToEditModel(this Clinic item)
+    public static ClinicRequest MapToEditModel(this Clinic item)
     {
-        return new ClinicEditModel
+        return new ClinicRequest
         {
-            Id = item.Id,
             VanityId = item.VanityId,
             Name = item.Name,
             SelectedBranches = item.Branches.Select(b => b.VanityId).ToArray()
@@ -23,13 +22,12 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static ClinicViewModel MapToViewModel(this Clinic? item)
+    public static ClinicResponse MapToViewModel(this Clinic? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new ClinicViewModel
+        return new ClinicResponse
         {
-            Id = item.Id,
             VanityId = item.VanityId,
             Name = item.Name,
             SelectedBranches = item.Branches.Select(b => b.VanityId).ToArray()
@@ -41,13 +39,12 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<ClinicViewModel> MapToViewModel(this IEnumerable<Clinic>? items)
+    public static IEnumerable<ClinicResponse> MapToViewModel(this IEnumerable<Clinic>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(clinic => new ClinicViewModel
+        return items.Select(clinic => new ClinicResponse
         {
-            Id = clinic.Id,
             VanityId = clinic.VanityId,
             Name = clinic.Name,
             SelectedBranches = clinic.Branches.Select(b => b.VanityId).ToArray()
@@ -60,11 +57,10 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static Clinic MapToEntity(this ClinicEditModel item)
+    public static Clinic MapToEntity(this ClinicRequest item)
     {
         return new Clinic
         {
-            Id = item.Id,
             VanityId = item.VanityId,
             Name = item.Name
         };
@@ -75,7 +71,7 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static Clinic MapToEntity(this ClinicEditModel item, Clinic? clinic)
+    public static Clinic MapToEntity(this ClinicRequest item, Clinic? clinic)
     {
         Guard.Against.Null(clinic, nameof(clinic));
 
