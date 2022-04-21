@@ -9,7 +9,7 @@ public class Branch : EntityBase
 
     public long ClinicId { get; set; }
 
-    public virtual Clinic Clinic { get; set; } = new Clinic();
+    public virtual Clinic Clinic { get; set; }
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 }
