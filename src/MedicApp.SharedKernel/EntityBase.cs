@@ -3,10 +3,8 @@
 public abstract class EntityBase
 {
     [NotMapped]
-    public bool IsNew
-    {
-        get
-        {
+    public bool IsNew {
+        get {
             return Id == 0 && VanityId == Guid.Empty;
         }
     }
@@ -22,10 +20,6 @@ public abstract class EntityBase
 
     public override string ToString()
     {
-        var jsonResult = new JObject(
-                                    new JProperty("Id", Id),
-                                    new JProperty("VanityId", VanityId)
-                                    );
-        return jsonResult.ToString();
+        return JsonConvert.SerializeObject(this);
     }
 }
