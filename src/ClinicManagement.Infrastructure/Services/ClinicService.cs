@@ -17,7 +17,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
             var clinics = await Repository.GetAllAsync(cancellationToken);
             Guard.Against.Null(clinics, nameof(clinics));
 
-            result.Value = clinics.MapToViewModel();
+            result.Value = clinics.MapToResponse();
         }
         catch (Exception ex)
         {
@@ -39,7 +39,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
             var clinic = await Repository.GetByIdAsync(id, cancellationToken);
             Guard.Against.Null(clinic, nameof(clinic));
 
-            result.Value = clinic.MapToViewModel();
+            result.Value = clinic.MapToResponse();
         }
         catch (Exception ex)
         {

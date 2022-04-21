@@ -7,7 +7,7 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static ClinicRequest MapToEditModel(this Clinic item)
+    public static ClinicRequest MapToRequest(this Clinic item)
     {
         return new ClinicRequest
         {
@@ -22,7 +22,7 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static ClinicResponse MapToViewModel(this Clinic? item)
+    public static ClinicResponse MapToResponse(this Clinic? item)
     {
         Guard.Against.Null(item, nameof(item));
 
@@ -39,7 +39,7 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<ClinicResponse> MapToViewModel(this IEnumerable<Clinic>? items)
+    public static IEnumerable<ClinicResponse> MapToResponse(this IEnumerable<Clinic>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
