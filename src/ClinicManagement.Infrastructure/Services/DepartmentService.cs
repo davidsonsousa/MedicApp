@@ -1,0 +1,89 @@
+﻿namespace ClinicManagement.Infrastructure.Services;
+
+public class DepartmentService : ServiceBase<Department>, IDepartmentService
+{
+    private readonly IBranchRepository branchRepository;
+
+    public DepartmentService(IDepartmentRepository departmentRepository, IBranchRepository branchRepository, ILoggerFactory loggerFactory)
+        : base(departmentRepository, loggerFactory)
+    {
+        this.branchRepository = branchRepository;
+    }
+
+    public async Task<IResult> GetAllDepartments(CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetAllDepartments));
+        var result = new Result<IEnumerable<DepartmentResponse>>();
+
+        try
+        {
+            var departments = await Repository.GetAllAsync(cancellationToken);
+            Guard.Against.Null(departments, nameof(departments));
+
+            result.Value = departments.MapToResponse();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(DepartmentService), nameof(GetAllDepartments));
+            result.SetErrorMessage("An error has occurred while loading the departments");
+        }
+
+        return result;
+    }
+
+
+    public async Task<IResult> GetDepartmentById(Guid id, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(DepartmentService), nameof(GetDepartmentById), id);
+        var result = new Result<DepartmentResponse>();
+
+        try
+        {
+            var department = await Repository.GetByIdAsync(id, cancellationToken);
+            Guard.Against.Null(department, nameof(department));
+
+            result.Value = department.MapToResponse();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(DepartmentService), nameof(GetDepartmentById));
+            result.SetErrorMessage("An error has occurred while loading the department");
+        }
+
+        return result;
+    }
+
+    public async Task<IResult> SaveAsync(DepartmentRequest model, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(DepartmentService), nameof(SaveAsync), model);
+        var result = new Result($"Department '{model.Name}' saved.");
+
+        try
+        {
+            await AddOrUpdateAsync(model, cancellationToken);
+            await Repository.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(DepartmentService), nameof(GetDepartmentById));
+            result.SetErrorMessage("An error has occurred while saving the department");
+        }
+
+        return result;
+    }
+
+    private async Task AddOrUpdateAsync(DepartmentRequest model, CancellationToken cancellationToken = default)
+    {
+        if (model.IsNew)
+        {
+            var department = model.MapToEntity(await branchRepository.GetByIdAsync(model.BranchId, cancellationToken));
+            await Repository.AddAsync(department, cancellationToken);
+        }
+        else
+        {
+            var department = model.MapToEntity(await Repository.GetByIdAsync(model.VanityId, cancellationToken),
+                                               await branchRepository.GetByIdAsync(model.BranchId, cancellationToken));
+            await Repository.UpdateAsync(department, cancellationToken);
+        }
+    }
+}
