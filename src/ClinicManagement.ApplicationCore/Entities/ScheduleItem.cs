@@ -6,5 +6,5 @@ public abstract class ScheduleItem : EntityBase
 
     public long PersonId { get; set; }
 
-    public Person Person { get; set; }
+    public Person Person { get; set; } = null!;
 }

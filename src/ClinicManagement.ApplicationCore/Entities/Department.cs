@@ -7,5 +7,5 @@ public class Department : EntityBase
 
     public long BranchId { get; set; }
 
-    public virtual Branch Branch { get; set; }
+    public virtual Branch Branch { get; set; } = null!;
 }
