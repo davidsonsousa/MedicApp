@@ -2,5 +2,7 @@
 
 public class Nurse : Person
 {
-    public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
+    public virtual ICollection<Department> Departments { get; set; } = null!;
+
+    public virtual ICollection<WorkSchedule> WorkSchedules { get; set; } = null!;
 }
