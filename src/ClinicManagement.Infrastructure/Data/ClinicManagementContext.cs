@@ -18,6 +18,8 @@ public class ClinicManagementContext : DbContext
 
     public DbSet<Appointment> Appointments => Set<Appointment>();
 
+    public DbSet<Language> Languages => Set<Language>();
+
     public ClinicManagementContext(DbContextOptions<ClinicManagementContext> options)
         : base(options)
     {
@@ -31,6 +33,7 @@ public class ClinicManagementContext : DbContext
         new DepartmentEntityConfiguration().Configure(modelBuilder.Entity<Department>());
         new DoctorEntityConfiguration().Configure(modelBuilder.Entity<Doctor>());
         new PersonEntityConfiguration().Configure(modelBuilder.Entity<Person>());
+        new LanguageEntityConfiguration().Configure(modelBuilder.Entity<Language>());
         new NurseEntityConfiguration().Configure(modelBuilder.Entity<Nurse>());
         new WorkScheduleEntityConfiguration().Configure(modelBuilder.Entity<WorkSchedule>());
         new PatientEntityConfiguration().Configure(modelBuilder.Entity<Patient>());
