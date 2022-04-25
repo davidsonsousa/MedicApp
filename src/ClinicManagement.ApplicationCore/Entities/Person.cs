@@ -14,4 +14,6 @@ public abstract class Person : EntityBase
     public Address Address { get; set; } = new Address();
 
     public PhoneNumber PhoneNumber { get; set; } = new PhoneNumber();
+
+    public virtual ICollection<Language> Languages { get; set; } = null!;
 }
