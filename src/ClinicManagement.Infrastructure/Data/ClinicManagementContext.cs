@@ -43,8 +43,6 @@ public class ClinicManagementContext : DbContext
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.DetectChanges();
-
-        var timeStamp = DateTime.Now;
         var entries = ChangeTracker.Entries().Where(e => e.Entity is EntityBase && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         // TODO: Get the user who triggered the operation
@@ -54,11 +52,10 @@ public class ClinicManagementContext : DbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Property("DateCreated").CurrentValue = timeStamp;
                 //entry.Property("UserCreated").CurrentValue = currentUsername;
             }
 
-            entry.Property("DateModified").CurrentValue = timeStamp;
+            entry.Property("DateModified").CurrentValue = DateTime.Now;
             //entry.Property("UserModified").CurrentValue = currentUsername;
         }
 
