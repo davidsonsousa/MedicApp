@@ -79,7 +79,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
         else
         {
             var clinic = model.MapToEntity(await Repository.GetByIdAsync(model.VanityId, cancellationToken));
-            await Repository.UpdateAsync(clinic, cancellationToken);
+            Repository.Update(clinic, cancellationToken);
         }
     }
 }

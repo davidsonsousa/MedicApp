@@ -83,7 +83,7 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
         {
             var department = model.MapToEntity(await Repository.GetByIdAsync(model.VanityId, cancellationToken),
                                                await branchRepository.GetByIdAsync(model.BranchId, cancellationToken));
-            await Repository.UpdateAsync(department, cancellationToken);
+            Repository.Update(department, cancellationToken);
         }
     }
 }

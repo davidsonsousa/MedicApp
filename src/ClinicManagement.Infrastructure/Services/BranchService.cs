@@ -83,7 +83,7 @@ public class BranchService : ServiceBase<Branch>, IBranchService
         {
             var branch = model.MapToEntity(await Repository.GetByIdAsync(model.VanityId, cancellationToken),
                                            await clinicRepository.GetByIdAsync(model.ClinicId, cancellationToken));
-            await Repository.UpdateAsync(branch, cancellationToken);
+            Repository.Update(branch, cancellationToken);
         }
     }
 }
