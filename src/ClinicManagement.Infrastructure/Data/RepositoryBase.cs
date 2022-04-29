@@ -71,6 +71,13 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
         return await DbContext.Set<TEntity>().Where(q => q.VanityId == id).SingleOrDefaultAsync(cancellationToken);
     }
 
+    public async virtual Task<IEnumerable<TEntity>?> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetByIdsAsync));
+
+        return await DbContext.Set<TEntity>().Where(q => ids.Contains(q.VanityId)).ToListAsync(cancellationToken);
+    }
+
     public async virtual Task<IEnumerable<TEntity>> GetReadOnlyAsync(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetReadOnlyAsync), filter);

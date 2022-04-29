@@ -16,7 +16,15 @@ public interface IReadRepository<TEntity> where TEntity : class
     /// <param name="vanityId">Value of the Vanity Id</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<TEntity?> GetByIdAsync(Guid vanityId, CancellationToken cancellationToken = default);
+    Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Get multiple entities by multiple VanityIds
+    /// </summary>
+    /// <param name="vanityId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IEnumerable<TEntity>?> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get all records which were not marked as deleted (IsDeleted == false)
