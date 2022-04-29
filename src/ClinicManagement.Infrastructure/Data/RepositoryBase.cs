@@ -19,7 +19,7 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
         Logger.DebugMethodCall(nameof(AddAsync), entity);
 
         await DbContext.AddAsync(entity, cancellationToken);
-        await SaveChangesAsync(cancellationToken);
+        //await SaveChangesAsync(cancellationToken);
         return entity;
     }
 
@@ -39,15 +39,15 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
         return await DbContext.Set<TEntity>().CountAsync(filter, cancellationToken);
     }
 
-    public async virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual void Delete(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, entity.GetType().Name);
 
-        Logger.DebugMethodCall(nameof(DeleteAsync), entity);
+        Logger.DebugMethodCall(nameof(Delete), entity);
 
         // We never delete anything, only update the IsDelete flag
         entity.IsDeleted = true;
-        await UpdateAsync(entity, cancellationToken);
+        Update(entity, cancellationToken);
     }
 
     public async virtual Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -92,14 +92,13 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
         return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async virtual Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual void Update(TEntity entity, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(entity, entity.GetType().Name);
 
-        Logger.DebugMethodCall(nameof(UpdateAsync), entity);
+        Logger.DebugMethodCall(nameof(Update), entity);
 
         DbContext.Update(entity);
-        await SaveChangesAsync(cancellationToken);
     }
 
     private IQueryable<TEntity> GetValidRecords()
