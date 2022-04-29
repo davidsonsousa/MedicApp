@@ -12,5 +12,7 @@ public class LanguageEntityConfiguration : IEntityTypeConfiguration<Language>
                .WithMany(doc => doc.Languages)
                .UsingEntity<LanguagePerson>(b => b.HasOne<Person>().WithMany(),
                                             b => b.HasOne<Language>().WithMany());
+
+        builder.HasData(GeneralConfiguration.SeedLanguages());
     }
 }

@@ -17,5 +17,7 @@ public class DepartmentEntityConfiguration : IEntityTypeConfiguration<Department
                .WithMany(nur => nur.Departments)
                .UsingEntity<DepartmentNurse>(b => b.HasOne<Nurse>().WithMany(),
                                               b => b.HasOne<Department>().WithMany());
+
+        builder.HasData(GeneralConfiguration.SeedDepartments());
     }
 }
