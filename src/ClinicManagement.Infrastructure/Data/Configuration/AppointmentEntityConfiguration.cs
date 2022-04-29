@@ -9,16 +9,10 @@ public class AppointmentEntityConfiguration : IEntityTypeConfiguration<Appointme
 
         builder.OwnsOne(appointment => appointment.DateTimeSchedule);
 
+        // Relationships
         builder.HasMany(appointment => appointment.Patients)
                .WithMany(patient => patient.Appointments)
-               .UsingEntity<Dictionary<string, object>>(
-                            "AppointmentPatient",
-                            b => b.HasOne<Patient>()
-                                  .WithMany()
-                                  .OnDelete(DeleteBehavior.NoAction),
-                            b => b.HasOne<Appointment>()
-                                  .WithMany()
-                                  .OnDelete(DeleteBehavior.NoAction)
-                           );
+               .UsingEntity<AppointmentPatient>(b => b.HasOne<Patient>().WithMany().OnDelete(DeleteBehavior.NoAction),
+                                                b => b.HasOne<Appointment>().WithMany().OnDelete(DeleteBehavior.NoAction));
     }
 }
