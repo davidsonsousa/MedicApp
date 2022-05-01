@@ -209,48 +209,24 @@ namespace ClinicManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DepartmentDoctor",
+                name: "DepartmentEmployee",
                 columns: table => new
                 {
                     DepartmentId = table.Column<long>(type: "bigint", nullable: false),
-                    DoctorId = table.Column<long>(type: "bigint", nullable: false)
+                    EmployeeId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DepartmentDoctor", x => new { x.DepartmentId, x.DoctorId });
+                    table.PrimaryKey("PK_DepartmentEmployee", x => new { x.DepartmentId, x.EmployeeId });
                     table.ForeignKey(
-                        name: "FK_DepartmentDoctor_Departments_DepartmentId",
+                        name: "FK_DepartmentEmployee_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DepartmentDoctor_People_DoctorId",
-                        column: x => x.DoctorId,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DepartmentNurse",
-                columns: table => new
-                {
-                    DepartmentId = table.Column<long>(type: "bigint", nullable: false),
-                    NurseId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DepartmentNurse", x => new { x.DepartmentId, x.NurseId });
-                    table.ForeignKey(
-                        name: "FK_DepartmentNurse_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DepartmentNurse_People_NurseId",
-                        column: x => x.NurseId,
+                        name: "FK_DepartmentEmployee_People_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "People",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -291,44 +267,22 @@ namespace ClinicManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkScheduleDoctor",
+                name: "WorkScheduleEmployee",
                 columns: table => new
                 {
                     WorkScheduleId = table.Column<long>(type: "bigint", nullable: false),
-                    DoctorId = table.Column<long>(type: "bigint", nullable: false)
+                    EmployeeId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkScheduleDoctor", x => new { x.DoctorId, x.WorkScheduleId });
+                    table.PrimaryKey("PK_WorkScheduleEmployee", x => new { x.EmployeeId, x.WorkScheduleId });
                     table.ForeignKey(
-                        name: "FK_WorkScheduleDoctor_People_DoctorId",
-                        column: x => x.DoctorId,
+                        name: "FK_WorkScheduleEmployee_People_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "People",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_WorkScheduleDoctor_WorkSchedules_WorkScheduleId",
-                        column: x => x.WorkScheduleId,
-                        principalTable: "WorkSchedules",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkScheduleNurse",
-                columns: table => new
-                {
-                    WorkScheduleId = table.Column<long>(type: "bigint", nullable: false),
-                    NurseId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkScheduleNurse", x => new { x.NurseId, x.WorkScheduleId });
-                    table.ForeignKey(
-                        name: "FK_WorkScheduleNurse_People_NurseId",
-                        column: x => x.NurseId,
-                        principalTable: "People",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_WorkScheduleNurse_WorkSchedules_WorkScheduleId",
+                        name: "FK_WorkScheduleEmployee_WorkSchedules_WorkScheduleId",
                         column: x => x.WorkScheduleId,
                         principalTable: "WorkSchedules",
                         principalColumn: "Id");
@@ -412,14 +366,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_DepartmentDoctor_DoctorId",
-                table: "DepartmentDoctor",
-                column: "DoctorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DepartmentNurse_NurseId",
-                table: "DepartmentNurse",
-                column: "NurseId");
+                name: "IX_DepartmentEmployee_EmployeeId",
+                table: "DepartmentEmployee",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Departments_BranchId",
@@ -450,13 +399,8 @@ namespace ClinicManagement.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkScheduleDoctor_WorkScheduleId",
-                table: "WorkScheduleDoctor",
-                column: "WorkScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkScheduleNurse_WorkScheduleId",
-                table: "WorkScheduleNurse",
+                name: "IX_WorkScheduleEmployee_WorkScheduleId",
+                table: "WorkScheduleEmployee",
                 column: "WorkScheduleId");
 
             migrationBuilder.CreateIndex(
@@ -482,19 +426,13 @@ namespace ClinicManagement.Infrastructure.Migrations
                 name: "AppointmentPatient");
 
             migrationBuilder.DropTable(
-                name: "DepartmentDoctor");
-
-            migrationBuilder.DropTable(
-                name: "DepartmentNurse");
+                name: "DepartmentEmployee");
 
             migrationBuilder.DropTable(
                 name: "LanguagePerson");
 
             migrationBuilder.DropTable(
-                name: "WorkScheduleDoctor");
-
-            migrationBuilder.DropTable(
-                name: "WorkScheduleNurse");
+                name: "WorkScheduleEmployee");
 
             migrationBuilder.DropTable(
                 name: "Appointments");

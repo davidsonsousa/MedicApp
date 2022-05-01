@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20220429205936_InitialCreate")]
+    [Migration("20220501123309_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -348,34 +348,19 @@ namespace ClinicManagement.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentDoctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentEmployee", b =>
                 {
                     b.Property<long>("DepartmentId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("DoctorId")
+                    b.Property<long>("EmployeeId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("DepartmentId", "DoctorId");
+                    b.HasKey("DepartmentId", "EmployeeId");
 
-                    b.HasIndex("DoctorId");
+                    b.HasIndex("EmployeeId");
 
-                    b.ToTable("DepartmentDoctor");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentNurse", b =>
-                {
-                    b.Property<long>("DepartmentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("NurseId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("DepartmentId", "NurseId");
-
-                    b.HasIndex("NurseId");
-
-                    b.ToTable("DepartmentNurse");
+                    b.ToTable("DepartmentEmployee");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Language", b =>
@@ -598,48 +583,26 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.ToTable("WorkSchedules");
                 });
 
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleDoctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleEmployee", b =>
                 {
-                    b.Property<long>("DoctorId")
+                    b.Property<long>("EmployeeId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("WorkScheduleId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("DoctorId", "WorkScheduleId");
+                    b.HasKey("EmployeeId", "WorkScheduleId");
 
                     b.HasIndex("WorkScheduleId");
 
-                    b.ToTable("WorkScheduleDoctor");
+                    b.ToTable("WorkScheduleEmployee");
                 });
 
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleNurse", b =>
-                {
-                    b.Property<long>("NurseId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("WorkScheduleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("NurseId", "WorkScheduleId");
-
-                    b.HasIndex("WorkScheduleId");
-
-                    b.ToTable("WorkScheduleNurse");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Doctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Employee", b =>
                 {
                     b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Person");
 
-                    b.HasDiscriminator().HasValue("Doctor");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Nurse", b =>
-                {
-                    b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Person");
-
-                    b.HasDiscriminator().HasValue("Nurse");
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Patient", b =>
@@ -647,6 +610,20 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Person");
 
                     b.HasDiscriminator().HasValue("Patient");
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Doctor", b =>
+                {
+                    b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Employee");
+
+                    b.HasDiscriminator().HasValue("Doctor");
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Nurse", b =>
+                {
+                    b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Employee");
+
+                    b.HasDiscriminator().HasValue("Nurse");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Appointment", b =>
@@ -788,7 +765,7 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentDoctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentEmployee", b =>
                 {
                     b.HasOne("ClinicManagement.ApplicationCore.Entities.Department", null)
                         .WithMany()
@@ -796,24 +773,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Doctor", null)
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Employee", null)
                         .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentNurse", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Department", null)
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Nurse", null)
-                        .WithMany()
-                        .HasForeignKey("NurseId")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -936,26 +898,11 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleDoctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleEmployee", b =>
                 {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Doctor", null)
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Employee", null)
                         .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.WorkSchedule", null)
-                        .WithMany()
-                        .HasForeignKey("WorkScheduleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleNurse", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Nurse", null)
-                        .WithMany()
-                        .HasForeignKey("NurseId")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
