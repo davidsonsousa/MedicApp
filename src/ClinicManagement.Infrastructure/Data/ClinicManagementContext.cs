@@ -31,13 +31,15 @@ public class ClinicManagementContext : DbContext
         new ClinicEntityConfiguration().Configure(modelBuilder.Entity<Clinic>());
         new BranchEntityConfiguration().Configure(modelBuilder.Entity<Branch>());
         new DepartmentEntityConfiguration().Configure(modelBuilder.Entity<Department>());
-        new DoctorEntityConfiguration().Configure(modelBuilder.Entity<Doctor>());
-        new PersonEntityConfiguration().Configure(modelBuilder.Entity<Person>());
         new LanguageEntityConfiguration().Configure(modelBuilder.Entity<Language>());
-        new NurseEntityConfiguration().Configure(modelBuilder.Entity<Nurse>());
-        new WorkScheduleEntityConfiguration().Configure(modelBuilder.Entity<WorkSchedule>());
+
+        new PersonEntityConfiguration().Configure(modelBuilder.Entity<Person>());
         new PatientEntityConfiguration().Configure(modelBuilder.Entity<Patient>());
         new AppointmentEntityConfiguration().Configure(modelBuilder.Entity<Appointment>());
+
+        new DoctorEntityConfiguration().Configure(modelBuilder.Entity<Doctor>());
+        new NurseEntityConfiguration().Configure(modelBuilder.Entity<Nurse>());
+        new WorkScheduleEntityConfiguration().Configure(modelBuilder.Entity<WorkSchedule>());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
