@@ -17,13 +17,13 @@ builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
-//builder.Services.AddScoped<INurseRepository, NurseRepository>();
+builder.Services.AddScoped<INurseRepository, NurseRepository>();
 builder.Services.AddScoped<IClinicService, ClinicService>();
 builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
-//builder.Services.AddScoped<INurseService, NurseService>();
+builder.Services.AddScoped<INurseService, NurseService>();
 
 builder.Services.AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
                 .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
