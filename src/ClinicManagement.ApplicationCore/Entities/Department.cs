@@ -9,7 +9,5 @@ public class Department : EntityBase
 
     public virtual Branch Branch { get; set; } = null!;
 
-    public virtual ICollection<Doctor> Doctors { get; set; } = null!;
-
-    public virtual ICollection<Nurse> Nurses { get; set; } = null!;
+    public virtual ICollection<Employee> Employees { get; set; } = null!;
 }

@@ -6,7 +6,5 @@ public class WorkSchedule : ScheduleItem
 
     public virtual Department Department { get; set; } = null!;
 
-    public virtual ICollection<Doctor> Doctors { get; set; } = null!;
-
-    public virtual ICollection<Nurse> Nurses { get; set; } = null!;
+    public virtual ICollection<Employee> Employees { get; set; } = null!;
 }

@@ -22,21 +22,6 @@ namespace ClinicManagement.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AppointmentPatient", b =>
-                {
-                    b.Property<long>("AppointmentsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PatientsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("AppointmentsId", "PatientsId");
-
-                    b.HasIndex("PatientsId");
-
-                    b.ToTable("AppointmentPatient");
-                });
-
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Appointment", b =>
                 {
                     b.Property<long>("Id")
@@ -50,10 +35,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -85,6 +74,21 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.ToTable("Appointments");
                 });
 
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.AppointmentPatient", b =>
+                {
+                    b.Property<long>("AppointmentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PatientId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AppointmentId", "PatientId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("AppointmentPatient");
+                });
+
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Branch", b =>
                 {
                     b.Property<long>("Id")
@@ -98,10 +102,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -133,6 +141,40 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Branches");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            ClinicId = 1L,
+                            IsDeleted = false,
+                            Name = "WMC - Prague 1",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            ClinicId = 1L,
+                            IsDeleted = false,
+                            Name = "WMC - Prague 3",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            ClinicId = 2L,
+                            IsDeleted = false,
+                            Name = "RC - Prague 5",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            ClinicId = 2L,
+                            IsDeleted = false,
+                            Name = "RC - Prague 9",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Clinic", b =>
@@ -145,10 +187,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -178,6 +224,22 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Clinics");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            IsDeleted = false,
+                            Name = "Whatever Medical Center",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            IsDeleted = false,
+                            Name = "Random Clinic",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Department", b =>
@@ -193,10 +255,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -228,6 +294,71 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            BranchId = 1L,
+                            IsDeleted = false,
+                            Name = "General practitioner",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            BranchId = 1L,
+                            IsDeleted = false,
+                            Name = "Urology",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            BranchId = 1L,
+                            IsDeleted = false,
+                            Name = "Paediatrics",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            BranchId = 2L,
+                            IsDeleted = false,
+                            Name = "Internal medicine",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            BranchId = 2L,
+                            IsDeleted = false,
+                            Name = "Cardiology",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            BranchId = 2L,
+                            IsDeleted = false,
+                            Name = "Ophthalmology",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentEmployee", b =>
+                {
+                    b.Property<long>("DepartmentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EmployeeId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("DepartmentId", "EmployeeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("DepartmentEmployee");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Language", b =>
@@ -244,10 +375,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -277,6 +412,55 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Code = "CZ",
+                            IsDeleted = false,
+                            Name = "Czech",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Code = "EN",
+                            IsDeleted = false,
+                            Name = "English",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Code = "PL",
+                            IsDeleted = false,
+                            Name = "Polish",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Code = "RU",
+                            IsDeleted = false,
+                            Name = "Russian",
+                            VanityId = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.LanguagePerson", b =>
+                {
+                    b.Property<long>("LanguageId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PersonId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("LanguageId", "PersonId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("LanguagePerson");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Person", b =>
@@ -289,10 +473,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2")
@@ -334,7 +522,7 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasIndex("VanityId")
                         .IsUnique();
 
-                    b.ToTable("Person");
+                    b.ToTable("People", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Person");
                 });
@@ -349,10 +537,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<long>("DepartmentId")
                         .HasColumnType("bigint");
@@ -389,93 +581,26 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.ToTable("WorkSchedules");
                 });
 
-            modelBuilder.Entity("DepartmentDoctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleEmployee", b =>
                 {
-                    b.Property<long>("DepartmentsId")
+                    b.Property<long>("EmployeeId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("DoctorsId")
+                    b.Property<long>("WorkScheduleId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("DepartmentsId", "DoctorsId");
+                    b.HasKey("EmployeeId", "WorkScheduleId");
 
-                    b.HasIndex("DoctorsId");
+                    b.HasIndex("WorkScheduleId");
 
-                    b.ToTable("DepartmentDoctor");
+                    b.ToTable("WorkScheduleEmployee");
                 });
 
-            modelBuilder.Entity("DepartmentNurse", b =>
-                {
-                    b.Property<long>("DepartmentsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("NursesId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("DepartmentsId", "NursesId");
-
-                    b.HasIndex("NursesId");
-
-                    b.ToTable("DepartmentNurse");
-                });
-
-            modelBuilder.Entity("DoctorWorkSchedule", b =>
-                {
-                    b.Property<long>("DoctorsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("WorkSchedulesId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("DoctorsId", "WorkSchedulesId");
-
-                    b.HasIndex("WorkSchedulesId");
-
-                    b.ToTable("DoctorWorkSchedule");
-                });
-
-            modelBuilder.Entity("LanguagePerson", b =>
-                {
-                    b.Property<long>("LanguagesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PeopleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("LanguagesId", "PeopleId");
-
-                    b.HasIndex("PeopleId");
-
-                    b.ToTable("LanguagePerson");
-                });
-
-            modelBuilder.Entity("NurseWorkSchedule", b =>
-                {
-                    b.Property<long>("NursesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("WorkSchedulesId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("NursesId", "WorkSchedulesId");
-
-                    b.HasIndex("WorkSchedulesId");
-
-                    b.ToTable("NurseWorkSchedule");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Doctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Employee", b =>
                 {
                     b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Person");
 
-                    b.HasDiscriminator().HasValue("Doctor");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Nurse", b =>
-                {
-                    b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Person");
-
-                    b.HasDiscriminator().HasValue("Nurse");
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Patient", b =>
@@ -485,19 +610,18 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("Patient");
                 });
 
-            modelBuilder.Entity("AppointmentPatient", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Doctor", b =>
                 {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Appointment", null)
-                        .WithMany()
-                        .HasForeignKey("AppointmentsId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                    b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Employee");
 
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Patient", null)
-                        .WithMany()
-                        .HasForeignKey("PatientsId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                    b.HasDiscriminator().HasValue("Doctor");
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Nurse", b =>
+                {
+                    b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Employee");
+
+                    b.HasDiscriminator().HasValue("Nurse");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Appointment", b =>
@@ -531,6 +655,21 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.AppointmentPatient", b =>
+                {
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Appointment", null)
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Patient", null)
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Branch", b =>
@@ -571,6 +710,40 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("BranchId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    BranchId = 1L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Ulicova 1011/10",
+                                    ZipCode = "110 00"
+                                },
+                                new
+                                {
+                                    BranchId = 2L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Ulicova 3033/30",
+                                    ZipCode = "330 00"
+                                },
+                                new
+                                {
+                                    BranchId = 3L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Ulicova 5055/50",
+                                    ZipCode = "550 00"
+                                },
+                                new
+                                {
+                                    BranchId = 4L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Ulicova 9000/90",
+                                    ZipCode = "990 00"
+                                });
                         });
 
                     b.Navigation("Address")
@@ -588,6 +761,36 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentEmployee", b =>
+                {
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Department", null)
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.LanguagePerson", b =>
+                {
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Language", null)
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Person", null)
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Person", b =>
@@ -618,7 +821,7 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("Person");
+                            b1.ToTable("People");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId");
@@ -639,7 +842,7 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("Person");
+                            b1.ToTable("People");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId");
@@ -693,77 +896,17 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("DepartmentDoctor", b =>
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleEmployee", b =>
                 {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Department", null)
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Employee", null)
                         .WithMany()
-                        .HasForeignKey("DepartmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Doctor", null)
-                        .WithMany()
-                        .HasForeignKey("DoctorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DepartmentNurse", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Department", null)
-                        .WithMany()
-                        .HasForeignKey("DepartmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Nurse", null)
-                        .WithMany()
-                        .HasForeignKey("NursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DoctorWorkSchedule", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Doctor", null)
-                        .WithMany()
-                        .HasForeignKey("DoctorsId")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ClinicManagement.ApplicationCore.Entities.WorkSchedule", null)
                         .WithMany()
-                        .HasForeignKey("WorkSchedulesId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LanguagePerson", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Language", null)
-                        .WithMany()
-                        .HasForeignKey("LanguagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PeopleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("NurseWorkSchedule", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Nurse", null)
-                        .WithMany()
-                        .HasForeignKey("NursesId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.WorkSchedule", null)
-                        .WithMany()
-                        .HasForeignKey("WorkSchedulesId")
+                        .HasForeignKey("WorkScheduleId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

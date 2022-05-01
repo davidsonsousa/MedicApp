@@ -31,20 +31,20 @@ public class ClinicManagementContext : DbContext
         new ClinicEntityConfiguration().Configure(modelBuilder.Entity<Clinic>());
         new BranchEntityConfiguration().Configure(modelBuilder.Entity<Branch>());
         new DepartmentEntityConfiguration().Configure(modelBuilder.Entity<Department>());
-        new DoctorEntityConfiguration().Configure(modelBuilder.Entity<Doctor>());
-        new PersonEntityConfiguration().Configure(modelBuilder.Entity<Person>());
         new LanguageEntityConfiguration().Configure(modelBuilder.Entity<Language>());
-        new NurseEntityConfiguration().Configure(modelBuilder.Entity<Nurse>());
-        new WorkScheduleEntityConfiguration().Configure(modelBuilder.Entity<WorkSchedule>());
+
+        new PersonEntityConfiguration().Configure(modelBuilder.Entity<Person>());
         new PatientEntityConfiguration().Configure(modelBuilder.Entity<Patient>());
         new AppointmentEntityConfiguration().Configure(modelBuilder.Entity<Appointment>());
+
+        new DoctorEntityConfiguration().Configure(modelBuilder.Entity<Doctor>());
+        new NurseEntityConfiguration().Configure(modelBuilder.Entity<Nurse>());
+        new WorkScheduleEntityConfiguration().Configure(modelBuilder.Entity<WorkSchedule>());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ChangeTracker.DetectChanges();
-
-        var timeStamp = DateTime.Now;
         var entries = ChangeTracker.Entries().Where(e => e.Entity is EntityBase && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         // TODO: Get the user who triggered the operation
@@ -54,11 +54,10 @@ public class ClinicManagementContext : DbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Property("DateCreated").CurrentValue = timeStamp;
                 //entry.Property("UserCreated").CurrentValue = currentUsername;
             }
 
-            entry.Property("DateModified").CurrentValue = timeStamp;
+            entry.Property("DateModified").CurrentValue = DateTime.Now;
             //entry.Property("UserModified").CurrentValue = currentUsername;
         }
 

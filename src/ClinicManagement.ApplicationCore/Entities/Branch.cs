@@ -5,7 +5,7 @@ public class Branch : EntityBase
     [Column(Order = 2)]
     public string Name { get; set; } = string.Empty;
 
-    public Address Address { get; set; } = new Address();
+    public Address Address { get; set; } = null!;
 
     public long ClinicId { get; set; }
 

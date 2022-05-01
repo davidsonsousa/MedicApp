@@ -7,6 +7,8 @@ public class PersonEntityConfiguration : IEntityTypeConfiguration<Person>
         GeneralConfiguration.AddPropertiesForAuditing(builder);
         GeneralConfiguration.AddVanityId(builder);
 
+        builder.ToTable("People");
+
         // Date is a DateOnly property and date on database
         builder.Property(x => x.DateOfBirth)
                .HasConversion<DateOnlyConverter, DateOnlyComparer>();

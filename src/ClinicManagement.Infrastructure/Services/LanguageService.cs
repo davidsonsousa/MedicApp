@@ -80,7 +80,7 @@ public class LanguageService : ServiceBase<Language>, ILanguageService
         else
         {
             var language = model.MapToEntity(await Repository.GetByIdAsync(model.VanityId, cancellationToken));
-            await Repository.UpdateAsync(language, cancellationToken);
+            Repository.Update(language, cancellationToken);
         }
     }
 }

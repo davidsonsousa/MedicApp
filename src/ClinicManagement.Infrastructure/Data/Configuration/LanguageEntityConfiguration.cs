@@ -6,5 +6,13 @@ public class LanguageEntityConfiguration : IEntityTypeConfiguration<Language>
     {
         GeneralConfiguration.AddPropertiesForAuditing(builder);
         GeneralConfiguration.AddVanityId(builder);
+
+        // Relationships
+        builder.HasMany(dept => dept.People)
+               .WithMany(doc => doc.Languages)
+               .UsingEntity<LanguagePerson>(b => b.HasOne<Person>().WithMany(),
+                                            b => b.HasOne<Language>().WithMany());
+
+        builder.HasData(GeneralConfiguration.SeedLanguages());
     }
 }

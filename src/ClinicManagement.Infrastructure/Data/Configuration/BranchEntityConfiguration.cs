@@ -7,6 +7,9 @@ public class BranchEntityConfiguration : IEntityTypeConfiguration<Branch>
         GeneralConfiguration.AddPropertiesForAuditing(builder);
         GeneralConfiguration.AddVanityId(builder);
 
-        builder.OwnsOne(branch => branch.Address);
+        builder.HasData(GeneralConfiguration.SeedBranches());
+
+        builder.OwnsOne(branch => branch.Address)
+               .HasData(GeneralConfiguration.SeedBranchAddresses());
     }
 }

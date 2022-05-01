@@ -12,13 +12,13 @@ public interface IChangeRepository<TEntity> where TEntity : class
     /// Updates record
     /// </summary>
     /// <param name="entity"></param>
-    Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
+    void Update(TEntity entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Deletes record from database
     /// </summary>
     /// <param name="entity"></param>
-    Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
+    void Delete(TEntity entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Persists changes to the database

@@ -1,8 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Entities;
 
-public class Nurse : Person
+public class Nurse : Employee
 {
-    public virtual ICollection<Department> Departments { get; set; } = null!;
 
-    public virtual ICollection<WorkSchedule> WorkSchedules { get; set; } = null!;
 }
