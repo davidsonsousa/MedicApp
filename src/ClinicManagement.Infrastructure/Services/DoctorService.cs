@@ -35,7 +35,6 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
         return result;
     }
 
-
     public async Task<IResult> GetDoctorById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(DoctorService), nameof(GetDoctorById), id);
