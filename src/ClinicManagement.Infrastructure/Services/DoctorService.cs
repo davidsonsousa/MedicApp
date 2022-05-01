@@ -88,13 +88,13 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
             await doctorRepository.SaveChangesAsync(cancellationToken);
 
             await doctorRepository.AddDepartmentsToDoctorAsync(doctor, departments, cancellationToken);
-            await doctorRepository.AddLanguagesToDoctorAsync(doctor, languages, cancellationToken);
+            await doctorRepository.AddLanguagesToPersonAsync(doctor, languages, cancellationToken);
         }
         else
         {
             doctor = model.MapToEntity(await doctorRepository.GetDoctorWithDepartmentsAndLanguagesById(model.VanityId, cancellationToken));
             await doctorRepository.UpdateDoctorDepartmentsAsync(doctor, departments, cancellationToken);
-            await doctorRepository.UpdateDoctorLanguagesAsync(doctor, languages, cancellationToken);
+            await doctorRepository.UpdatePersonLanguagesAsync(doctor, languages, cancellationToken);
         }
     }
 }

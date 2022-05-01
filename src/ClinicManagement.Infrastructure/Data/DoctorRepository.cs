@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.Infrastructure.Data;
 
-public class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
+public class DoctorRepository : PersonRepository<Doctor>, IDoctorRepository
 {
     public DoctorRepository(ClinicManagementContext dbContext, ILoggerFactory loggerFactory) : base(dbContext, loggerFactory)
     {
@@ -20,22 +20,6 @@ public class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
         });
 
         await DbContext.Set<DepartmentDoctor>().AddRangeAsync(departmentDoctorList, cancellationToken);
-    }
-
-    public async Task AddLanguagesToDoctorAsync(Doctor? doctor, IEnumerable<Language>? languages, CancellationToken cancellationToken = default)
-    {
-        Guard.Against.Null(doctor, nameof(doctor));
-        Guard.Against.Null(languages, nameof(languages));
-
-        Logger.DebugMethodCall(nameof(AddLanguagesToDoctorAsync));
-
-        var languagePersonList = languages.Select(lang => new LanguagePerson
-        {
-            LanguageId = lang.Id,
-            PersonId = doctor.Id
-        });
-
-        await DbContext.Set<LanguagePerson>().AddRangeAsync(languagePersonList, cancellationToken);
     }
 
     public async Task<Doctor?> GetDoctorWithDepartmentsAndLanguagesById(Guid id, CancellationToken cancellationToken = default)
@@ -67,24 +51,6 @@ public class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
         }
     }
 
-    public async Task RemoveLanguagesFromDoctorAsync(Doctor? doctor, IEnumerable<Language>? languages, CancellationToken cancellationToken = default)
-    {
-        Guard.Against.Null(doctor, nameof(doctor));
-        Guard.Against.Null(languages, nameof(languages));
-
-        Logger.DebugMethodCall(nameof(RemoveLanguagesFromDoctorAsync));
-
-        var languagePersonList = await DbContext.Set<LanguagePerson>()
-                                                .Where(dd => dd.PersonId == doctor.Id && languages.Select(d => d.Id).Contains(dd.LanguageId))
-                                                .ToListAsync(cancellationToken);
-
-        if (languagePersonList is not null)
-        {
-            DbContext.RemoveRange(languagePersonList);
-            await DbContext.SaveChangesAsync(cancellationToken);
-        }
-    }
-
     public async Task UpdateDoctorDepartmentsAsync(Doctor? doctor, IEnumerable<Department>? departments, CancellationToken cancellationToken = default)
     {
         Guard.Against.Null(doctor, nameof(doctor));
@@ -93,15 +59,5 @@ public class DoctorRepository : RepositoryBase<Doctor>, IDoctorRepository
 
         await RemoveDepartmentsFromDoctorAsync(doctor, doctor.Departments, cancellationToken);
         await AddDepartmentsToDoctorAsync(doctor, departments, cancellationToken);
-    }
-
-    public async Task UpdateDoctorLanguagesAsync(Doctor? doctor, IEnumerable<Language>? languages, CancellationToken cancellationToken = default)
-    {
-        Guard.Against.Null(doctor, nameof(doctor));
-
-        Logger.DebugMethodCall(nameof(UpdateDoctorLanguagesAsync));
-
-        await RemoveLanguagesFromDoctorAsync(doctor, doctor.Languages, cancellationToken);
-        await AddLanguagesToDoctorAsync(doctor, languages, cancellationToken);
     }
 }
