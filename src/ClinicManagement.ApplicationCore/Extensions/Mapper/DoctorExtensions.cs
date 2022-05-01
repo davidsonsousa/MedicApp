@@ -92,6 +92,7 @@ public static class DoctorExtensions
         doctor.Address = item.Address;
         doctor.DateOfBirth = item.DateOfBirth;
         doctor.PhoneNumber = item.PhoneNumber;
+
         return doctor;
     }
 }
