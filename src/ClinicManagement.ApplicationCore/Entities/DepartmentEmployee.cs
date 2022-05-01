@@ -1,8 +1,8 @@
 ﻿namespace ClinicManagement.ApplicationCore.Entities;
 
-public class DepartmentNurse
+public class DepartmentEmployee
 {
     public long DepartmentId { get; set; }
 
-    public long NurseId { get; set; }
+    public long EmployeeId { get; set; }
 }

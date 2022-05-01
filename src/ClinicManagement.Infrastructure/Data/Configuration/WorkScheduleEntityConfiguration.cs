@@ -10,14 +10,9 @@ public class WorkScheduleEntityConfiguration : IEntityTypeConfiguration<WorkSche
         builder.OwnsOne(workSchedule => workSchedule.DateTimeSchedule);
 
         // Relationships
-        builder.HasMany(workSchedule => workSchedule.Doctors)
+        builder.HasMany(workSchedule => workSchedule.Employees)
                .WithMany(doctor => doctor.WorkSchedules)
-               .UsingEntity<WorkScheduleDoctor>(b => b.HasOne<Doctor>().WithMany().OnDelete(DeleteBehavior.NoAction),
-                                                b => b.HasOne<WorkSchedule>().WithMany().OnDelete(DeleteBehavior.NoAction));
-
-        builder.HasMany(workSchedule => workSchedule.Nurses)
-               .WithMany(nurse => nurse.WorkSchedules)
-               .UsingEntity<WorkScheduleNurse>(b => b.HasOne<Nurse>().WithMany().OnDelete(DeleteBehavior.NoAction),
-                                               b => b.HasOne<WorkSchedule>().WithMany().OnDelete(DeleteBehavior.NoAction));
+               .UsingEntity<WorkScheduleEmployee>(b => b.HasOne<Employee>().WithMany().OnDelete(DeleteBehavior.NoAction),
+                                                  b => b.HasOne<WorkSchedule>().WithMany().OnDelete(DeleteBehavior.NoAction));
     }
 }

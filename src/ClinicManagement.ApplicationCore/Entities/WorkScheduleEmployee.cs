@@ -1,8 +1,8 @@
 ﻿namespace ClinicManagement.ApplicationCore.Entities;
 
-public class WorkScheduleDoctor
+public class WorkScheduleEmployee
 {
     public long WorkScheduleId { get; set; }
 
-    public long DoctorId { get; set; }
+    public long EmployeeId { get; set; }
 }
