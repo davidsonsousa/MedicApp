@@ -1,0 +1,101 @@
+﻿namespace ClinicManagement.Infrastructure.Services;
+
+public class NurseService : ServiceBase<Nurse>, INurseService
+{
+    private readonly INurseRepository nurseRepository;
+    private readonly IDepartmentRepository departmentRepository;
+    private readonly ILanguageRepository languageRepository;
+
+    public NurseService(INurseRepository nurseRepository, IDepartmentRepository departmentRepository, ILanguageRepository languageRepository, ILoggerFactory loggerFactory)
+        : base(nurseRepository, loggerFactory)
+    {
+        this.nurseRepository = nurseRepository;
+        this.departmentRepository = departmentRepository;
+        this.languageRepository = languageRepository;
+    }
+
+    public async Task<IResult> GetAllNurses(CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetAllNurses));
+        var result = new Result<IEnumerable<NurseResponse>>();
+
+        try
+        {
+            var nurses = await Repository.GetAllAsync(cancellationToken);
+            Guard.Against.Null(nurses, nameof(nurses));
+
+            result.Value = nurses.MapToResponse();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(NurseService), nameof(GetAllNurses));
+            result.SetErrorMessage("An error has occurred while loading the nurses");
+        }
+
+        return result;
+    }
+
+    public async Task<IResult> GetNurseById(Guid id, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(NurseService), nameof(GetNurseById), id);
+        var result = new Result<NurseResponse>();
+
+        try
+        {
+            var nurse = await Repository.GetByIdAsync(id, cancellationToken);
+            Guard.Against.Null(nurse, nameof(nurse));
+
+            result.Value = nurse.MapToResponse();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(NurseService), nameof(GetNurseById));
+            result.SetErrorMessage("An error has occurred while loading the nurse");
+        }
+
+        return result;
+    }
+
+    public async Task<IResult> SaveAsync(NurseRequest model, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(NurseService), nameof(SaveAsync), model);
+        var result = new Result($"Nurse '{model.Name}' saved.");
+
+        try
+        {
+            await AddOrUpdateAsync(model, cancellationToken);
+            await Repository.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(NurseService), nameof(GetNurseById));
+            result.SetErrorMessage("An error has occurred while saving the nurse");
+        }
+
+        return result;
+    }
+
+    private async Task AddOrUpdateAsync(NurseRequest model, CancellationToken cancellationToken = default)
+    {
+        Nurse? nurse;
+        var departments = await departmentRepository.GetByIdsAsync(model.SelectedDepartments, cancellationToken);
+        var languages = await languageRepository.GetByIdsAsync(model.SelectedLanguages, cancellationToken);
+
+        if (model.IsNew)
+        {
+            nurse = model.MapToEntity();
+            await nurseRepository.AddAsync(nurse, cancellationToken);
+            await nurseRepository.SaveChangesAsync(cancellationToken);
+
+            await nurseRepository.AddDepartmentsToEmployeeAsync(nurse, departments, cancellationToken);
+            await nurseRepository.AddLanguagesToPersonAsync(nurse, languages, cancellationToken);
+        }
+        else
+        {
+            nurse = model.MapToEntity(await nurseRepository.GetEmployeeWithDepartmentsAndLanguagesById(model.VanityId, cancellationToken));
+            await nurseRepository.UpdateEmployeeDepartmentsAsync(nurse, departments, cancellationToken);
+            await nurseRepository.UpdatePersonLanguagesAsync(nurse, languages, cancellationToken);
+            nurseRepository.Update(nurse, cancellationToken);
+        }
+    }
+}
