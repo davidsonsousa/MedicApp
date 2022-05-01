@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.Infrastructure.Data;
 
-public abstract class PersonRepository<TEntity> : RepositoryBase<Doctor>, IPersonRepository<TEntity> where TEntity : Person
+public abstract class PersonRepository<TEntity> : RepositoryBase<TEntity>, IPersonRepository<TEntity> where TEntity : Person
 {
     public PersonRepository(ClinicManagementContext dbContext, ILoggerFactory loggerFactory) : base(dbContext, loggerFactory)
     {
