@@ -11,6 +11,11 @@ public class LanguageController : ControllerBase
         this.languageService = languageService;
     }
 
+    /// <summary>
+    /// Gets the list of languages
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>List of languages</returns>
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
@@ -26,6 +31,12 @@ public class LanguageController : ControllerBase
         return !items.Any() ? NotFound() : Ok(items);
     }
 
+    /// <summary>
+    /// Gets a language by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("id")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
@@ -34,18 +45,34 @@ public class LanguageController : ControllerBase
         return result.HasError ? NotFound() : Ok(result.As<LanguageResponse>());
     }
 
+    /// <summary>
+    /// Inserts a new language
+    /// </summary>
+    /// <param name="languageRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPost]
     public async Task PostAsync(LanguageRequest languageRequest, CancellationToken cancellationToken)
     {
         await languageService.SaveAsync(languageRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Updates an existing language
+    /// </summary>
+    /// <param name="languageRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPut]
     public async Task PutAsync(LanguageRequest languageRequest, CancellationToken cancellationToken)
     {
         await languageService.SaveAsync(languageRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Deletes an existing language
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete]
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {

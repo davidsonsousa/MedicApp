@@ -11,6 +11,11 @@ public class DepartmentController : ControllerBase
         this.departmentService = departmentService;
     }
 
+    /// <summary>
+    /// Gets the list of departments
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>List of departments</returns>
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
@@ -26,6 +31,12 @@ public class DepartmentController : ControllerBase
         return !items.Any() ? NotFound() : Ok(items);
     }
 
+    /// <summary>
+    /// Gets a department by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("id")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
@@ -34,18 +45,34 @@ public class DepartmentController : ControllerBase
         return result.HasError ? NotFound() : Ok(result.As<DepartmentResponse>());
     }
 
+    /// <summary>
+    /// Inserts a new department
+    /// </summary>
+    /// <param name="departmentRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPost]
     public async Task PostAsync(DepartmentRequest departmentRequest, CancellationToken cancellationToken)
     {
         await departmentService.SaveAsync(departmentRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Updates an existing department
+    /// </summary>
+    /// <param name="departmentRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPut]
     public async Task PutAsync(DepartmentRequest departmentRequest, CancellationToken cancellationToken)
     {
         await departmentService.SaveAsync(departmentRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Deletes an existing department
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete]
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
