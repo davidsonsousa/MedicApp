@@ -11,6 +11,11 @@ public class BranchController : ControllerBase
         this.branchService = branchService;
     }
 
+    /// <summary>
+    /// Gets the list of branches
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>List of branches</returns>
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
@@ -26,6 +31,12 @@ public class BranchController : ControllerBase
         return !items.Any() ? NotFound() : Ok(items);
     }
 
+    /// <summary>
+    /// Gets a branch by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("id")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
@@ -34,18 +45,34 @@ public class BranchController : ControllerBase
         return result.HasError ? NotFound() : Ok(result.As<BranchResponse>());
     }
 
+    /// <summary>
+    /// Inserts a new branch
+    /// </summary>
+    /// <param name="branchRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPost]
     public async Task PostAsync(BranchRequest branchRequest, CancellationToken cancellationToken)
     {
         await branchService.SaveAsync(branchRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Updates an existing branch
+    /// </summary>
+    /// <param name="branchRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPut]
     public async Task PutAsync(BranchRequest branchRequest, CancellationToken cancellationToken)
     {
         await branchService.SaveAsync(branchRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Deletes an existing branch
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete]
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {

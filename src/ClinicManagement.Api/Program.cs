@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Controllers;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Initializing Logger
@@ -32,21 +30,21 @@ builder.Services.AddControllers(options => options.UseDateOnlyTimeOnlyStringConv
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    //c.SwaggerDoc("v1", new OpenApiInfo
-    //{
-    //    Version = "v1",
-    //    Title = $"{Configuration["SwaggerDocs_ProductName"]} API",
-    //    Contact = new OpenApiContact
-    //    {
-    //        Name = Configuration["SwaggerDocs_ContactName"],
-    //        Email = Configuration["SwaggerDocs_ContactEmail"]
-    //    }
-    //});
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = builder.Configuration["ApiInformation:Version"],
+        Title = $"{builder.Configuration["ApiInformation:ProductName"]} API",
+        Description = builder.Configuration["ApiInformation:Description"],
+        Contact = new OpenApiContact
+        {
+            Name = builder.Configuration["ApiInformation:ContactName"],
+            Email = builder.Configuration["ApiInformation:ContactEmail"]
+        }
+    });
 
-    //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
-    //c.IncludeXmlComments(xmlPath);
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 
     c.TagActionsBy(api =>
     {

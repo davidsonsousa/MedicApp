@@ -11,6 +11,11 @@ public class ClinicController : ControllerBase
         this.clinicService = clinicService;
     }
 
+    /// <summary>
+    /// Gets the list of clinics
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>List of clinics</returns>
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
@@ -26,6 +31,12 @@ public class ClinicController : ControllerBase
         return !items.Any() ? NotFound() : Ok(items);
     }
 
+    /// <summary>
+    /// Gets a clinic by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("id")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
@@ -34,18 +45,34 @@ public class ClinicController : ControllerBase
         return result.HasError ? NotFound() : Ok(result.As<ClinicResponse>());
     }
 
+    /// <summary>
+    /// Inserts a new clinic
+    /// </summary>
+    /// <param name="clinicRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPost]
     public async Task PostAsync(ClinicRequest clinicRequest, CancellationToken cancellationToken)
     {
         await clinicService.SaveAsync(clinicRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Updates an existing clinic
+    /// </summary>
+    /// <param name="clinicRequest"></param>
+    /// <param name="cancellationToken"></param>
     [HttpPut]
     public async Task PutAsync(ClinicRequest clinicRequest, CancellationToken cancellationToken)
     {
         await clinicService.SaveAsync(clinicRequest, cancellationToken);
     }
 
+    /// <summary>
+    /// Deletes an existing clinic
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete]
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
