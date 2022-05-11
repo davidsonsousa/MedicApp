@@ -309,6 +309,17 @@ namespace ClinicManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "People",
+                columns: new[] { "Id", "DateOfBirth", "Discriminator", "IsDeleted", "Name", "Surname", "UserCreated", "UserModified", "Address_City", "Address_Country", "Address_State", "Address_Street", "Address_ZipCode", "PhoneNumber_CountryCode", "PhoneNumber_Number" },
+                values: new object[,]
+                {
+                    { 1L, new DateTime(1970, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Doctor", false, "John", "Doe", null, null, "Prague", "CZ", null, "ul. Doktorova 1010/10", "110 00", "420", "987654321" },
+                    { 2L, new DateTime(1975, 5, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Doctor", false, "Mary", "Sue", null, null, "Prague", "CZ", null, "ul. Nemocinice 2020/20", "220 00", "420", "789456123" },
+                    { 3L, new DateTime(1980, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nurse", false, "Pavla", "Novakova", null, null, "Prague", "CZ", null, "ul. Sersterska 3030/30", "330 00", "420", "777888999" },
+                    { 4L, new DateTime(1985, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nurse", false, "Lenka", "Novakova", null, null, "Prague", "CZ", null, "ul. Sersterska 3031/31", "330 00", "420", "888444333" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Branches",
                 columns: new[] { "Id", "ClinicId", "IsDeleted", "Name", "UserCreated", "UserModified", "Address_City", "Address_Country", "Address_State", "Address_Street", "Address_ZipCode" },
                 values: new object[,]
@@ -317,6 +328,21 @@ namespace ClinicManagement.Infrastructure.Migrations
                     { 2L, 1L, false, "WMC - Prague 3", null, null, "Prague", "CZ", null, "ul. Ulicova 3033/30", "330 00" },
                     { 3L, 2L, false, "RC - Prague 5", null, null, "Prague", "CZ", null, "ul. Ulicova 5055/50", "550 00" },
                     { 4L, 2L, false, "RC - Prague 9", null, null, "Prague", "CZ", null, "ul. Ulicova 9000/90", "990 00" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LanguagePerson",
+                columns: new[] { "LanguageId", "PersonId" },
+                values: new object[,]
+                {
+                    { 1L, 1L },
+                    { 1L, 2L },
+                    { 1L, 3L },
+                    { 1L, 4L },
+                    { 2L, 1L },
+                    { 2L, 2L },
+                    { 3L, 4L },
+                    { 4L, 3L }
                 });
 
             migrationBuilder.InsertData(
@@ -330,6 +356,17 @@ namespace ClinicManagement.Infrastructure.Migrations
                     { 4L, 2L, false, "Internal medicine", null, null },
                     { 5L, 2L, false, "Cardiology", null, null },
                     { 6L, 2L, false, "Ophthalmology", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "DepartmentEmployee",
+                columns: new[] { "DepartmentId", "EmployeeId" },
+                values: new object[,]
+                {
+                    { 1L, 1L },
+                    { 1L, 3L },
+                    { 2L, 2L },
+                    { 2L, 4L }
                 });
 
             migrationBuilder.CreateIndex(
