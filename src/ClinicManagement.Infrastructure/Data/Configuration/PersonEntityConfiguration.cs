@@ -13,7 +13,9 @@ public class PersonEntityConfiguration : IEntityTypeConfiguration<Person>
         builder.Property(x => x.DateOfBirth)
                .HasConversion<DateOnlyConverter, DateOnlyComparer>();
 
-        builder.OwnsOne(person => person.Address);
-        builder.OwnsOne(person => person.PhoneNumber);
+        builder.OwnsOne(person => person.Address)
+               .HasData(GeneralConfiguration.SeedPersonAddresses());
+        builder.OwnsOne(person => person.PhoneNumber)
+               .HasData(GeneralConfiguration.SeedPersonPhoneNumbers());
     }
 }

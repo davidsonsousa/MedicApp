@@ -133,44 +133,48 @@ public static class GeneralConfiguration
         };
     }
 
-    public static IEnumerable<Doctor> SeedDoctors()
+    public static IEnumerable<dynamic> SeedDoctors()
     {
-        return new List<Doctor>
+        return new[]
         {
-            new Doctor
+            new
             {
-                Id = 1,
+                Id = 1L,
                 Name = "John",
                 Surname ="Doe",
-                DateOfBirth = new DateOnly(1970, 02, 10)
+                DateOfBirth = new DateOnly(1970, 02, 10),
+                IsDeleted = false
             },
-            new Doctor
+            new
             {
-                Id = 2,
+                Id = 2L,
                 Name = "Mary",
                 Surname ="Sue",
-                DateOfBirth = new DateOnly(1975, 05, 08)
+                DateOfBirth = new DateOnly(1975, 05, 08),
+                IsDeleted = false
             },
         };
     }
 
-    public static IEnumerable<Nurse> SeedNurses()
+    public static IEnumerable<dynamic> SeedNurses()
     {
-        return new List<Nurse>
+        return new[]
         {
-            new Nurse
+            new
             {
-                Id = 3,
+                Id = 3L,
                 Name = "Pavla",
                 Surname ="Novakova",
-                DateOfBirth = new DateOnly(1980, 04, 22)
+                DateOfBirth = new DateOnly(1980, 04, 22),
+                IsDeleted = false
             },
-            new Nurse
+            new
             {
-                Id = 4,
+                Id = 4L,
                 Name = "Lenka",
                 Surname ="Novakova",
-                DateOfBirth = new DateOnly(1985, 03, 15)
+                DateOfBirth = new DateOnly(1985, 03, 15),
+                IsDeleted = false
             },
         };
     }
