@@ -126,30 +126,100 @@ public static class GeneralConfiguration
     {
         return new List<Language>
         {
-            new Language
+            new Language { Id= 1, Name = "Czech", Code = "CZ" },
+            new Language { Id= 2, Name = "English", Code = "EN" },
+            new Language { Id= 3, Name = "Polish", Code = "PL" },
+            new Language { Id= 4, Name = "Russian", Code = "RU" },
+        };
+    }
+
+    public static IEnumerable<Doctor> SeedDoctors()
+    {
+        return new List<Doctor>
+        {
+            new Doctor
             {
-                Id= 1,
-                Name = "Czech",
-                Code = "CZ"
+                Id = 1,
+                Name = "John",
+                Surname ="Doe",
+                DateOfBirth = new DateOnly(1970, 02, 10)
             },
-            new Language
+            new Doctor
             {
-                Id= 2,
-                Name = "English",
-                Code = "EN"
+                Id = 2,
+                Name = "Mary",
+                Surname ="Sue",
+                DateOfBirth = new DateOnly(1975, 05, 08)
             },
-            new Language
+        };
+    }
+
+    public static IEnumerable<Nurse> SeedNurses()
+    {
+        return new List<Nurse>
+        {
+            new Nurse
             {
-                Id= 3,
-                Name = "Polish",
-                Code = "PL"
+                Id = 3,
+                Name = "Pavla",
+                Surname ="Novakova",
+                DateOfBirth = new DateOnly(1980, 04, 22)
             },
-            new Language
+            new Nurse
             {
-                Id= 4,
-                Name = "Russian",
-                Code = "RU"
+                Id = 4,
+                Name = "Lenka",
+                Surname ="Novakova",
+                DateOfBirth = new DateOnly(1985, 03, 15)
             },
+        };
+    }
+
+    public static IEnumerable<dynamic> SeedPersonAddresses()
+    {
+        return new[]
+        {
+            new { PersonId = 1L, Street = "ul. Doktorova 1010/10", ZipCode="110 00", City = "Prague", Country = "CZ" },
+            new { PersonId = 2L, Street = "ul. Nemocinice 2020/20", ZipCode="220 00", City = "Prague", Country = "CZ" },
+            new { PersonId = 3L, Street = "ul. Sersterska 3030/30", ZipCode="330 00", City = "Prague", Country = "CZ" },
+            new { PersonId = 4L, Street = "ul. Sersterska 3031/31", ZipCode="330 00", City = "Prague", Country = "CZ" }
+        };
+    }
+
+    public static IEnumerable<dynamic> SeedPersonPhoneNumbers()
+    {
+        return new[]
+        {
+            new { PersonId = 1L, CountryCode = "420", Number = "987654321" },
+            new { PersonId = 2L, CountryCode = "420", Number = "789456123" },
+            new { PersonId = 3L, CountryCode = "420", Number = "777888999" },
+            new { PersonId = 4L, CountryCode = "420", Number = "888444333" }
+        };
+    }
+
+    public static IEnumerable<LanguagePerson> SeedLanguagePeople()
+    {
+        return new List<LanguagePerson>
+        {
+            new LanguagePerson { LanguageId = 1, PersonId = 1 },
+            new LanguagePerson { LanguageId = 2, PersonId = 1 },
+            new LanguagePerson { LanguageId = 1, PersonId = 2 },
+            new LanguagePerson { LanguageId = 2, PersonId = 2 },
+            new LanguagePerson { LanguageId = 1, PersonId = 3 },
+            new LanguagePerson { LanguageId = 4, PersonId = 3 },
+            new LanguagePerson { LanguageId = 1, PersonId = 4 },
+            new LanguagePerson { LanguageId = 3, PersonId = 4 }
+        };
+    }
+
+    public static IEnumerable<DepartmentEmployee> SeedDepartmentEmployees()
+    {
+        return new List<DepartmentEmployee>
+        {
+            new DepartmentEmployee { DepartmentId = 1, EmployeeId = 1 },
+            new DepartmentEmployee { DepartmentId = 2, EmployeeId = 2 },
+            new DepartmentEmployee { DepartmentId = 1, EmployeeId = 3 },
+            new DepartmentEmployee { DepartmentId = 2, EmployeeId = 4 }
         };
     }
 }

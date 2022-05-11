@@ -7,12 +7,13 @@ public class DepartmentEntityConfiguration : IEntityTypeConfiguration<Department
         GeneralConfiguration.AddPropertiesForAuditing(builder);
         GeneralConfiguration.AddVanityId(builder);
 
+        builder.HasData(GeneralConfiguration.SeedDepartments());
+
         // Relationships
         builder.HasMany(dept => dept.Employees)
                .WithMany(doc => doc.Departments)
                .UsingEntity<DepartmentEmployee>(b => b.HasOne<Employee>().WithMany(),
-                                                b => b.HasOne<Department>().WithMany());
-
-        builder.HasData(GeneralConfiguration.SeedDepartments());
+                                                b => b.HasOne<Department>().WithMany())
+               .HasData(GeneralConfiguration.SeedDepartmentEmployees());
     }
 }
