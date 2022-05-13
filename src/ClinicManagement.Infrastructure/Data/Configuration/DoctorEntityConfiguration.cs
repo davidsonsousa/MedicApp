@@ -6,5 +6,7 @@ public class DoctorEntityConfiguration : IEntityTypeConfiguration<Doctor>
     {
         GeneralConfiguration.AddPropertiesForAuditing(builder);
         GeneralConfiguration.AddVanityId(builder);
+
+        builder.HasData(GeneralConfiguration.SeedDoctors());
     }
 }

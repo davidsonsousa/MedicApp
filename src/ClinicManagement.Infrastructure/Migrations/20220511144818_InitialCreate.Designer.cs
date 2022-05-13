@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20220501123309_InitialCreate")]
+    [Migration("20220511144818_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -361,6 +361,28 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("DepartmentEmployee");
+
+                    b.HasData(
+                        new
+                        {
+                            DepartmentId = 1L,
+                            EmployeeId = 1L
+                        },
+                        new
+                        {
+                            DepartmentId = 2L,
+                            EmployeeId = 2L
+                        },
+                        new
+                        {
+                            DepartmentId = 1L,
+                            EmployeeId = 3L
+                        },
+                        new
+                        {
+                            DepartmentId = 2L,
+                            EmployeeId = 4L
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Language", b =>
@@ -463,6 +485,48 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("LanguagePerson");
+
+                    b.HasData(
+                        new
+                        {
+                            LanguageId = 1L,
+                            PersonId = 1L
+                        },
+                        new
+                        {
+                            LanguageId = 2L,
+                            PersonId = 1L
+                        },
+                        new
+                        {
+                            LanguageId = 1L,
+                            PersonId = 2L
+                        },
+                        new
+                        {
+                            LanguageId = 2L,
+                            PersonId = 2L
+                        },
+                        new
+                        {
+                            LanguageId = 1L,
+                            PersonId = 3L
+                        },
+                        new
+                        {
+                            LanguageId = 4L,
+                            PersonId = 3L
+                        },
+                        new
+                        {
+                            LanguageId = 1L,
+                            PersonId = 4L
+                        },
+                        new
+                        {
+                            LanguageId = 3L,
+                            PersonId = 4L
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Person", b =>
@@ -617,6 +681,24 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Employee");
 
                     b.HasDiscriminator().HasValue("Doctor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            DateOfBirth = new DateTime(1970, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "John",
+                            Surname = "Doe"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            DateOfBirth = new DateTime(1975, 5, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Mary",
+                            Surname = "Sue"
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Nurse", b =>
@@ -624,6 +706,24 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Employee");
 
                     b.HasDiscriminator().HasValue("Nurse");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3L,
+                            DateOfBirth = new DateTime(1980, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Pavla",
+                            Surname = "Novakova"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            DateOfBirth = new DateTime(1985, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Lenka",
+                            Surname = "Novakova"
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Appointment", b =>
@@ -827,6 +927,40 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    PersonId = 1L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Doktorova 1010/10",
+                                    ZipCode = "110 00"
+                                },
+                                new
+                                {
+                                    PersonId = 2L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Nemocinice 2020/20",
+                                    ZipCode = "220 00"
+                                },
+                                new
+                                {
+                                    PersonId = 3L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Sersterska 3030/30",
+                                    ZipCode = "330 00"
+                                },
+                                new
+                                {
+                                    PersonId = 4L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Sersterska 3031/31",
+                                    ZipCode = "330 00"
+                                });
                         });
 
                     b.OwnsOne("MedicApp.SharedKernel.PhoneNumber", "PhoneNumber", b1 =>
@@ -848,6 +982,32 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    PersonId = 1L,
+                                    CountryCode = "420",
+                                    Number = "987654321"
+                                },
+                                new
+                                {
+                                    PersonId = 2L,
+                                    CountryCode = "420",
+                                    Number = "789456123"
+                                },
+                                new
+                                {
+                                    PersonId = 3L,
+                                    CountryCode = "420",
+                                    Number = "777888999"
+                                },
+                                new
+                                {
+                                    PersonId = 4L,
+                                    CountryCode = "420",
+                                    Number = "888444333"
+                                });
                         });
 
                     b.Navigation("Address")
