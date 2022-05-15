@@ -5,13 +5,16 @@ public class NurseService : ServiceBase<Nurse>, INurseService
     private readonly INurseRepository nurseRepository;
     private readonly IDepartmentRepository departmentRepository;
     private readonly ILanguageRepository languageRepository;
+    private readonly IWorkScheduleRepository workScheduleRepository;
 
-    public NurseService(INurseRepository nurseRepository, IDepartmentRepository departmentRepository, ILanguageRepository languageRepository, ILoggerFactory loggerFactory)
+    public NurseService(INurseRepository nurseRepository, ILoggerFactory loggerFactory,
+                        IDepartmentRepository departmentRepository, ILanguageRepository languageRepository, IWorkScheduleRepository workScheduleRepository)
         : base(nurseRepository, loggerFactory)
     {
         this.nurseRepository = nurseRepository;
         this.departmentRepository = departmentRepository;
         this.languageRepository = languageRepository;
+        this.workScheduleRepository = workScheduleRepository;
     }
 
     public async Task<IResult> GetAllNurses(CancellationToken cancellationToken = default)
@@ -30,6 +33,27 @@ public class NurseService : ServiceBase<Nurse>, INurseService
         {
             Logger.ErrorMethodCall(ex, nameof(NurseService), nameof(GetAllNurses));
             result.SetErrorMessage("An error has occurred while loading the nurses");
+        }
+
+        return result;
+    }
+
+    public async Task<IResult> GetAllNurseWorkSchedules(CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetAllNurseWorkSchedules));
+        var result = new Result<IEnumerable<WorkScheduleEmployeeResponse>>();
+
+        try
+        {
+            var workSchedules = await workScheduleRepository.GetWorkSchedulesWithEmployeeAndDepartmentByEmployeeTypeAsync(Constants.Discriminator.Nurse, cancellationToken);
+            Guard.Against.Null(workSchedules, nameof(workSchedules));
+
+            result.Value = workSchedules.MapToResponse();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(NurseService), nameof(GetAllNurseWorkSchedules));
+            result.SetErrorMessage("An error has occurred while loading the workSchedules");
         }
 
         return result;
@@ -75,6 +99,25 @@ public class NurseService : ServiceBase<Nurse>, INurseService
         return result;
     }
 
+    public async Task<IResult> SaveNurseWorkScheduleAsync(WorkScheduleEmployeeRequest model, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(NurseService), nameof(SaveNurseWorkScheduleAsync), model);
+        var result = new Result($"WorkSchedule for employee '{model.EmployeeId}' saved.");
+
+        try
+        {
+            await AddOrUpdateWorkScheduleAsync(model, cancellationToken);
+            await workScheduleRepository.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(NurseService), nameof(SaveNurseWorkScheduleAsync));
+            result.SetErrorMessage("An error has occurred while saving the workSchedules");
+        }
+
+        return result;
+    }
+
     private async Task AddOrUpdateAsync(NurseRequest model, CancellationToken cancellationToken = default)
     {
         Nurse? nurse;
@@ -96,6 +139,21 @@ public class NurseService : ServiceBase<Nurse>, INurseService
             await nurseRepository.UpdateEmployeeDepartmentsAsync(nurse, departments, cancellationToken);
             await nurseRepository.UpdatePersonLanguagesAsync(nurse, languages, cancellationToken);
             nurseRepository.Update(nurse, cancellationToken);
+        }
+    }
+
+    private async Task AddOrUpdateWorkScheduleAsync(WorkScheduleEmployeeRequest model, CancellationToken cancellationToken = default)
+    {
+        if (model.IsNew)
+        {
+            var workSchedules = model.MapToEntity(await nurseRepository.GetByIdAsync(model.EmployeeId, cancellationToken),
+                                                  await departmentRepository.GetByIdAsync(model.DepartmentId, cancellationToken));
+            await workScheduleRepository.AddAsync(workSchedules, cancellationToken);
+        }
+        else
+        {
+            var workSchedules = model.MapToEntity(await workScheduleRepository.GetByIdAsync(model.VanityId, cancellationToken));
+            workScheduleRepository.Update(workSchedules, cancellationToken);
         }
     }
 }
