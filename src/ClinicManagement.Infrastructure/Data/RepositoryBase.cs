@@ -108,7 +108,7 @@ public abstract class RepositoryBase<TEntity> : IReadRepository<TEntity>, IChang
         DbContext.Update(entity);
     }
 
-    private IQueryable<TEntity> GetValidRecords()
+    protected IQueryable<TEntity> GetValidRecords()
     {
         Logger.DebugMethodCall(nameof(GetValidRecords));
 

@@ -15,5 +15,8 @@ public class DepartmentEntityConfiguration : IEntityTypeConfiguration<Department
                .UsingEntity<DepartmentEmployee>(b => b.HasOne<Employee>().WithMany(),
                                                 b => b.HasOne<Department>().WithMany())
                .HasData(GeneralConfiguration.SeedDepartmentEmployees());
+
+        builder.OwnsOne(dept => dept.PhoneNumber)
+               .HasData(GeneralConfiguration.SeedDepartmentPhoneNumbers());
     }
 }

@@ -2,18 +2,20 @@
 
 public abstract class Person : EntityBase
 {
-    [Column(Order = 2)]
+    public virtual ICollection<Language> Languages { get; set; } = null!;
+
+    [Column(Order = 20)]
     public string Name { get; set; } = string.Empty;
 
-    [Column(Order = 3)]
+    [Column(Order = 21)]
     public string Surname { get; set; } = string.Empty;
 
-    [Column(Order = 4)]
+    [Column(Order = 22)]
     public DateOnly DateOfBirth { get; set; }
 
     public Address Address { get; set; } = new Address();
 
     public PhoneNumber PhoneNumber { get; set; } = new PhoneNumber();
 
-    public virtual ICollection<Language> Languages { get; set; } = null!;
+    public string Discriminator { get; private set; } = string.Empty;
 }

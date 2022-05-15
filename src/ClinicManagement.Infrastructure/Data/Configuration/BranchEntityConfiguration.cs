@@ -11,5 +11,8 @@ public class BranchEntityConfiguration : IEntityTypeConfiguration<Branch>
 
         builder.OwnsOne(branch => branch.Address)
                .HasData(GeneralConfiguration.SeedBranchAddresses());
+
+        builder.OwnsOne(branch => branch.PhoneNumber)
+               .HasData(GeneralConfiguration.SeedBranchPhoneNumbers());
     }
 }

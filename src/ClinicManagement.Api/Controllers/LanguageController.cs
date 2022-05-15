@@ -17,7 +17,7 @@ public class LanguageController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns>List of languages</returns>
     [HttpGet]
-    public async Task<IActionResult> Get(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken)
     {
         var result = await languageService.GetAllLanguages(cancellationToken);
 
@@ -38,7 +38,7 @@ public class LanguageController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("id")]
-    public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await languageService.GetLanguageById(id, cancellationToken);
 

@@ -4,10 +4,10 @@ public static class GeneralConfiguration
 {
     public static void AddPropertiesForAuditing<T>(EntityTypeBuilder<T> builder) where T : EntityBase
     {
-        builder.Property<DateTime>("DateCreated").HasDefaultValueSql("getdate()");
-        builder.Property<DateTime>("DateModified").HasDefaultValueSql("getdate()");
-        builder.Property<string>("UserCreated").HasMaxLength(50);
-        builder.Property<string>("UserModified").HasMaxLength(50);
+        builder.Property<DateTime>("DateCreated").HasDefaultValueSql("getdate()").HasColumnOrder(96);
+        builder.Property<DateTime>("DateModified").HasDefaultValueSql("getdate()").HasColumnOrder(97);
+        builder.Property<string>("UserCreated").HasMaxLength(50).HasColumnOrder(98);
+        builder.Property<string>("UserModified").HasMaxLength(50).HasColumnOrder(99);
     }
 
     public static void AddVanityId<T>(EntityTypeBuilder<T> builder) where T : EntityBase
@@ -79,6 +79,17 @@ public static class GeneralConfiguration
         };
     }
 
+    public static IEnumerable<dynamic> SeedBranchPhoneNumbers()
+    {
+        return new[]
+        {
+            new { BranchId = 1L, CountryCode = "420", Number = "999888777" },
+            new { BranchId = 2L, CountryCode = "420", Number = "666555444" },
+            new { BranchId = 3L, CountryCode = "420", Number = "333222111" },
+            new { BranchId = 4L, CountryCode = "420", Number = "999666333" }
+        };
+    }
+
     public static IEnumerable<Department> SeedDepartments()
     {
         return new List<Department>
@@ -119,6 +130,19 @@ public static class GeneralConfiguration
                 BranchId = 2,
                 Name= "Ophthalmology"
             }
+        };
+    }
+
+    public static IEnumerable<dynamic> SeedDepartmentPhoneNumbers()
+    {
+        return new[]
+        {
+            new { DepartmentId = 1L, CountryCode = "420", Number = "999888777" },
+            new { DepartmentId = 2L, CountryCode = "420", Number = "666555444" },
+            new { DepartmentId = 3L, CountryCode = "420", Number = "333222111" },
+            new { DepartmentId = 4L, CountryCode = "420", Number = "999666333" },
+            new { DepartmentId = 5L, CountryCode = "420", Number = "888555222" },
+            new { DepartmentId = 6L, CountryCode = "420", Number = "777444111" }
         };
     }
 

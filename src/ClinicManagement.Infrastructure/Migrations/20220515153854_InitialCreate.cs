@@ -16,12 +16,12 @@ namespace ClinicManagement.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VanityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UserCreated = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,13 +35,13 @@ namespace ClinicManagement.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VanityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UserCreated = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,6 +55,7 @@ namespace ClinicManagement.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VanityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -67,10 +68,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                     PhoneNumber_Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserCreated = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,18 +84,20 @@ namespace ClinicManagement.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VanityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    ClinicId = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address_Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address_City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address_State = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address_ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClinicId = table.Column<long>(type: "bigint", nullable: false),
+                    PhoneNumber_CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber_Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UserCreated = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -115,19 +117,25 @@ namespace ClinicManagement.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VanityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    PersonId = table.Column<long>(type: "bigint", nullable: false),
                     AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTimeSchedule_Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTimeSchedule_End = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UserCreated = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DateTimeSchedule_Start = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateTimeSchedule_End = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonId = table.Column<long>(type: "bigint", nullable: false)
+                    PatientId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_People_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "People",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Appointments_People_PersonId",
                         column: x => x.PersonId,
@@ -167,13 +175,15 @@ namespace ClinicManagement.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VanityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     BranchId = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber_CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber_Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UserCreated = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -184,28 +194,6 @@ namespace ClinicManagement.Infrastructure.Migrations
                         principalTable: "Branches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AppointmentPatient",
-                columns: table => new
-                {
-                    AppointmentId = table.Column<long>(type: "bigint", nullable: false),
-                    PatientId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppointmentPatient", x => new { x.AppointmentId, x.PatientId });
-                    table.ForeignKey(
-                        name: "FK_AppointmentPatient_Appointments_AppointmentId",
-                        column: x => x.AppointmentId,
-                        principalTable: "Appointments",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_AppointmentPatient_People_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "People",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -239,15 +227,16 @@ namespace ClinicManagement.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VanityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    PersonId = table.Column<long>(type: "bigint", nullable: false),
                     DepartmentId = table.Column<long>(type: "bigint", nullable: false),
+                    DateTimeSchedule_Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTimeSchedule_End = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UserCreated = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UserModified = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DateTimeSchedule_Start = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateTimeSchedule_End = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PersonId = table.Column<long>(type: "bigint", nullable: false)
+                    EmployeeId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -259,33 +248,16 @@ namespace ClinicManagement.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_WorkSchedules_People_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "People",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_WorkSchedules_People_PersonId",
                         column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkScheduleEmployee",
-                columns: table => new
-                {
-                    WorkScheduleId = table.Column<long>(type: "bigint", nullable: false),
-                    EmployeeId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkScheduleEmployee", x => new { x.EmployeeId, x.WorkScheduleId });
-                    table.ForeignKey(
-                        name: "FK_WorkScheduleEmployee_People_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "People",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_WorkScheduleEmployee_WorkSchedules_WorkScheduleId",
-                        column: x => x.WorkScheduleId,
-                        principalTable: "WorkSchedules",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -321,13 +293,13 @@ namespace ClinicManagement.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Branches",
-                columns: new[] { "Id", "ClinicId", "IsDeleted", "Name", "UserCreated", "UserModified", "Address_City", "Address_Country", "Address_State", "Address_Street", "Address_ZipCode" },
+                columns: new[] { "Id", "ClinicId", "IsDeleted", "Name", "UserCreated", "UserModified", "Address_City", "Address_Country", "Address_State", "Address_Street", "Address_ZipCode", "PhoneNumber_CountryCode", "PhoneNumber_Number" },
                 values: new object[,]
                 {
-                    { 1L, 1L, false, "WMC - Prague 1", null, null, "Prague", "CZ", null, "ul. Ulicova 1011/10", "110 00" },
-                    { 2L, 1L, false, "WMC - Prague 3", null, null, "Prague", "CZ", null, "ul. Ulicova 3033/30", "330 00" },
-                    { 3L, 2L, false, "RC - Prague 5", null, null, "Prague", "CZ", null, "ul. Ulicova 5055/50", "550 00" },
-                    { 4L, 2L, false, "RC - Prague 9", null, null, "Prague", "CZ", null, "ul. Ulicova 9000/90", "990 00" }
+                    { 1L, 1L, false, "WMC - Prague 1", null, null, "Prague", "CZ", null, "ul. Ulicova 1011/10", "110 00", "420", "999888777" },
+                    { 2L, 1L, false, "WMC - Prague 3", null, null, "Prague", "CZ", null, "ul. Ulicova 3033/30", "330 00", "420", "666555444" },
+                    { 3L, 2L, false, "RC - Prague 5", null, null, "Prague", "CZ", null, "ul. Ulicova 5055/50", "550 00", "420", "333222111" },
+                    { 4L, 2L, false, "RC - Prague 9", null, null, "Prague", "CZ", null, "ul. Ulicova 9000/90", "990 00", "420", "999666333" }
                 });
 
             migrationBuilder.InsertData(
@@ -347,15 +319,15 @@ namespace ClinicManagement.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Departments",
-                columns: new[] { "Id", "BranchId", "IsDeleted", "Name", "UserCreated", "UserModified" },
+                columns: new[] { "Id", "BranchId", "IsDeleted", "Name", "UserCreated", "UserModified", "PhoneNumber_CountryCode", "PhoneNumber_Number" },
                 values: new object[,]
                 {
-                    { 1L, 1L, false, "General practitioner", null, null },
-                    { 2L, 1L, false, "Urology", null, null },
-                    { 3L, 1L, false, "Paediatrics", null, null },
-                    { 4L, 2L, false, "Internal medicine", null, null },
-                    { 5L, 2L, false, "Cardiology", null, null },
-                    { 6L, 2L, false, "Ophthalmology", null, null }
+                    { 1L, 1L, false, "General practitioner", null, null, "420", "999888777" },
+                    { 2L, 1L, false, "Urology", null, null, "420", "666555444" },
+                    { 3L, 1L, false, "Paediatrics", null, null, "420", "333222111" },
+                    { 4L, 2L, false, "Internal medicine", null, null, "420", "999666333" },
+                    { 5L, 2L, false, "Cardiology", null, null, "420", "888555222" },
+                    { 6L, 2L, false, "Ophthalmology", null, null, "420", "777444111" }
                 });
 
             migrationBuilder.InsertData(
@@ -370,8 +342,8 @@ namespace ClinicManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppointmentPatient_PatientId",
-                table: "AppointmentPatient",
+                name: "IX_Appointments_PatientId",
+                table: "Appointments",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
@@ -436,14 +408,14 @@ namespace ClinicManagement.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkScheduleEmployee_WorkScheduleId",
-                table: "WorkScheduleEmployee",
-                column: "WorkScheduleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_WorkSchedules_DepartmentId",
                 table: "WorkSchedules",
                 column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkSchedules_EmployeeId",
+                table: "WorkSchedules",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkSchedules_PersonId",
@@ -460,7 +432,7 @@ namespace ClinicManagement.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AppointmentPatient");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
                 name: "DepartmentEmployee");
@@ -469,16 +441,10 @@ namespace ClinicManagement.Infrastructure.Migrations
                 name: "LanguagePerson");
 
             migrationBuilder.DropTable(
-                name: "WorkScheduleEmployee");
-
-            migrationBuilder.DropTable(
-                name: "Appointments");
+                name: "WorkSchedules");
 
             migrationBuilder.DropTable(
                 name: "Languages");
-
-            migrationBuilder.DropTable(
-                name: "WorkSchedules");
 
             migrationBuilder.DropTable(
                 name: "Departments");
