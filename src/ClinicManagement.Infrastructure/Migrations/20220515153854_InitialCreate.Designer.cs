@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20220511144818_InitialCreate")]
+    [Migration("20220515153854_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,31 +34,41 @@ namespace ClinicManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("AdditionalInformation")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(21);
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(96)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(97)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
+
+                    b.Property<long?>("PatientId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("PersonId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(11);
 
                     b.Property<string>("UserCreated")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(98);
 
                     b.Property<string>("UserModified")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(99);
 
                     b.Property<Guid>("VanityId")
                         .ValueGeneratedOnAdd()
@@ -68,27 +78,14 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PatientId");
+
                     b.HasIndex("PersonId");
 
                     b.HasIndex("VanityId")
                         .IsUnique();
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.AppointmentPatient", b =>
-                {
-                    b.Property<long>("AppointmentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PatientId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("AppointmentId", "PatientId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("AppointmentPatient");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Branch", b =>
@@ -101,33 +98,39 @@ namespace ClinicManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<long>("ClinicId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(11);
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(96)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(97)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(20);
 
                     b.Property<string>("UserCreated")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(98);
 
                     b.Property<string>("UserModified")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(99);
 
                     b.Property<Guid>("VanityId")
                         .ValueGeneratedOnAdd()
@@ -191,28 +194,33 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(96)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(97)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(20);
 
                     b.Property<string>("UserCreated")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(98);
 
                     b.Property<string>("UserModified")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(99);
 
                     b.Property<Guid>("VanityId")
                         .ValueGeneratedOnAdd()
@@ -254,33 +262,39 @@ namespace ClinicManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<long>("BranchId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(11);
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(96)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(97)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(20);
 
                     b.Property<string>("UserCreated")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(98);
 
                     b.Property<string>("UserModified")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(99);
 
                     b.Property<Guid>("VanityId")
                         .ValueGeneratedOnAdd()
@@ -396,33 +410,39 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnOrder(21);
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(96)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(97)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(20);
 
                     b.Property<string>("UserCreated")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(98);
 
                     b.Property<string>("UserModified")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(99);
 
                     b.Property<Guid>("VanityId")
                         .ValueGeneratedOnAdd()
@@ -541,41 +561,46 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(96)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(97)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(4);
+                        .HasColumnOrder(22);
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(20);
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(3);
+                        .HasColumnOrder(21);
 
                     b.Property<string>("UserCreated")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(98);
 
                     b.Property<string>("UserModified")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(99);
 
                     b.Property<Guid>("VanityId")
                         .ValueGeneratedOnAdd()
@@ -605,29 +630,39 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(96)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasColumnOrder(97)
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<long>("DepartmentId")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(12);
+
+                    b.Property<long?>("EmployeeId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(10);
 
                     b.Property<long>("PersonId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(11);
 
                     b.Property<string>("UserCreated")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(98);
 
                     b.Property<string>("UserModified")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(99);
 
                     b.Property<Guid>("VanityId")
                         .ValueGeneratedOnAdd()
@@ -639,27 +674,14 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                     b.HasIndex("DepartmentId");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex("PersonId");
 
                     b.HasIndex("VanityId")
                         .IsUnique();
 
                     b.ToTable("WorkSchedules");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleEmployee", b =>
-                {
-                    b.Property<long>("EmployeeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("WorkScheduleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("EmployeeId", "WorkScheduleId");
-
-                    b.HasIndex("WorkScheduleId");
-
-                    b.ToTable("WorkScheduleEmployee");
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Employee", b =>
@@ -728,6 +750,10 @@ namespace ClinicManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Appointment", b =>
                 {
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Patient", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("PatientId");
+
                     b.HasOne("ClinicManagement.ApplicationCore.Entities.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
@@ -740,10 +766,12 @@ namespace ClinicManagement.Infrastructure.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<DateTime>("End")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2")
+                                .HasColumnOrder(51);
 
                             b1.Property<DateTime>("Start")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2")
+                                .HasColumnOrder(50);
 
                             b1.HasKey("AppointmentId");
 
@@ -757,21 +785,6 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.AppointmentPatient", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Appointment", null)
-                        .WithMany()
-                        .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Patient", null)
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Branch", b =>
@@ -789,22 +802,27 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(31);
 
                             b1.Property<string>("Country")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(33);
 
                             b1.Property<string>("State")
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(32);
 
                             b1.Property<string>("Street")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(30);
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(34);
 
                             b1.HasKey("BranchId");
 
@@ -848,10 +866,62 @@ namespace ClinicManagement.Infrastructure.Migrations
                                 });
                         });
 
+                    b.OwnsOne("MedicApp.SharedKernel.PhoneNumber", "PhoneNumber", b1 =>
+                        {
+                            b1.Property<long>("BranchId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("CountryCode")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(40);
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(41);
+
+                            b1.HasKey("BranchId");
+
+                            b1.ToTable("Branches");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BranchId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    BranchId = 1L,
+                                    CountryCode = "420",
+                                    Number = "999888777"
+                                },
+                                new
+                                {
+                                    BranchId = 2L,
+                                    CountryCode = "420",
+                                    Number = "666555444"
+                                },
+                                new
+                                {
+                                    BranchId = 3L,
+                                    CountryCode = "420",
+                                    Number = "333222111"
+                                },
+                                new
+                                {
+                                    BranchId = 4L,
+                                    CountryCode = "420",
+                                    Number = "999666333"
+                                });
+                        });
+
                     b.Navigation("Address")
                         .IsRequired();
 
                     b.Navigation("Clinic");
+
+                    b.Navigation("PhoneNumber")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Department", b =>
@@ -862,7 +932,71 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("MedicApp.SharedKernel.PhoneNumber", "PhoneNumber", b1 =>
+                        {
+                            b1.Property<long>("DepartmentId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("CountryCode")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(40);
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(41);
+
+                            b1.HasKey("DepartmentId");
+
+                            b1.ToTable("Departments");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DepartmentId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    DepartmentId = 1L,
+                                    CountryCode = "420",
+                                    Number = "999888777"
+                                },
+                                new
+                                {
+                                    DepartmentId = 2L,
+                                    CountryCode = "420",
+                                    Number = "666555444"
+                                },
+                                new
+                                {
+                                    DepartmentId = 3L,
+                                    CountryCode = "420",
+                                    Number = "333222111"
+                                },
+                                new
+                                {
+                                    DepartmentId = 4L,
+                                    CountryCode = "420",
+                                    Number = "999666333"
+                                },
+                                new
+                                {
+                                    DepartmentId = 5L,
+                                    CountryCode = "420",
+                                    Number = "888555222"
+                                },
+                                new
+                                {
+                                    DepartmentId = 6L,
+                                    CountryCode = "420",
+                                    Number = "777444111"
+                                });
+                        });
+
                     b.Navigation("Branch");
+
+                    b.Navigation("PhoneNumber")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.DepartmentEmployee", b =>
@@ -904,22 +1038,27 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(31);
 
                             b1.Property<string>("Country")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(33);
 
                             b1.Property<string>("State")
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(32);
 
                             b1.Property<string>("Street")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(30);
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(34);
 
                             b1.HasKey("PersonId");
 
@@ -970,11 +1109,13 @@ namespace ClinicManagement.Infrastructure.Migrations
 
                             b1.Property<string>("CountryCode")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(40);
 
                             b1.Property<string>("Number")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnOrder(41);
 
                             b1.HasKey("PersonId");
 
@@ -1025,6 +1166,10 @@ namespace ClinicManagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Employee", null)
+                        .WithMany("WorkSchedules")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("ClinicManagement.ApplicationCore.Entities.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
@@ -1037,10 +1182,12 @@ namespace ClinicManagement.Infrastructure.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<DateTime>("End")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2")
+                                .HasColumnOrder(51);
 
                             b1.Property<DateTime>("Start")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2")
+                                .HasColumnOrder(50);
 
                             b1.HasKey("WorkScheduleId");
 
@@ -1058,21 +1205,6 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.WorkScheduleEmployee", b =>
-                {
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ClinicManagement.ApplicationCore.Entities.WorkSchedule", null)
-                        .WithMany()
-                        .HasForeignKey("WorkScheduleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Branch", b =>
                 {
                     b.Navigation("Departments");
@@ -1081,6 +1213,16 @@ namespace ClinicManagement.Infrastructure.Migrations
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Clinic", b =>
                 {
                     b.Navigation("Branches");
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Employee", b =>
+                {
+                    b.Navigation("WorkSchedules");
+                });
+
+            modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Patient", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }
