@@ -22,6 +22,7 @@ public abstract class ServiceBase<T> : IService<T> where T : EntityBase
         try
         {
             Repository.Delete(item, cancellationToken);
+            await Repository.SaveChangesAsync();
         }
         catch (Exception ex)
         {
