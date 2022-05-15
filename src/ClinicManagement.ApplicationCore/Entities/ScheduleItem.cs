@@ -2,9 +2,10 @@
 
 public abstract class ScheduleItem : EntityBase
 {
-    public DateTimeRange DateTimeSchedule { get; set; } = new DateTimeRange();
-
+    [Column(Order = 11)]
     public long PersonId { get; set; }
 
     public Person Person { get; set; } = null!;
+
+    public DateTimeRange DateTimeSchedule { get; set; } = new DateTimeRange();
 }

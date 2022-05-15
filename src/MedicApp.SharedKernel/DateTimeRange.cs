@@ -2,8 +2,10 @@
 
 public class DateTimeRange : ValueObject<DateTimeRange>
 {
+    [Column(Order = 50)]
     public DateTime Start { get; set; }
 
+    [Column(Order = 51)]
     public DateTime End { get; set; }
 
     public DateTimeRange(DateTime start, DateTime end)

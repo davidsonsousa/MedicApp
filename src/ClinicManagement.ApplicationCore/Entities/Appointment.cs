@@ -2,7 +2,6 @@
 
 public class Appointment : ScheduleItem
 {
+    [Column(Order = 21)]
     public string? AdditionalInformation { get; set; }
-
-    public virtual ICollection<Patient> Patients { get; set; } = null!;
 }

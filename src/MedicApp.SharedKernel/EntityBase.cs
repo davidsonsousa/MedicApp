@@ -9,14 +9,15 @@ public abstract class EntityBase
         }
     }
 
-    public bool IsDeleted { get; set; }
-
-    [Column(Order = 0)]
     [Key]
+    [Column(Order = 0)]
     public long Id { get; set; }
 
     [Column(Order = 1)]
     public Guid VanityId { get; set; }
+
+    [Column(Order = 10)]
+    public bool IsDeleted { get; set; }
 
     public override string ToString()
     {
