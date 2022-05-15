@@ -16,4 +16,6 @@ public abstract class Person : EntityBase
     public Address Address { get; set; } = new Address();
 
     public PhoneNumber PhoneNumber { get; set; } = new PhoneNumber();
+
+    public string Discriminator { get; private set; } = string.Empty;
 }
