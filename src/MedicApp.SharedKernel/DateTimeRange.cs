@@ -2,8 +2,9 @@
 
 public class DateTimeRange : ValueObject<DateTimeRange>
 {
-    public DateTime Start { get; private set; }
-    public DateTime End { get; private set; }
+    public DateTime Start { get; set; }
+
+    public DateTime End { get; set; }
 
     public DateTimeRange(DateTime start, DateTime end)
     {
@@ -30,10 +31,12 @@ public class DateTimeRange : ValueObject<DateTimeRange>
     {
         return new DateTimeRange(Start, newEnd);
     }
+
     public DateTimeRange NewDuration(TimeSpan newDuration)
     {
         return new DateTimeRange(Start, newDuration);
     }
+
     public DateTimeRange NewStart(DateTime newStart)
     {
         return new DateTimeRange(newStart, End);
