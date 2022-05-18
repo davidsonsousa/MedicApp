@@ -17,6 +17,8 @@ builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<INurseRepository, NurseRepository>();
 builder.Services.AddScoped<IWorkScheduleRepository, WorkScheduleRepository>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
 // Configure DI - Services
 builder.Services.AddScoped<IClinicService, ClinicService>();
@@ -26,6 +28,8 @@ builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<INurseService, NurseService>();
 builder.Services.AddScoped<IWorkScheduleService, WorkScheduleService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 builder.Services.AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
                 .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
