@@ -18,6 +18,4 @@ public class PatientRequest : RequestBase
     public PhoneNumber PhoneNumber { get; set; } = new PhoneNumber();
 
     public IEnumerable<Guid> SelectedLanguages { get; set; } = new List<Guid>();
-
-    public IEnumerable<Guid> SelectedDepartments { get; set; } = new List<Guid>();
 }
