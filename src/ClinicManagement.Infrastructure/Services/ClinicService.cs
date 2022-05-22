@@ -12,7 +12,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
     public async Task<IResult> GetAllClinics(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllClinics));
-        var result = new Result<IEnumerable<SimpleClinicResponse>>();
+        var result = new Result<IEnumerable<ClinicResponse>>();
 
         try
         {
@@ -30,15 +30,14 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
         return result;
     }
 
-
     public async Task<IResult> GetClinicById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(GetClinicById), id);
-        var result = new Result<ClinicResponse>();
+        var result = new Result<ClinicDetailResponse>();
 
         try
         {
-            var clinic = await Repository.GetByIdAsync(id, cancellationToken);
+            var clinic = await clinicRepository.GetClinicWithBranchesByIdAsync(id, cancellationToken);
             Guard.Against.Null(clinic, nameof(clinic));
 
             result.Value = clinic.MapToResponse();

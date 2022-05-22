@@ -26,7 +26,7 @@ public class ClinicController : ControllerBase
             return NotFound();
         }
 
-        var items = result.As<IEnumerable<SimpleClinicResponse>>();
+        var items = result.As<IEnumerable<ClinicResponse>>();
 
         return !items.Any() ? NotFound() : Ok(items);
     }
@@ -42,7 +42,7 @@ public class ClinicController : ControllerBase
     {
         var result = await clinicService.GetClinicById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<ClinicResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<ClinicDetailResponse>());
     }
 
     /// <summary>
