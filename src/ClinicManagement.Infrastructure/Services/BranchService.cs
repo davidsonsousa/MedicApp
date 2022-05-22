@@ -2,11 +2,13 @@
 
 public class BranchService : ServiceBase<Branch>, IBranchService
 {
+    private readonly IBranchRepository branchRepository;
     private readonly IClinicRepository clinicRepository;
 
     public BranchService(IBranchRepository branchRepository, IClinicRepository clinicRepository, ILoggerFactory loggerFactory)
         : base(branchRepository, loggerFactory)
     {
+        this.branchRepository = branchRepository;
         this.clinicRepository = clinicRepository;
     }
 
@@ -17,7 +19,7 @@ public class BranchService : ServiceBase<Branch>, IBranchService
 
         try
         {
-            var branches = await Repository.GetAllAsync(cancellationToken);
+            var branches = await branchRepository.GetAllBranchesWithDepartmentsAsync(cancellationToken);
             Guard.Against.Null(branches, nameof(branches));
 
             result.Value = branches.MapToResponse();
@@ -31,15 +33,14 @@ public class BranchService : ServiceBase<Branch>, IBranchService
         return result;
     }
 
-
     public async Task<IResult> GetBranchById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(BranchService), nameof(GetBranchById), id);
-        var result = new Result<BranchResponse>();
+        var result = new Result<BranchDetailResponse>();
 
         try
         {
-            var branch = await Repository.GetByIdAsync(id, cancellationToken);
+            var branch = await branchRepository.GetBranchWithDepartmentsByIdAsync(id, cancellationToken);
             Guard.Against.Null(branch, nameof(branch));
 
             result.Value = branch.MapToResponse();
