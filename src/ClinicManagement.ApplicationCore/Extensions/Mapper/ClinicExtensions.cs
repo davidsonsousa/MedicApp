@@ -22,15 +22,20 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static ClinicResponse MapToResponse(this Clinic? item)
+    public static ClinicDetailResponse MapToResponse(this Clinic? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new ClinicResponse
+        return new ClinicDetailResponse
         {
             VanityId = item.VanityId,
             Name = item.Name,
-            SelectedBranches = item.Branches.Select(b => b.VanityId).ToArray()
+            Branches = item.Branches.Select(b => new ClinicBranchItem
+            {
+                VanityId = b.VanityId,
+                Name = b.Name,
+                Address = b.Address
+            })
         };
     }
 
@@ -39,7 +44,7 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<ClinicResponse> MapToResponse(this IEnumerable<Clinic>? items)
+    public static IEnumerable<ClinicResponse> MapToSimpleResponse(this IEnumerable<Clinic>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
@@ -47,7 +52,7 @@ public static class ClinicExtensions
         {
             VanityId = clinic.VanityId,
             Name = clinic.Name,
-            SelectedBranches = clinic.Branches.Select(b => b.VanityId).ToArray()
+            BranchIds = clinic.Branches.Select(b => b.VanityId).ToArray()
         });
 
     }

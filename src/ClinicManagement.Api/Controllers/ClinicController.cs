@@ -42,7 +42,7 @@ public class ClinicController : ControllerBase
     {
         var result = await clinicService.GetClinicById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<ClinicResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<ClinicDetailResponse>());
     }
 
     /// <summary>

@@ -2,9 +2,11 @@
 
 public class ClinicService : ServiceBase<Clinic>, IClinicService
 {
+    private readonly IClinicRepository clinicRepository;
+
     public ClinicService(IClinicRepository clinicRepository, ILoggerFactory loggerFactory) : base(clinicRepository, loggerFactory)
     {
-
+        this.clinicRepository = clinicRepository;
     }
 
     public async Task<IResult> GetAllClinics(CancellationToken cancellationToken = default)
@@ -14,10 +16,10 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
 
         try
         {
-            var clinics = await Repository.GetAllAsync(cancellationToken);
+            var clinics = await clinicRepository.GetAllClinicsWithBranchesAsync(cancellationToken);
             Guard.Against.Null(clinics, nameof(clinics));
 
-            result.Value = clinics.MapToResponse();
+            result.Value = clinics.MapToSimpleResponse();
         }
         catch (Exception ex)
         {
@@ -28,15 +30,14 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
         return result;
     }
 
-
     public async Task<IResult> GetClinicById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(GetClinicById), id);
-        var result = new Result<ClinicResponse>();
+        var result = new Result<ClinicDetailResponse>();
 
         try
         {
-            var clinic = await Repository.GetByIdAsync(id, cancellationToken);
+            var clinic = await clinicRepository.GetClinicWithBranchesByIdAsync(id, cancellationToken);
             Guard.Against.Null(clinic, nameof(clinic));
 
             result.Value = clinic.MapToResponse();
