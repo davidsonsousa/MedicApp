@@ -3,6 +3,7 @@ global using ClinicManagement.ApplicationCore.Interfaces.Data;
 global using ClinicManagement.ApplicationCore.Interfaces.Services;
 global using ClinicManagement.ApplicationCore.Models.Requests;
 global using ClinicManagement.ApplicationCore.Models.Responses;
+global using ClinicManagement.ApplicationCore.Models.Responses.Branch;
 global using ClinicManagement.ApplicationCore.Models.Responses.Clinic;
 global using ClinicManagement.Infrastructure.Data;
 global using ClinicManagement.Infrastructure.Services;

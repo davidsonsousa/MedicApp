@@ -42,7 +42,7 @@ public class BranchController : ControllerBase
     {
         var result = await branchService.GetBranchById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<BranchResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<BranchDetailResponse>());
     }
 
     /// <summary>

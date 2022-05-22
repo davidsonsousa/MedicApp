@@ -24,16 +24,20 @@ public static class BranchExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static BranchResponse MapToResponse(this Branch? item)
+    public static BranchDetailResponse MapToResponse(this Branch? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new BranchResponse
+        return new BranchDetailResponse
         {
             VanityId = item.VanityId,
             Name = item.Name,
             Address = item.Address,
-            SelectedDepartments = item.Departments.Select(b => b.VanityId).ToArray()
+            Departments = item.Departments.Select(d => new BranchDepartmentItem
+            {
+                VanityId = d.VanityId,
+                Name = d.Name
+            })
         };
     }
 
@@ -51,7 +55,7 @@ public static class BranchExtensions
             VanityId = branch.VanityId,
             Name = branch.Name,
             Address = branch.Address,
-            SelectedDepartments = branch.Departments.Select(b => b.VanityId).ToArray()
+            DepartmentIds = branch.Departments.Select(b => b.VanityId).ToArray()
         });
     }
 

@@ -19,7 +19,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
             var clinics = await clinicRepository.GetAllClinicsWithBranchesAsync(cancellationToken);
             Guard.Against.Null(clinics, nameof(clinics));
 
-            result.Value = clinics.MapToSimpleResponse();
+            result.Value = clinics.MapToResponse();
         }
         catch (Exception ex)
         {

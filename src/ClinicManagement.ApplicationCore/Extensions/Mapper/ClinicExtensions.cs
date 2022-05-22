@@ -44,7 +44,7 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<ClinicResponse> MapToSimpleResponse(this IEnumerable<Clinic>? items)
+    public static IEnumerable<ClinicResponse> MapToResponse(this IEnumerable<Clinic>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
