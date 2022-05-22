@@ -2,22 +2,24 @@
 
 public class ClinicService : ServiceBase<Clinic>, IClinicService
 {
+    private readonly IClinicRepository clinicRepository;
+
     public ClinicService(IClinicRepository clinicRepository, ILoggerFactory loggerFactory) : base(clinicRepository, loggerFactory)
     {
-
+        this.clinicRepository = clinicRepository;
     }
 
     public async Task<IResult> GetAllClinics(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllClinics));
-        var result = new Result<IEnumerable<ClinicResponse>>();
+        var result = new Result<IEnumerable<SimpleClinicResponse>>();
 
         try
         {
-            var clinics = await Repository.GetAllAsync(cancellationToken);
+            var clinics = await clinicRepository.GetAllClinicsWithBranchesAsync(cancellationToken);
             Guard.Against.Null(clinics, nameof(clinics));
 
-            result.Value = clinics.MapToResponse();
+            result.Value = clinics.MapToSimpleResponse();
         }
         catch (Exception ex)
         {
