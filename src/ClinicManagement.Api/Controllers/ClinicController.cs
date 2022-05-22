@@ -26,7 +26,7 @@ public class ClinicController : ControllerBase
             return NotFound();
         }
 
-        var items = result.As<IEnumerable<ClinicResponse>>();
+        var items = result.As<IEnumerable<SimpleClinicResponse>>();
 
         return !items.Any() ? NotFound() : Ok(items);
     }

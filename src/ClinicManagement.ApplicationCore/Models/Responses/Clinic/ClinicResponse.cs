@@ -1,4 +1,4 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.Responses;
+﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Clinic;
 
 public class ClinicResponse : ResponseBase
 {

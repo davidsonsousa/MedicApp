@@ -39,15 +39,15 @@ public static class ClinicExtensions
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<ClinicResponse> MapToResponse(this IEnumerable<Clinic>? items)
+    public static IEnumerable<SimpleClinicResponse> MapToSimpleResponse(this IEnumerable<Clinic>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(clinic => new ClinicResponse
+        return items.Select(clinic => new SimpleClinicResponse
         {
             VanityId = clinic.VanityId,
             Name = clinic.Name,
-            SelectedBranches = clinic.Branches.Select(b => b.VanityId).ToArray()
+            BranchIds = clinic.Branches.Select(b => b.VanityId).ToArray()
         });
 
     }
