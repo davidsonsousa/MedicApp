@@ -8,5 +8,4 @@ public abstract class ResponseBase
     {
         return JsonConvert.SerializeObject(this);
     }
-
 }
