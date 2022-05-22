@@ -20,7 +20,7 @@ public class EmployeeController : ControllerBase
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns>List of doctors</returns>
-    [HttpGet("doctor")]
+    [HttpGet("doctors")]
     public async Task<IActionResult> GetDoctorsAsync(CancellationToken cancellationToken)
     {
         var result = await doctorService.GetAllDoctors(cancellationToken);
@@ -60,7 +60,7 @@ public class EmployeeController : ControllerBase
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns>List of nurses</returns>
-    [HttpGet("nurse")]
+    [HttpGet("nurses")]
     public async Task<IActionResult> GetNurseAsync(CancellationToken cancellationToken)
     {
         var result = await nurseService.GetAllNurses(cancellationToken);
@@ -100,7 +100,7 @@ public class EmployeeController : ControllerBase
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns>List of workSchedules</returns>
-    [HttpGet("work-schedule")]
+    [HttpGet("work-schedules")]
     public async Task<IActionResult> GetWorkSchedulesAsync(CancellationToken cancellationToken)
     {
         var result = await workScheduleService.GetAllWorkSchedules(cancellationToken);

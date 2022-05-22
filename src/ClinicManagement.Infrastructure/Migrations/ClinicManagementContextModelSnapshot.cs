@@ -544,6 +544,16 @@ namespace ClinicManagement.Infrastructure.Migrations
                         {
                             LanguageId = 3L,
                             PersonId = 4L
+                        },
+                        new
+                        {
+                            LanguageId = 2L,
+                            PersonId = 5L
+                        },
+                        new
+                        {
+                            LanguageId = 2L,
+                            PersonId = 6L
                         });
                 });
 
@@ -694,6 +704,24 @@ namespace ClinicManagement.Infrastructure.Migrations
                     b.HasBaseType("ClinicManagement.ApplicationCore.Entities.Person");
 
                     b.HasDiscriminator().HasValue("Patient");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5L,
+                            DateOfBirth = new DateTime(1981, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Bob",
+                            Surname = "Smith"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            DateOfBirth = new DateTime(1986, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Karen",
+                            Surname = "Horner"
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagement.ApplicationCore.Entities.Doctor", b =>
@@ -1097,6 +1125,22 @@ namespace ClinicManagement.Infrastructure.Migrations
                                     Country = "CZ",
                                     Street = "ul. Sersterska 3031/31",
                                     ZipCode = "330 00"
+                                },
+                                new
+                                {
+                                    PersonId = 5L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Pacientu 4000/40",
+                                    ZipCode = "440 00"
+                                },
+                                new
+                                {
+                                    PersonId = 6L,
+                                    City = "Prague",
+                                    Country = "CZ",
+                                    Street = "ul. Pacientu 4444/44",
+                                    ZipCode = "440 00"
                                 });
                         });
 
@@ -1146,6 +1190,18 @@ namespace ClinicManagement.Infrastructure.Migrations
                                     PersonId = 4L,
                                     CountryCode = "420",
                                     Number = "888444333"
+                                },
+                                new
+                                {
+                                    PersonId = 5L,
+                                    CountryCode = "420",
+                                    Number = "654321789"
+                                },
+                                new
+                                {
+                                    PersonId = 6L,
+                                    CountryCode = "420",
+                                    Number = "321456987"
                                 });
                         });
 

@@ -203,6 +203,29 @@ public static class GeneralConfiguration
         };
     }
 
+    public static IEnumerable<dynamic> SeedPatients()
+    {
+        return new[]
+        {
+            new
+            {
+                Id = 5L,
+                Name = "Bob",
+                Surname ="Smith",
+                DateOfBirth = new DateOnly(1981, 05, 23),
+                IsDeleted = false
+            },
+            new
+            {
+                Id = 6L,
+                Name = "Karen",
+                Surname ="Horner",
+                DateOfBirth = new DateOnly(1986, 04, 16),
+                IsDeleted = false
+            },
+        };
+    }
+
     public static IEnumerable<dynamic> SeedPersonAddresses()
     {
         return new[]
@@ -210,7 +233,9 @@ public static class GeneralConfiguration
             new { PersonId = 1L, Street = "ul. Doktorova 1010/10", ZipCode="110 00", City = "Prague", Country = "CZ" },
             new { PersonId = 2L, Street = "ul. Nemocinice 2020/20", ZipCode="220 00", City = "Prague", Country = "CZ" },
             new { PersonId = 3L, Street = "ul. Sersterska 3030/30", ZipCode="330 00", City = "Prague", Country = "CZ" },
-            new { PersonId = 4L, Street = "ul. Sersterska 3031/31", ZipCode="330 00", City = "Prague", Country = "CZ" }
+            new { PersonId = 4L, Street = "ul. Sersterska 3031/31", ZipCode="330 00", City = "Prague", Country = "CZ" },
+            new { PersonId = 5L, Street = "ul. Pacientu 4000/40", ZipCode="440 00", City = "Prague", Country = "CZ" },
+            new { PersonId = 6L, Street = "ul. Pacientu 4444/44", ZipCode="440 00", City = "Prague", Country = "CZ" }
         };
     }
 
@@ -221,7 +246,9 @@ public static class GeneralConfiguration
             new { PersonId = 1L, CountryCode = "420", Number = "987654321" },
             new { PersonId = 2L, CountryCode = "420", Number = "789456123" },
             new { PersonId = 3L, CountryCode = "420", Number = "777888999" },
-            new { PersonId = 4L, CountryCode = "420", Number = "888444333" }
+            new { PersonId = 4L, CountryCode = "420", Number = "888444333" },
+            new { PersonId = 5L, CountryCode = "420", Number = "654321789" },
+            new { PersonId = 6L, CountryCode = "420", Number = "321456987" }
         };
     }
 
@@ -236,7 +263,9 @@ public static class GeneralConfiguration
             new LanguagePerson { LanguageId = 1, PersonId = 3 },
             new LanguagePerson { LanguageId = 4, PersonId = 3 },
             new LanguagePerson { LanguageId = 1, PersonId = 4 },
-            new LanguagePerson { LanguageId = 3, PersonId = 4 }
+            new LanguagePerson { LanguageId = 3, PersonId = 4 },
+            new LanguagePerson { LanguageId = 2, PersonId = 5 },
+            new LanguagePerson { LanguageId = 2, PersonId = 6 }
         };
     }
 

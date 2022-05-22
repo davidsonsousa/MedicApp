@@ -288,7 +288,9 @@ namespace ClinicManagement.Infrastructure.Migrations
                     { 1L, new DateTime(1970, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Doctor", false, "John", "Doe", null, null, "Prague", "CZ", null, "ul. Doktorova 1010/10", "110 00", "420", "987654321" },
                     { 2L, new DateTime(1975, 5, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Doctor", false, "Mary", "Sue", null, null, "Prague", "CZ", null, "ul. Nemocinice 2020/20", "220 00", "420", "789456123" },
                     { 3L, new DateTime(1980, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nurse", false, "Pavla", "Novakova", null, null, "Prague", "CZ", null, "ul. Sersterska 3030/30", "330 00", "420", "777888999" },
-                    { 4L, new DateTime(1985, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nurse", false, "Lenka", "Novakova", null, null, "Prague", "CZ", null, "ul. Sersterska 3031/31", "330 00", "420", "888444333" }
+                    { 4L, new DateTime(1985, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nurse", false, "Lenka", "Novakova", null, null, "Prague", "CZ", null, "ul. Sersterska 3031/31", "330 00", "420", "888444333" },
+                    { 5L, new DateTime(1981, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Patient", false, "Bob", "Smith", null, null, "Prague", "CZ", null, "ul. Pacientu 4000/40", "440 00", "420", "654321789" },
+                    { 6L, new DateTime(1986, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Patient", false, "Karen", "Horner", null, null, "Prague", "CZ", null, "ul. Pacientu 4444/44", "440 00", "420", "321456987" }
                 });
 
             migrationBuilder.InsertData(
@@ -313,6 +315,8 @@ namespace ClinicManagement.Infrastructure.Migrations
                     { 1L, 4L },
                     { 2L, 1L },
                     { 2L, 2L },
+                    { 2L, 5L },
+                    { 2L, 6L },
                     { 3L, 4L },
                     { 4L, 3L }
                 });
