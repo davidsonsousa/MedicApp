@@ -55,7 +55,7 @@ public static class BranchExtensions
             VanityId = branch.VanityId,
             Name = branch.Name,
             Address = branch.Address,
-            DepartmentIds = branch.Departments.Select(b => b.VanityId).ToArray()
+            DepartmentIds = branch.Departments.Select(d => d.VanityId).ToArray()
         });
     }
 
