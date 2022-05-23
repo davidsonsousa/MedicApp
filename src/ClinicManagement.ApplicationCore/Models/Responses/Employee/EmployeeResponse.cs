@@ -1,6 +1,6 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.Requests;
+﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Employee;
 
-public class NurseResponse : RequestBase
+public class EmployeeResponse : RequestBase
 {
     public string Name { get; set; } = string.Empty;
 
@@ -12,7 +12,7 @@ public class NurseResponse : RequestBase
 
     public PhoneNumber PhoneNumber { get; set; } = new PhoneNumber();
 
-    public IEnumerable<string> SelectedLanguages { get; set; } = new List<string>();
+    public IEnumerable<Guid> LanguageIds { get; set; } = new List<Guid>();
 
-    public IEnumerable<Guid> SelectedDepartments { get; set; } = new List<Guid>();
+    public IEnumerable<Guid> DepartmentIds { get; set; } = new List<Guid>();
 }

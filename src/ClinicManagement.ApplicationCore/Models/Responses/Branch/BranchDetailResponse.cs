@@ -6,5 +6,5 @@ public class BranchDetailResponse : ResponseBase
 
     public Address Address { get; set; } = new Address();
 
-    public IEnumerable<BranchDepartmentItem> Departments { get; set; } = new List<BranchDepartmentItem>();
+    public IEnumerable<DepartmentResponse> Departments { get; set; } = new List<DepartmentResponse>();
 }
