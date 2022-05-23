@@ -30,7 +30,7 @@ public class EmployeeController : ControllerBase
             return NotFound();
         }
 
-        var items = result.As<IEnumerable<DoctorResponse>>();
+        var items = result.As<IEnumerable<EmployeeResponse>>();
 
         return !items.Any() ? NotFound() : Ok(items);
     }
@@ -70,7 +70,7 @@ public class EmployeeController : ControllerBase
             return NotFound();
         }
 
-        var items = result.As<IEnumerable<NurseResponse>>();
+        var items = result.As<IEnumerable<EmployeeResponse>>();
 
         return !items.Any() ? NotFound() : Ok(items);
     }
@@ -126,7 +126,7 @@ public class EmployeeController : ControllerBase
     {
         var result = await doctorService.GetDoctorById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<DoctorResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<EmployeeDetailResponse>());
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public class EmployeeController : ControllerBase
     {
         var result = await nurseService.GetNurseById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<NurseResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<EmployeeDetailResponse>());
     }
 
     /// <summary>

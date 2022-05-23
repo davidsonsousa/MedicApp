@@ -20,11 +20,11 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
     public async Task<IResult> GetAllDoctors(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllDoctors));
-        var result = new Result<IEnumerable<DoctorResponse>>();
+        var result = new Result<IEnumerable<EmployeeResponse>>();
 
         try
         {
-            var doctors = await Repository.GetAllAsync(cancellationToken);
+            var doctors = await doctorRepository.GetAllEmployeesWithDepartmentsAndLanguageAsync(cancellationToken);
             Guard.Against.Null(doctors, nameof(doctors));
 
             result.Value = doctors.MapToResponse();
@@ -62,11 +62,11 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
     public async Task<IResult> GetDoctorById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(DoctorService), nameof(GetDoctorById), id);
-        var result = new Result<DoctorResponse>();
+        var result = new Result<EmployeeDetailResponse>();
 
         try
         {
-            var doctor = await Repository.GetByIdAsync(id, cancellationToken);
+            var doctor = await doctorRepository.GetEmployeeWithDepartmentsAndLanguagesByIdAsync(id, cancellationToken);
             Guard.Against.Null(doctor, nameof(doctor));
 
             result.Value = doctor.MapToResponse();
@@ -135,7 +135,7 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
         }
         else
         {
-            doctor = model.MapToEntity(await doctorRepository.GetEmployeeWithDepartmentsAndLanguagesById(model.VanityId, cancellationToken));
+            doctor = model.MapToEntity(await doctorRepository.GetEmployeeWithDepartmentsAndLanguagesByIdAsync(model.VanityId, cancellationToken));
             await doctorRepository.UpdateEmployeeDepartmentsAsync(doctor, departments, cancellationToken);
             await doctorRepository.UpdatePersonLanguagesAsync(doctor, languages, cancellationToken);
             doctorRepository.Update(doctor, cancellationToken);

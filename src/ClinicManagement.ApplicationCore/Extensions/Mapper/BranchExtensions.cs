@@ -33,7 +33,7 @@ public static class BranchExtensions
             VanityId = item.VanityId,
             Name = item.Name,
             Address = item.Address,
-            Departments = item.Departments.Select(d => new BranchDepartmentItem
+            Departments = item.Departments.Select(d => new DepartmentResponse
             {
                 VanityId = d.VanityId,
                 Name = d.Name
