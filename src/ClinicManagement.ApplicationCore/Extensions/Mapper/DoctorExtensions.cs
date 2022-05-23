@@ -25,18 +25,20 @@ public static class DoctorExtensions
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static DoctorResponse MapToResponse(this Doctor? item)
+    public static EmployeeDetailResponse MapToResponse(this Doctor? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new DoctorResponse
+        return new EmployeeDetailResponse
         {
             VanityId = item.VanityId,
             Name = item.Name,
             Surname = item.Surname,
             Address = item.Address,
             DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber
+            PhoneNumber = item.PhoneNumber,
+            Departments = item.Departments.MapToResponse(),
+            Languages = item.Languages.MapToResponse()
         };
     }
 
@@ -45,18 +47,20 @@ public static class DoctorExtensions
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<DoctorResponse> MapToResponse(this IEnumerable<Doctor>? items)
+    public static IEnumerable<EmployeeResponse> MapToResponse(this IEnumerable<Doctor>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(doctor => new DoctorResponse
+        return items.Select(doctor => new EmployeeResponse
         {
             VanityId = doctor.VanityId,
             Name = doctor.Name,
             Surname = doctor.Surname,
             Address = doctor.Address,
             DateOfBirth = doctor.DateOfBirth,
-            PhoneNumber = doctor.PhoneNumber
+            PhoneNumber = doctor.PhoneNumber,
+            DepartmentIds = doctor.Departments.Select(d => d.VanityId),
+            LanguageIds = doctor.Languages.Select(l => l.VanityId),
         });
     }
 

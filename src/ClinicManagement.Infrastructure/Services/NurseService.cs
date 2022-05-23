@@ -20,11 +20,11 @@ public class NurseService : ServiceBase<Nurse>, INurseService
     public async Task<IResult> GetAllNurses(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllNurses));
-        var result = new Result<IEnumerable<NurseResponse>>();
+        var result = new Result<IEnumerable<EmployeeResponse>>();
 
         try
         {
-            var nurses = await Repository.GetAllAsync(cancellationToken);
+            var nurses = await nurseRepository.GetAllEmployeesWithDepartmentsAndLanguageAsync(cancellationToken);
             Guard.Against.Null(nurses, nameof(nurses));
 
             result.Value = nurses.MapToResponse();
@@ -62,11 +62,11 @@ public class NurseService : ServiceBase<Nurse>, INurseService
     public async Task<IResult> GetNurseById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(NurseService), nameof(GetNurseById), id);
-        var result = new Result<NurseResponse>();
+        var result = new Result<EmployeeDetailResponse>();
 
         try
         {
-            var nurse = await Repository.GetByIdAsync(id, cancellationToken);
+            var nurse = await nurseRepository.GetEmployeeWithDepartmentsAndLanguagesByIdAsync(id, cancellationToken);
             Guard.Against.Null(nurse, nameof(nurse));
 
             result.Value = nurse.MapToResponse();
@@ -135,7 +135,7 @@ public class NurseService : ServiceBase<Nurse>, INurseService
         }
         else
         {
-            nurse = model.MapToEntity(await nurseRepository.GetEmployeeWithDepartmentsAndLanguagesById(model.VanityId, cancellationToken));
+            nurse = model.MapToEntity(await nurseRepository.GetEmployeeWithDepartmentsAndLanguagesByIdAsync(model.VanityId, cancellationToken));
             await nurseRepository.UpdateEmployeeDepartmentsAsync(nurse, departments, cancellationToken);
             await nurseRepository.UpdatePersonLanguagesAsync(nurse, languages, cancellationToken);
             nurseRepository.Update(nurse, cancellationToken);

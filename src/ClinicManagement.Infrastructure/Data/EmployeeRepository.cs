@@ -28,9 +28,19 @@ public abstract class EmployeeRepository<TEntity> : PersonRepository<TEntity>, I
         await DbContext.Set<DepartmentEmployee>().AddRangeAsync(departmentEmployeeList, cancellationToken);
     }
 
-    public async Task<TEntity?> GetEmployeeWithDepartmentsAndLanguagesById(Guid id, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TEntity>> GetAllEmployeesWithDepartmentsAndLanguageAsync(CancellationToken cancellationToken = default)
     {
-        Logger.DebugMethodCall(nameof(GetEmployeeWithDepartmentsAndLanguagesById), id);
+        Logger.DebugMethodCall(nameof(GetAllEmployeesWithDepartmentsAndLanguageAsync));
+
+        return await GetValidRecords().Include(e => e.Departments)
+                                      .Include(e => e.Languages)
+                                      .AsSplitQuery()
+                                      .ToListAsync(cancellationToken);
+    }
+
+    public async Task<TEntity?> GetEmployeeWithDepartmentsAndLanguagesByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetEmployeeWithDepartmentsAndLanguagesByIdAsync), id);
 
         return await DbContext.Set<TEntity>()
                               .Include(d => d.Departments)

@@ -8,6 +8,7 @@ global using ClinicManagement.ApplicationCore.Models.Requests;
 global using ClinicManagement.ApplicationCore.Models.Responses;
 global using ClinicManagement.ApplicationCore.Models.Responses.Branch;
 global using ClinicManagement.ApplicationCore.Models.Responses.Clinic;
+global using ClinicManagement.ApplicationCore.Models.Responses.Employee;
 global using ClinicManagement.Infrastructure.Data.Comparers;
 global using ClinicManagement.Infrastructure.Data.Configuration;
 global using ClinicManagement.Infrastructure.Data.Converters;

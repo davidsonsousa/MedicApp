@@ -21,42 +21,46 @@ public static class NurseExtensions
     }
 
     /// <summary>
-    /// Maps a Nurse entity to a NurseResponse object
+    /// Maps a Nurse entity to a EmployeeResponse object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static NurseResponse MapToResponse(this Nurse? item)
+    public static EmployeeDetailResponse MapToResponse(this Nurse? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new NurseResponse
+        return new EmployeeDetailResponse
         {
             VanityId = item.VanityId,
             Name = item.Name,
             Surname = item.Surname,
             Address = item.Address,
             DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber
+            PhoneNumber = item.PhoneNumber,
+            Departments = item.Departments.MapToResponse(),
+            Languages = item.Languages.MapToResponse()
         };
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Nurse&gt; to IEnumerable&lt;NurseResponse&gt; object
+    /// Maps IEnumerable&lt;Nurse&gt; to IEnumerable&lt;EmployeeResponse&gt; object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<NurseResponse> MapToResponse(this IEnumerable<Nurse>? items)
+    public static IEnumerable<EmployeeResponse> MapToResponse(this IEnumerable<Nurse>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(nurse => new NurseResponse
+        return items.Select(nurse => new EmployeeResponse
         {
             VanityId = nurse.VanityId,
             Name = nurse.Name,
             Surname = nurse.Surname,
             Address = nurse.Address,
             DateOfBirth = nurse.DateOfBirth,
-            PhoneNumber = nurse.PhoneNumber
+            PhoneNumber = nurse.PhoneNumber,
+            DepartmentIds = nurse.Departments.Select(d => d.VanityId),
+            LanguageIds = nurse.Languages.Select(l => l.VanityId),
         });
     }
 

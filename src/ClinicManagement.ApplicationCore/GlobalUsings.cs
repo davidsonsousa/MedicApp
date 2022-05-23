@@ -7,6 +7,7 @@ global using ClinicManagement.ApplicationCore.Models.Requests;
 global using ClinicManagement.ApplicationCore.Models.Responses;
 global using ClinicManagement.ApplicationCore.Models.Responses.Branch;
 global using ClinicManagement.ApplicationCore.Models.Responses.Clinic;
+global using ClinicManagement.ApplicationCore.Models.Responses.Employee;
 global using MedicApp.SharedKernel;
 global using MedicApp.SharedKernel.Interfaces;
 global using Newtonsoft.Json;
