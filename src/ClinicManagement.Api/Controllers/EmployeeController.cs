@@ -251,7 +251,7 @@ public class EmployeeController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete("doctor")]
+    [HttpDelete("doctor/{id}")]
     public async Task DeleteDoctorAsync(Guid id, CancellationToken cancellationToken)
     {
         await doctorService.DeleteAsync(id, cancellationToken);
@@ -263,7 +263,7 @@ public class EmployeeController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete("nurse")]
+    [HttpDelete("nurse/{id}")]
     public async Task DeleteNurseAsync(Guid id, CancellationToken cancellationToken)
     {
         await nurseService.DeleteAsync(id, cancellationToken);
@@ -275,7 +275,7 @@ public class EmployeeController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete("work-schedule")]
+    [HttpDelete("work-schedule/{id}")]
     public async Task DeleteWorkScheduleAsync(Guid id, CancellationToken cancellationToken)
     {
         await workScheduleService.DeleteAsync(id, cancellationToken);
