@@ -1,0 +1,65 @@
+﻿@page "/clinic/create"
+@page "/clinic/edit/{ClinicId:guid}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IClinicManagementApiService ApiService
+@inject ILogger<CreateEdit> Logger
+
+<PageTitle>@pageTitle</PageTitle>
+
+<h1>@pageTitle</h1>
+
+<EditForm Model="@clinicEditModel" OnValidSubmit="@HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <InputText id="name" class="form-control" @bind-Value="clinicEditModel.Name" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+<ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
+
+@code {
+    private string pageTitle = "Clinic Management - New Clinic";
+    private ClinicEditModel clinicEditModel = new();
+    private ModalComponent? modalComponent;
+
+    [Parameter]
+    public Guid? ClinicId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ClinicId.HasValue)
+        {
+            pageTitle = "Clinic Management - Edit Clinic";
+            clinicEditModel = await ApiService.GetItemByIdAsync<ClinicEditModel>(ClinicId.Value);
+        }
+    }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        try
+        {
+            bool result = ClinicId.HasValue
+                          ? await ApiService.UpdateItemAsync<ClinicEditModel>(clinicEditModel)
+                          : await ApiService.InsertItemAsync<ClinicEditModel>(clinicEditModel);
+
+            if (result)
+            {
+                clinicEditModel = new();
+                modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/clinic");
+            }
+            else
+            {
+                modalComponent?.Show("Error", "An error occurred when saving the clinic!", ModalType.OneButtonWithoutAction);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when saving clinic: {Message}", ex.Message);
+        }
+    }
+}

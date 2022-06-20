@@ -1,0 +1,88 @@
+﻿@inject NavigationManager NavigationManager
+
+@if (isVisible)
+{
+    <div class="modal fade show" tabindex="-1" aria-hidden="true" style="display:block;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@title</h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="Hide"></button>
+                </div>
+                <div class="modal-body">
+                    @content
+                </div>
+                <div class="modal-footer">
+                    @switch (modalType)
+                    {
+                        case ModalType.TwoButtons:
+                            <button type="button" class="btn btn-secondary" @onclick="Hide">@SecondaryButtonText</button>
+                            <button type="button" class="btn btn-primary" @onclick="ExecuteActionAsync">@PrimaryButtonText</button>
+                            break;
+                        case ModalType.OneButtonWithAction:
+                            <button type="button" class="btn btn-primary" @onclick="ExecuteActionAsync">@PrimaryButtonText</button>
+                            break;
+                        case ModalType.OneButtonWithRedirectToUrl:
+                            <button type="button" class="btn btn-primary" @onclick="RedirectToUrl">@PrimaryButtonText</button>
+                            break;
+                        case ModalType.OneButtonWithoutAction:
+                        default:
+                            <button type="button" class="btn btn-primary" @onclick="Hide">@PrimaryButtonText</button>
+                            break;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool isVisible = false;
+    private string title = "Modal";
+    private string content = string.Empty;
+    private ModalType modalType;
+    public Guid? id;
+    public string redirectUrl = "/";
+
+    [Parameter]
+    public EventCallback<Guid> EventCallback { get; set; }
+
+    [Parameter]
+    public string PrimaryButtonText { get; set; } = "Ok";
+
+    [Parameter]
+    public string SecondaryButtonText { get; set; } = "Cancel";
+
+    public void Show(string title, string content, ModalType modalType, Guid? id = null, string redirectUrl = "/")
+    {
+        isVisible = true;
+        this.title = title;
+        this.content = content;
+        this.modalType = modalType;
+        this.id = id;
+        this.redirectUrl = redirectUrl;
+
+        this.StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        isVisible = false;
+    }
+
+    public void RedirectToUrl()
+    {
+        if (!string.IsNullOrWhiteSpace(redirectUrl))
+        {
+            NavigationManager.NavigateTo(redirectUrl);
+        }
+    }
+
+    private async Task ExecuteActionAsync()
+    {
+        Guard.Against.Null(id);
+
+        Hide();
+        await EventCallback.InvokeAsync(id.Value);
+    }
+}
