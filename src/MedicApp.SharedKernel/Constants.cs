@@ -16,4 +16,12 @@ public static class Constants
         public const string Nurse = "Nurse";
         public const string Patient = "Patient";
     }
+
+    public static class ModalButtons
+    {
+        public const string Yes = "Yes";
+        public const string No = "No";
+        public const string Ok = "Ok";
+        public const string Cancel = "Cancel";
+    }
 }
