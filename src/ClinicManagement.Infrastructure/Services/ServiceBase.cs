@@ -22,7 +22,7 @@ public abstract class ServiceBase<T> : IService<T> where T : EntityBase
         try
         {
             Repository.Delete(item, cancellationToken);
-            await Repository.SaveChangesAsync();
+            await Repository.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {

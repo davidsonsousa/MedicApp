@@ -37,7 +37,7 @@ public class DepartmentController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await departmentService.GetDepartmentById(id, cancellationToken);
@@ -73,7 +73,7 @@ public class DepartmentController : ControllerBase
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         await departmentService.DeleteAsync(id, cancellationToken);

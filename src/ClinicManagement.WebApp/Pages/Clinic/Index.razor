@@ -1,0 +1,100 @@
+﻿@page "/clinic"
+@inject HttpClient Http
+@inject IClinicManagementApiService ApiService
+@inject ILogger<Index> Logger
+
+<PageTitle>Clinic Management - Clinics</PageTitle>
+
+<h1>Clinics</h1>
+<div class="btn-group" role="group">
+    <a href="clinic/create" role="button" class="btn btn-success" title="New clinic"><i class="fa-solid fa-plus"></i> New clinic</a>
+</div>
+
+@if (clinics == null)
+{
+    <p><em>No clinics found</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var clinic in clinics)
+            {
+                <tr>
+                    <td>@clinic.Name</td>
+                    <td>
+                        <a href="/clinic/edit/@clinic.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                        <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(clinic)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light">
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+<ModalComponent @ref="modalComponent" PrimaryButtonText="Yes" SecondaryButtonText="No" EventCallback="HandleEventCallbackAsync" />
+
+
+@code {
+    private IEnumerable<ClinicViewModel>? clinics;
+    private ModalComponent? modalComponent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetClinicsAsync();
+    }
+
+    private void ShowDeleteModal(ClinicViewModel clinic)
+    {
+        modalComponent?.Show("Delete clinic?", $"Are you sure you want to delete '{clinic.Name}'?", ModalType.TwoButtons, clinic.VanityId);
+    }
+
+    private async Task GetClinicsAsync()
+    {
+        try
+        {
+            clinics = await ApiService.GetItemsAsync<ClinicViewModel>();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when loading clinics: {Message}", ex.Message);
+        }
+        StateHasChanged();
+    }
+
+    private async Task HandleEventCallbackAsync(Guid id)
+    {
+        try
+        {
+            var result = await ApiService.DeleteItemAsync(id);
+
+            if (result)
+            {
+                await GetClinicsAsync();
+                modalComponent?.Show("Confirmation", "The clinic was successfully deleted.", ModalType.OneButtonWithoutAction);
+            }
+            else
+            {
+                modalComponent?.Show("Error", "An error occurred when deleting the clinic.", ModalType.OneButtonWithoutAction);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when saving clinic: {Message}", ex.Message);
+        }
+    }
+}

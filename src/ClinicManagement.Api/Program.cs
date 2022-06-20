@@ -31,6 +31,14 @@ builder.Services.AddScoped<IWorkScheduleService, WorkScheduleService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder => policyBuilder.WithOrigins("https://localhost:7290")
+                                                           .AllowAnyMethod()
+                                                           .AllowAnyHeader());
+});
+
+
 builder.Services.AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
                 .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
 
@@ -86,6 +94,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
