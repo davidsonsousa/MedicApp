@@ -1,0 +1,65 @@
+﻿@page "/departments/create"
+@page "/departments/edit/{DepartmentId:guid}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IClinicManagementApiService ApiService
+@inject ILogger<CreateEdit> Logger
+
+<PageTitle>@pageTitle</PageTitle>
+
+<h1>@pageTitle</h1>
+
+<EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+<ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
+
+@code {
+    private string pageTitle = "Clinic Management - New Department";
+    private DepartmentEditModel departmentEditModel = new();
+    private ModalComponent? modalComponent;
+
+    [Parameter]
+    public Guid? DepartmentId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (DepartmentId.HasValue)
+        {
+            pageTitle = "Clinic Management - Edit Department";
+            departmentEditModel = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(DepartmentId.Value);
+        }
+    }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        try
+        {
+            bool result = DepartmentId.HasValue
+                          ? await ApiService.UpdateDepartmentAsync(departmentEditModel)
+                          : await ApiService.InsertDepartmentAsync(departmentEditModel);
+
+            if (result)
+            {
+                departmentEditModel = new();
+                modalComponent?.Show("Department", "Department saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/departments");
+            }
+            else
+            {
+                modalComponent?.Show("Error", "An error occurred when saving the department!", ModalType.OneButtonWithoutAction);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when saving department: {Message}", ex.Message);
+        }
+    }
+}

@@ -1,0 +1,99 @@
+﻿@page "/departments"
+@inject HttpClient Http
+@inject IClinicManagementApiService ApiService
+@inject ILogger<Index> Logger
+
+<PageTitle>Department Management - Departments</PageTitle>
+
+<h1>Departments</h1>
+<div class="btn-group" role="group">
+    <a href="departments/create" role="button" class="btn btn-success" title="New"><i class="fa-solid fa-plus"></i> New</a>
+</div>
+
+@if (departments == null)
+{
+    <p><em>No departments found</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var department in departments)
+            {
+                <tr>
+                    <td>@department.Name</td>
+                    <td>
+                        <a href="/departments/edit/@department.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                        <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(department)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light">
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+<ModalComponent @ref="modalComponent" PrimaryButtonText="Yes" SecondaryButtonText="No" EventCallback="HandleEventCallbackAsync" />
+
+@code {
+    private IEnumerable<DepartmentViewModel>? departments;
+    private ModalComponent? modalComponent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDepartmentsAsync();
+    }
+
+    private void ShowDeleteModal(DepartmentViewModel department)
+    {
+        modalComponent?.Show("Delete department?", $"Are you sure you want to delete '{department.Name}'?", ModalType.TwoButtons, department.VanityId);
+    }
+
+    private async Task GetDepartmentsAsync()
+    {
+        try
+        {
+            departments = await ApiService.GetDepartmentsAsync<DepartmentViewModel>();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when loading departments: {Message}", ex.Message);
+        }
+        StateHasChanged();
+    }
+
+    private async Task HandleEventCallbackAsync(Guid id)
+    {
+        try
+        {
+            var result = await ApiService.DeleteDepartmentAsync(id);
+
+            if (result)
+            {
+                await GetDepartmentsAsync();
+                modalComponent?.Show("Confirmation", "The department was successfully deleted.", ModalType.OneButtonWithoutAction);
+            }
+            else
+            {
+                modalComponent?.Show("Error", "An error occurred when deleting the department.", ModalType.OneButtonWithoutAction);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when saving department: {Message}", ex.Message);
+        }
+    }
+}
