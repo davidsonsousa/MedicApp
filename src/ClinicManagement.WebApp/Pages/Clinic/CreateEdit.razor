@@ -1,5 +1,5 @@
-﻿@page "/clinic/create"
-@page "/clinic/edit/{ClinicId:guid}"
+﻿@page "/clinics/create"
+@page "/clinics/edit/{ClinicId:guid}"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IClinicManagementApiService ApiService
@@ -35,7 +35,7 @@
         if (ClinicId.HasValue)
         {
             pageTitle = "Clinic Management - Edit Clinic";
-            clinicEditModel = await ApiService.GetItemByIdAsync<ClinicEditModel>(ClinicId.Value);
+            clinicEditModel = await ApiService.GetClinicByIdAsync<ClinicEditModel>(ClinicId.Value);
         }
     }
 
@@ -44,8 +44,8 @@
         try
         {
             bool result = ClinicId.HasValue
-                          ? await ApiService.UpdateItemAsync<ClinicEditModel>(clinicEditModel)
-                          : await ApiService.InsertItemAsync<ClinicEditModel>(clinicEditModel);
+                          ? await ApiService.UpdateClinicAsync(clinicEditModel)
+                          : await ApiService.InsertClinicAsync(clinicEditModel);
 
             if (result)
             {

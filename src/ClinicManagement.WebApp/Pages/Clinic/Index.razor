@@ -1,4 +1,4 @@
-﻿@page "/clinic"
+﻿@page "/clinics"
 @inject HttpClient Http
 @inject IClinicManagementApiService ApiService
 @inject ILogger<Index> Logger
@@ -7,7 +7,7 @@
 
 <h1>Clinics</h1>
 <div class="btn-group" role="group">
-    <a href="clinic/create" role="button" class="btn btn-success" title="New clinic"><i class="fa-solid fa-plus"></i> New clinic</a>
+    <a href="clinics/create" role="button" class="btn btn-success" title="New"><i class="fa-solid fa-plus"></i> New</a>
 </div>
 
 @if (clinics == null)
@@ -48,7 +48,6 @@ else
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Yes" SecondaryButtonText="No" EventCallback="HandleEventCallbackAsync" />
 
-
 @code {
     private IEnumerable<ClinicViewModel>? clinics;
     private ModalComponent? modalComponent;
@@ -67,7 +66,7 @@ else
     {
         try
         {
-            clinics = await ApiService.GetItemsAsync<ClinicViewModel>();
+            clinics = await ApiService.GetClinicsAsync<ClinicViewModel>();
         }
         catch (Exception ex)
         {
@@ -80,7 +79,7 @@ else
     {
         try
         {
-            var result = await ApiService.DeleteItemAsync(id);
+            var result = await ApiService.DeleteClinicAsync(id);
 
             if (result)
             {
