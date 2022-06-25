@@ -1,0 +1,65 @@
+﻿@page "/branches/create"
+@page "/branches/edit/{BranchId:guid}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IClinicManagementApiService ApiService
+@inject ILogger<CreateEdit> Logger
+
+<PageTitle>@pageTitle</PageTitle>
+
+<h1>@pageTitle</h1>
+
+<EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+<ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
+
+@code {
+    private string pageTitle = "Clinic Management - New Branch";
+    private BranchEditModel branchEditModel = new();
+    private ModalComponent? modalComponent;
+
+    [Parameter]
+    public Guid? BranchId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (BranchId.HasValue)
+        {
+            pageTitle = "Clinic Management - Edit Branch";
+            branchEditModel = await ApiService.GetBranchByIdAsync<BranchEditModel>(BranchId.Value);
+        }
+    }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        try
+        {
+            bool result = BranchId.HasValue
+                          ? await ApiService.UpdateBranchAsync(branchEditModel)
+                          : await ApiService.InsertBranchAsync(branchEditModel);
+
+            if (result)
+            {
+                branchEditModel = new();
+                modalComponent?.Show("Branch", "Branch saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/branches");
+            }
+            else
+            {
+                modalComponent?.Show("Error", "An error occurred when saving the branch!", ModalType.OneButtonWithoutAction);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when saving branch: {Message}", ex.Message);
+        }
+    }
+}
