@@ -10,9 +10,9 @@
     <a href="clinics/create" role="button" class="btn btn-success" title="New"><i class="fa-solid fa-plus"></i> New</a>
 </div>
 
-@if (clinics == null)
+@if (clinics is null)
 {
-    <p><em>No clinics found</em></p>
+    <SpinnerComponent MessageLoading="Loading clinics..." MessageNotFound="There are no clinics available at the moment" ShowSpinner="showSpinner" />
 }
 else
 {
@@ -51,10 +51,13 @@ else
 @code {
     private IEnumerable<ClinicViewModel>? clinics;
     private ModalComponent? modalComponent;
+    private bool showSpinner;
 
     protected override async Task OnInitializedAsync()
     {
+        showSpinner = true;
         await GetClinicsAsync();
+        showSpinner = false;
     }
 
     private void ShowDeleteModal(ClinicViewModel clinic)
