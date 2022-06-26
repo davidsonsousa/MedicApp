@@ -1,0 +1,35 @@
+﻿<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <i class="bi me-2 fa-solid fa-house-chimney-medical"></i>
+        <span class="fs-4">Clinic Management</span>
+    </a>
+
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <NavLink class="nav-link" href="clinics">
+                Clinics
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="branches">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Branches
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="departments">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Departments
+            </NavLink>
+        </li>
+    </ul>
+</header>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
