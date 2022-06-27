@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ClinicManagement.WebApp.Models;
+﻿namespace ClinicManagement.WebApp.Models;
 
 public class ClinicEditModel
 {
@@ -9,4 +7,6 @@ public class ClinicEditModel
 
     [Required]
     public string Name { get; set; } = string.Empty;
+
+    public IEnumerable<BranchEditModel> Branches { get; set; } = new List<BranchEditModel>();
 }
