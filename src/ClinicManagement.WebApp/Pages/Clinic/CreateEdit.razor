@@ -7,9 +7,9 @@
 
 <PageTitle>Clinic Management - @pageTitle</PageTitle>
 
-<h1>@pageTitle</h1>
+<h2>@pageTitle</h2>
 
-<EditForm Model="@clinicEditModel" OnValidSubmit="@HandleValidSubmitAsync">
+<EditForm Model="@clinicEditModel" OnValidSubmit="@HandleValidClinicSubmitAsync">
     <div class="row">
         <div class="col-md-5 col-lg-4 order-md-last">
             <ValidationSummary />
@@ -22,17 +22,78 @@
                     <InputText id="name" class="form-control" @bind-Value="clinicEditModel.Name" />
                 </label>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-success">Save</button>
         </div>
     </div>
 </EditForm>
+
+<div class="row mt-3">
+    @foreach (var branch in clinicEditModel.Branches)
+    {
+        if (branchId == branch.VanityId)
+        {
+            <div class="col-3">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidBranchSubmitAsync">
+                        <DataAnnotationsValidator />
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">
+                                <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Street <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Street" /></li>
+                                <li>Zip code <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" /></li>
+                                <li>City <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.City" /></li>
+                                @if (branchEditModel.Address.HasState)
+                                {
+                                    <li>State <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.State" /></li>
+                                }
+                                <li>Country <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Country" /></li>
+                            </ul>
+                            <button type="submit" class="w-50 btn btn-success">Save branch</button>
+                            <button type="button" class="btn btn-danger" @onclick="CloseEditForm">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-3">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">@branch.Name</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Street: @branch.Address.Street</li>
+                            <li>Zip code: @branch.Address.ZipCode</li>
+                            <li>City: @branch.Address.City</li>
+                            @if (branch.Address.HasState)
+                            {
+                                <li>State: @branch.Address.State</li>
+                            }
+                            <li>Country: @branch.Address.Country</li>
+                        </ul>
+                        <button type="button" class="w-100 btn btn-primary" disabled="@isEditOpen" @onclick="() => EditBranch(branch.VanityId)">Edit</button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
 
 @code {
     private string pageTitle = "New Clinic";
     private ClinicEditModel clinicEditModel = new();
+    private BranchEditModel branchEditModel = new();
     private ModalComponent? modalComponent;
+    private Guid? branchId;
+    private bool isEditOpen;
 
     [Parameter]
     public Guid? ClinicId { get; set; }
@@ -46,18 +107,18 @@
         }
     }
 
-    private async Task HandleValidSubmitAsync()
+    private async Task HandleValidClinicSubmitAsync()
     {
         try
         {
-            bool result = ClinicId.HasValue
-                          ? await ApiService.UpdateClinicAsync(clinicEditModel)
-                          : await ApiService.InsertClinicAsync(clinicEditModel);
+            var result = ClinicId.HasValue
+                         ? await ApiService.UpdateClinicAsync(clinicEditModel)
+                         : await ApiService.InsertClinicAsync(clinicEditModel);
 
             if (result)
             {
                 clinicEditModel = new();
-                modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/clinic");
+                modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/clinics");
             }
             else
             {
@@ -68,5 +129,46 @@
         {
             Logger.LogError("Error when saving clinic: {Message}", ex.Message);
         }
+    }
+
+    private async Task HandleValidBranchSubmitAsync()
+    {
+        try
+        {
+            var result = branchId.HasValue
+                         ? await ApiService.UpdateBranchAsync(branchEditModel)
+                         : await ApiService.InsertBranchAsync(branchEditModel);
+
+            if (result)
+            {
+                clinicEditModel.Branches = await ApiService.GetBranchesByClinicIdAsync<BranchEditModel>(ClinicId.Value);
+                CloseEditForm();
+            }
+            else
+            {
+                modalComponent?.Show("Error", $"An error occurred when saving the branch '{branchEditModel.Name}'!", ModalType.OneButtonWithoutAction);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when saving branch: {Message}", ex.Message);
+        }
+    }
+
+    private async Task EditBranch(Guid? vanityId)
+    {
+        if (vanityId.HasValue)
+        {
+            branchEditModel = await ApiService.GetBranchByIdAsync<BranchEditModel>(vanityId.Value);
+            branchId = vanityId;
+            isEditOpen = true;
+        }
+    }
+
+    private void CloseEditForm()
+    {
+        branchEditModel = new();
+        branchId = null;
+        isEditOpen = false;
     }
 }
