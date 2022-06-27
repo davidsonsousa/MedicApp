@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ClinicManagement.WebApp.Models;
+﻿namespace ClinicManagement.WebApp.Models;
 
 public class BranchEditModel
 {
@@ -8,5 +6,10 @@ public class BranchEditModel
     public Guid VanityId { get; set; }
 
     [Required]
+    public Guid ClinicId { get; set; }
+
+    [Required]
     public string Name { get; set; } = string.Empty;
+
+    public Address Address { get; set; } = new Address();
 }
