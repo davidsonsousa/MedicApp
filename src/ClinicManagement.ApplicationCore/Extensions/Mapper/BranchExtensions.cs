@@ -31,6 +31,7 @@ public static class BranchExtensions
         return new BranchDetailResponse
         {
             VanityId = item.VanityId,
+            ClinicId = item.Clinic.VanityId,
             Name = item.Name,
             Address = item.Address,
             Departments = item.Departments.Select(d => new DepartmentResponse
@@ -53,6 +54,7 @@ public static class BranchExtensions
         return items.Select(branch => new BranchResponse
         {
             VanityId = branch.VanityId,
+            ClinicId = branch.Clinic.VanityId,
             Name = branch.Name,
             Address = branch.Address,
             DepartmentIds = branch.Departments.Select(d => d.VanityId).ToArray()

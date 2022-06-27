@@ -46,6 +46,20 @@ public class BranchController : ControllerBase
     }
 
     /// <summary>
+    /// Gets a list of branches by clinic id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("by-clinic/{id}")]
+    public async Task<IActionResult> GetBranchesByClinicIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await branchService.GetBranchesByClinicId(id, cancellationToken);
+
+        return result.HasError ? NotFound() : Ok(result.As<IEnumerable<BranchResponse>>());
+    }
+
+    /// <summary>
     /// Inserts a new branch
     /// </summary>
     /// <param name="branchRequest"></param>

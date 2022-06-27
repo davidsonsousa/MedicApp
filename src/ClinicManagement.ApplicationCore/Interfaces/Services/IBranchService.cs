@@ -6,5 +6,7 @@ public interface IBranchService : IService<Branch>
 
     Task<IResult> GetBranchById(Guid id, CancellationToken cancellationToken = default);
 
+    Task<IResult> GetBranchesByClinicId(Guid id, CancellationToken cancellationToken = default);
+
     Task<IResult> SaveAsync(BranchRequest model, CancellationToken cancellationToken = default);
 }
