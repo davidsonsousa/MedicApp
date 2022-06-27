@@ -18,6 +18,8 @@ public interface IClinicManagementApiService
 
     Task<IEnumerable<T>> GetBranchesAsync<T>();
 
+    Task<IEnumerable<T>> GetBranchesByClinicIdAsync<T>(Guid clinicId);
+
     Task<bool> InsertBranchAsync<T>(T model);
 
     Task<bool> UpdateBranchAsync<T>(T model);
