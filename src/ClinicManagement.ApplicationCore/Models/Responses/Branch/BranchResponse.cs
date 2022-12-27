@@ -6,7 +6,9 @@ public class BranchResponse : ResponseBase
 
     public string Name { get; set; } = string.Empty;
 
-    public Address Address { get; set; } = new Address();
+    public Address Address { get; set; } = new();
+
+    public PhoneNumber PhoneNumber { get; set; } = new();
 
     public IEnumerable<Guid> DepartmentIds { get; set; } = new List<Guid>();
 }
