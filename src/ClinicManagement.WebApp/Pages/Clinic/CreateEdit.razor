@@ -27,7 +27,6 @@
     </div>
 </EditForm>
 
-
 <div class="row">
     @if (ClinicId.HasValue)
     {
@@ -70,7 +69,7 @@
                                 }
                                 <li>Country <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Country" /></li>
                             </ul>
-                            <button type="submit" class="w-50 btn btn-success">Save branch</button>
+                            <button type="submit" class="w-50 btn btn-success">Save</button>
                             <button type="button" class="btn btn-danger" @onclick="CloseEditForm">Cancel</button>
                         </div>
                     </EditForm>
