@@ -7,7 +7,7 @@
 
 <PageTitle>Clinic Management - @pageTitle</PageTitle>
 
-<h2>@pageTitle</h2>
+<h3>@pageTitle</h3>
 
 <EditForm Model="@clinicEditModel" OnValidSubmit="@HandleValidClinicSubmitAsync">
     <div class="row">
@@ -27,22 +27,40 @@
     </div>
 </EditForm>
 
-<div class="row mt-3">
+
+<div class="row">
+    @if (ClinicId.HasValue)
+    {
+        <hr class="my-4" />
+        <h3>
+            <span>Branches</span>
+            <button type="button" class="btn btn-primary" disabled="@isEditOpen" @onclick="AddBranch"><i class="fa-solid fa-plus"></i></button>
+        </h3>
+    }
+
     @foreach (var branch in clinicEditModel.Branches)
     {
         if (branchId == branch.VanityId)
         {
             <div class="col-3">
-                <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card">
                     <EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidBranchSubmitAsync">
                         <DataAnnotationsValidator />
-                        <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">
-                                <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
-                            </h4>
+                        <div class="card-header">
+                            <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
                         </div>
                         <div class="card-body">
-                            <ul class="list-unstyled mt-3 mb-4">
+                            <ul class="list-unstyled">
+                                <li>
+                                    Phone
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">+</span>
+                                        <div class="col-sm-3">
+                                            <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
+                                        </div>
+                                        <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
+                                    </div>
+                                </li>
                                 <li>Street <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Street" /></li>
                                 <li>Zip code <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" /></li>
                                 <li>City <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.City" /></li>
@@ -62,12 +80,11 @@
         else
         {
             <div class="col-3">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">@branch.Name</h4>
-                    </div>
+                <div class="card">
+                    <h5 class="card-header"><a href="/branch/edit/@branch.VanityId">@branch.Name</a></h5>
                     <div class="card-body">
-                        <ul class="list-unstyled mt-3 mb-4">
+                        <ul class="list-unstyled">
+                            <li>Phone: +@branch.PhoneNumber.CountryCode @branch.PhoneNumber.Number</li>
                             <li>Street: @branch.Address.Street</li>
                             <li>Zip code: @branch.Address.ZipCode</li>
                             <li>City: @branch.Address.City</li>
@@ -135,6 +152,11 @@
     {
         try
         {
+            if (branchEditModel.ClinicId == Guid.Empty)
+            {
+                branchEditModel.ClinicId = ClinicId.Value;
+            }
+
             var result = branchId.HasValue
                          ? await ApiService.UpdateBranchAsync(branchEditModel)
                          : await ApiService.InsertBranchAsync(branchEditModel);
@@ -155,6 +177,14 @@
         }
     }
 
+    private void AddBranch()
+    {
+        branchEditModel.ClinicId = clinicEditModel.VanityId;
+        ((List<BranchEditModel>)clinicEditModel.Branches).Add(branchEditModel);
+        branchId = Guid.Empty;
+        isEditOpen = true;
+    }
+
     private async Task EditBranch(Guid? vanityId)
     {
         if (vanityId.HasValue)
@@ -167,6 +197,11 @@
 
     private void CloseEditForm()
     {
+        if (branchEditModel.VanityId == Guid.Empty)
+        {
+            ((List<BranchEditModel>)clinicEditModel.Branches).Remove(branchEditModel);
+        }
+
         branchEditModel = new();
         branchId = null;
         isEditOpen = false;

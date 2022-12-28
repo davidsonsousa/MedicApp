@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col">
-        <h1>Clinics</h1>
+        <h3>Clinics</h3>
     </div>
     <div class="col-1">
         <div class="btn-group mb-3" role="toolbar" aria-label="Toolbar with button groups">
@@ -27,6 +27,7 @@ else
             <thead class="table-light">
                 <tr>
                     <th>Name</th>
+                    <th>Branches</th>
                     <th class="col-1"></th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@ else
                 {
                     <tr>
                         <td>@clinic.Name</td>
+                        <td>@clinic.BranchIds.Count()</td>
                         <td>
                             <a href="/clinic/edit/@clinic.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
                             <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(clinic)">
@@ -47,6 +49,7 @@ else
             <tfoot class="table-light">
                 <tr>
                     <th>Name</th>
+                    <th>Branches</th>
                     <th></th>
                 </tr>
             </tfoot>
