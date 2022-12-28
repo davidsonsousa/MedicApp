@@ -46,6 +46,20 @@ public class DepartmentController : ControllerBase
     }
 
     /// <summary>
+    /// Gets a list of departments by branch id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("by-branch/{id}")]
+    public async Task<IActionResult> GetDepartmentsByBranchIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await departmentService.GetDepartmentsByBranchId(id, cancellationToken);
+
+        return result.HasError ? NotFound() : Ok(result.As<IEnumerable<DepartmentResponse>>());
+    }
+
+    /// <summary>
     /// Inserts a new department
     /// </summary>
     /// <param name="departmentRequest"></param>
