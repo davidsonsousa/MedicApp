@@ -5,27 +5,111 @@
 @inject IClinicManagementApiService ApiService
 @inject ILogger<CreateEdit> Logger
 
-<PageTitle>@pageTitle</PageTitle>
+<PageTitle>Clinic Management - @pageTitle</PageTitle>
 
-<h1>@pageTitle</h1>
+<h3>@pageTitle</h3>
 
-<EditForm Model="@clinicEditModel" OnValidSubmit="@HandleValidSubmitAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="mb-3">
-        <InputText id="name" class="form-control" @bind-Value="clinicEditModel.Name" />
+<EditForm Model="@clinicEditModel" OnValidSubmit="@HandleValidClinicSubmitAsync">
+    <div class="row">
+        <div class="col-md-5 col-lg-4 order-md-last">
+            <ValidationSummary />
+        </div>
+        <div class="col-md-7 col-lg-8">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <label class="form-label">
+                    Name
+                    <InputText id="name" class="form-control" @bind-Value="clinicEditModel.Name" />
+                </label>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
 </EditForm>
+
+<div class="row">
+    @if (ClinicId.HasValue)
+    {
+        <hr class="my-4" />
+        <h3>
+            <span>Branches</span>
+            <button type="button" class="btn btn-primary" disabled="@isEditOpen" @onclick="AddBranch"><i class="fa-solid fa-plus"></i></button>
+        </h3>
+    }
+
+    @foreach (var branch in clinicEditModel.Branches)
+    {
+        if (branchId == branch.VanityId)
+        {
+            <div class="col-3">
+                <div class="card">
+                    <EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidBranchSubmitAsync">
+                        <DataAnnotationsValidator />
+                        <div class="card-header">
+                            <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li>
+                                    Phone
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">+</span>
+                                        <div class="col-sm-3">
+                                            <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
+                                        </div>
+                                        <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
+                                    </div>
+                                </li>
+                                <li>Street <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Street" /></li>
+                                <li>Zip code <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" /></li>
+                                <li>City <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.City" /></li>
+                                @if (branchEditModel.Address.HasState)
+                                {
+                                    <li>State <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.State" /></li>
+                                }
+                                <li>Country <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Country" /></li>
+                            </ul>
+                            <button type="submit" class="w-50 btn btn-success">Save</button>
+                            <button type="button" class="btn btn-danger" @onclick="CloseEditForm">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-3">
+                <div class="card">
+                    <h5 class="card-header"><a href="/branch/edit/@branch.VanityId">@branch.Name</a></h5>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>Phone: +@branch.PhoneNumber.CountryCode @branch.PhoneNumber.Number</li>
+                            <li>Street: @branch.Address.Street</li>
+                            <li>Zip code: @branch.Address.ZipCode</li>
+                            <li>City: @branch.Address.City</li>
+                            @if (branch.Address.HasState)
+                            {
+                                <li>State: @branch.Address.State</li>
+                            }
+                            <li>Country: @branch.Address.Country</li>
+                        </ul>
+                        <button type="button" class="w-100 btn btn-primary" disabled="@isEditOpen" @onclick="() => EditBranch(branch.VanityId)">Edit</button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
 
 @code {
-    private string pageTitle = "Clinic Management - New Clinic";
+    private string pageTitle = "New Clinic";
     private ClinicEditModel clinicEditModel = new();
+    private BranchEditModel branchEditModel = new();
     private ModalComponent? modalComponent;
+    private Guid? branchId;
+    private bool isEditOpen;
 
     [Parameter]
     public Guid? ClinicId { get; set; }
@@ -34,23 +118,23 @@
     {
         if (ClinicId.HasValue)
         {
-            pageTitle = "Clinic Management - Edit Clinic";
-            clinicEditModel = await ApiService.GetItemByIdAsync<ClinicEditModel>(ClinicId.Value);
+            pageTitle = "Edit Clinic";
+            clinicEditModel = await ApiService.GetClinicByIdAsync<ClinicEditModel>(ClinicId.Value);
         }
     }
 
-    private async Task HandleValidSubmitAsync()
+    private async Task HandleValidClinicSubmitAsync()
     {
         try
         {
-            bool result = ClinicId.HasValue
-                          ? await ApiService.UpdateItemAsync<ClinicEditModel>(clinicEditModel)
-                          : await ApiService.InsertItemAsync<ClinicEditModel>(clinicEditModel);
+            var result = ClinicId.HasValue
+                         ? await ApiService.UpdateClinicAsync(clinicEditModel)
+                         : await ApiService.InsertClinicAsync(clinicEditModel);
 
             if (result)
             {
                 clinicEditModel = new();
-                modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/clinic");
+                modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/clinics");
             }
             else
             {
@@ -61,5 +145,64 @@
         {
             Logger.LogError("Error when saving clinic: {Message}", ex.Message);
         }
+    }
+
+    private async Task HandleValidBranchSubmitAsync()
+    {
+        try
+        {
+            if (branchEditModel.ClinicId == Guid.Empty)
+            {
+                branchEditModel.ClinicId = ClinicId.Value;
+            }
+
+            var result = branchId.HasValue
+                         ? await ApiService.UpdateBranchAsync(branchEditModel)
+                         : await ApiService.InsertBranchAsync(branchEditModel);
+
+            if (result)
+            {
+                clinicEditModel.Branches = await ApiService.GetBranchesByClinicIdAsync<BranchEditModel>(ClinicId.Value);
+                CloseEditForm();
+            }
+            else
+            {
+                modalComponent?.Show("Error", $"An error occurred when saving the branch '{branchEditModel.Name}'!", ModalType.OneButtonWithoutAction);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError("Error when saving branch: {Message}", ex.Message);
+        }
+    }
+
+    private void AddBranch()
+    {
+        branchEditModel.ClinicId = clinicEditModel.VanityId;
+        ((List<BranchEditModel>)clinicEditModel.Branches).Add(branchEditModel);
+        branchId = Guid.Empty;
+        isEditOpen = true;
+    }
+
+    private async Task EditBranch(Guid? vanityId)
+    {
+        if (vanityId.HasValue)
+        {
+            branchEditModel = await ApiService.GetBranchByIdAsync<BranchEditModel>(vanityId.Value);
+            branchId = vanityId;
+            isEditOpen = true;
+        }
+    }
+
+    private void CloseEditForm()
+    {
+        if (branchEditModel.VanityId == Guid.Empty)
+        {
+            ((List<BranchEditModel>)clinicEditModel.Branches).Remove(branchEditModel);
+        }
+
+        branchEditModel = new();
+        branchId = null;
+        isEditOpen = false;
     }
 }

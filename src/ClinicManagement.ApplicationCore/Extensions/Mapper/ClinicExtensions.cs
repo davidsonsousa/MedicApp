@@ -34,7 +34,8 @@ public static class ClinicExtensions
             {
                 VanityId = b.VanityId,
                 Name = b.Name,
-                Address = b.Address
+                Address = b.Address,
+                PhoneNumber = b.PhoneNumber,
             })
         };
     }

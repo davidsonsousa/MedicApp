@@ -2,13 +2,37 @@
 
 public interface IClinicManagementApiService
 {
-    Task<bool> DeleteItemAsync(Guid id);
+    Task<bool> DeleteClinicAsync(Guid id);
 
-    Task<T> GetItemByIdAsync<T>(Guid id);
+    Task<T> GetClinicByIdAsync<T>(Guid id);
 
-    Task<IEnumerable<T>> GetItemsAsync<T>();
+    Task<IEnumerable<T>> GetClinicsAsync<T>();
 
-    Task<bool> InsertItemAsync<T>(T model);
+    Task<bool> InsertClinicAsync<T>(T model);
 
-    Task<bool> UpdateItemAsync<T>(T model);
+    Task<bool> UpdateClinicAsync<T>(T model);
+
+    Task<bool> DeleteBranchAsync(Guid id);
+
+    Task<T> GetBranchByIdAsync<T>(Guid id);
+
+    Task<IEnumerable<T>> GetBranchesAsync<T>();
+
+    Task<IEnumerable<T>> GetBranchesByClinicIdAsync<T>(Guid clinicId);
+
+    Task<bool> InsertBranchAsync<T>(T model);
+
+    Task<bool> UpdateBranchAsync<T>(T model);
+
+    Task<bool> DeleteDepartmentAsync(Guid id);
+
+    Task<T> GetDepartmentByIdAsync<T>(Guid id);
+
+    Task<IEnumerable<T>> GetDepartmentsAsync<T>();
+
+    Task<IEnumerable<T>> GetDepartmentsByBranchIdAsync<T>(Guid branchId);
+
+    Task<bool> InsertDepartmentAsync<T>(T model);
+
+    Task<bool> UpdateDepartmentAsync<T>(T model);
 }

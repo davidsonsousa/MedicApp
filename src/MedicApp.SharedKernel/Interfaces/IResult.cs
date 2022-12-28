@@ -3,4 +3,6 @@
 public interface IResult
 {
     bool HasError { get; }
+
+    string Message { get; }
 }

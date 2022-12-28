@@ -23,10 +23,13 @@ public class Result<T> : ValueObject<Result<T>>, IResult where T : class
 {
     public bool HasError { get; private set; } = false;
 
+    public string Message { get; private set; } = string.Empty;
+
     public T? Value { get; set; }
 
-    public Result SetErrorMessage(string message)
+    public void SetErrorMessage(string message)
     {
-        return new Result(message, true);
+        HasError = true;
+        Message = message;
     }
 }

@@ -19,7 +19,7 @@ public class BranchService : ServiceBase<Branch>, IBranchService
 
         try
         {
-            var branches = await branchRepository.GetAllBranchesWithDepartmentsAsync(cancellationToken);
+            var branches = await branchRepository.GetAllBranchesWithClinicsAndDepartmentsAsync(cancellationToken);
             Guard.Against.Null(branches, nameof(branches));
 
             result.Value = branches.MapToResponse();
@@ -40,7 +40,7 @@ public class BranchService : ServiceBase<Branch>, IBranchService
 
         try
         {
-            var branch = await branchRepository.GetBranchWithDepartmentsByIdAsync(id, cancellationToken);
+            var branch = await branchRepository.GetBranchWithClinicAndDepartmentsByIdAsync(id, cancellationToken);
             Guard.Against.Null(branch, nameof(branch));
 
             result.Value = branch.MapToResponse();
@@ -48,6 +48,27 @@ public class BranchService : ServiceBase<Branch>, IBranchService
         catch (Exception ex)
         {
             Logger.ErrorMethodCall(ex, nameof(BranchService), nameof(GetBranchById));
+            result.SetErrorMessage("An error has occurred while loading the branch");
+        }
+
+        return result;
+    }
+
+    public async Task<IResult> GetBranchesByClinicId(Guid id, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(BranchService), nameof(GetBranchesByClinicId), id);
+        var result = new Result<IEnumerable<BranchResponse>>();
+
+        try
+        {
+            var branches = await branchRepository.GetBranchesWithClinicAndDepartmentsByClinicIdAsync(id, cancellationToken);
+            Guard.Against.Null(branches, nameof(branches));
+
+            result.Value = branches.MapToResponse();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(BranchService), nameof(GetBranchesByClinicId));
             result.SetErrorMessage("An error has occurred while loading the branch");
         }
 

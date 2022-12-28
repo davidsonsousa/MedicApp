@@ -29,7 +29,9 @@ public static class DepartmentExtensions
         return new DepartmentResponse
         {
             VanityId = item.VanityId,
-            Name = item.Name
+            BranchId = item.Branch.VanityId,
+            Name = item.Name,
+            PhoneNumber = item.PhoneNumber
         };
     }
 
@@ -45,7 +47,9 @@ public static class DepartmentExtensions
         return items.Select(department => new DepartmentResponse
         {
             VanityId = department.VanityId,
-            Name = department.Name
+            BranchId = department.Branch.VanityId,
+            Name = department.Name,
+            PhoneNumber = department.PhoneNumber
         });
     }
 
@@ -63,6 +67,7 @@ public static class DepartmentExtensions
             VanityId = item.VanityId,
             Name = item.Name,
             BranchId = branch.Id,
+            PhoneNumber = item.PhoneNumber
         };
     }
 
@@ -78,6 +83,7 @@ public static class DepartmentExtensions
 
         department.Name = item.Name;
         department.BranchId = branch.Id;
+        department.PhoneNumber = item.PhoneNumber;
 
         return department;
     }

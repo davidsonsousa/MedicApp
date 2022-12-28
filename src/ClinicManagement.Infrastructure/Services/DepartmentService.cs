@@ -2,11 +2,13 @@
 
 public class DepartmentService : ServiceBase<Department>, IDepartmentService
 {
+    private readonly IDepartmentRepository departmentRepository;
     private readonly IBranchRepository branchRepository;
 
     public DepartmentService(IDepartmentRepository departmentRepository, IBranchRepository branchRepository, ILoggerFactory loggerFactory)
         : base(departmentRepository, loggerFactory)
     {
+        this.departmentRepository = departmentRepository;
         this.branchRepository = branchRepository;
     }
 
@@ -17,7 +19,7 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
 
         try
         {
-            var departments = await Repository.GetAllAsync(cancellationToken);
+            var departments = await departmentRepository.GetAllAsync(cancellationToken);
             Guard.Against.Null(departments, nameof(departments));
 
             result.Value = departments.MapToResponse();
@@ -31,7 +33,6 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
         return result;
     }
 
-
     public async Task<IResult> GetDepartmentById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(DepartmentService), nameof(GetDepartmentById), id);
@@ -39,7 +40,7 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
 
         try
         {
-            var department = await Repository.GetByIdAsync(id, cancellationToken);
+            var department = await departmentRepository.GetDepartmentWithBranchByIdAsync(id, cancellationToken);
             Guard.Against.Null(department, nameof(department));
 
             result.Value = department.MapToResponse();
@@ -47,6 +48,27 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
         catch (Exception ex)
         {
             Logger.ErrorMethodCall(ex, nameof(DepartmentService), nameof(GetDepartmentById));
+            result.SetErrorMessage("An error has occurred while loading the department");
+        }
+
+        return result;
+    }
+
+    public async Task<IResult> GetDepartmentsByBranchId(Guid id, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(DepartmentService), nameof(GetDepartmentsByBranchId), id);
+        var result = new Result<IEnumerable<DepartmentResponse>>();
+
+        try
+        {
+            var departments = await departmentRepository.GetDepartmentsWithBranchByBranchIdAsync(id, cancellationToken);
+            Guard.Against.Null(departments, nameof(departments));
+
+            result.Value = departments.MapToResponse();
+        }
+        catch (Exception ex)
+        {
+            Logger.ErrorMethodCall(ex, nameof(DepartmentService), nameof(GetDepartmentsByBranchId));
             result.SetErrorMessage("An error has occurred while loading the department");
         }
 
@@ -61,7 +83,7 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
         try
         {
             await AddOrUpdateAsync(model, cancellationToken);
-            await Repository.SaveChangesAsync(cancellationToken);
+            await departmentRepository.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
         {
@@ -77,13 +99,13 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
         if (model.IsNew)
         {
             var department = model.MapToEntity(await branchRepository.GetByIdAsync(model.BranchId, cancellationToken));
-            await Repository.AddAsync(department, cancellationToken);
+            await departmentRepository.AddAsync(department, cancellationToken);
         }
         else
         {
-            var department = model.MapToEntity(await Repository.GetByIdAsync(model.VanityId, cancellationToken),
+            var department = model.MapToEntity(await departmentRepository.GetByIdAsync(model.VanityId, cancellationToken),
                                                await branchRepository.GetByIdAsync(model.BranchId, cancellationToken));
-            Repository.Update(department, cancellationToken);
+            departmentRepository.Update(department, cancellationToken);
         }
     }
 }

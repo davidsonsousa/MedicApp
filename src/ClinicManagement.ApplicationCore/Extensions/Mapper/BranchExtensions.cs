@@ -14,6 +14,7 @@ public static class BranchExtensions
             VanityId = item.VanityId,
             Name = item.Name,
             Address = item.Address,
+            PhoneNumber = item.PhoneNumber,
             ClinicId = item.Clinic.VanityId,
             SelectedDepartments = item.Departments.Select(b => b.VanityId).ToArray()
         };
@@ -31,12 +32,15 @@ public static class BranchExtensions
         return new BranchDetailResponse
         {
             VanityId = item.VanityId,
+            ClinicId = item.Clinic.VanityId,
             Name = item.Name,
             Address = item.Address,
+            PhoneNumber = item.PhoneNumber,
             Departments = item.Departments.Select(d => new DepartmentResponse
             {
                 VanityId = d.VanityId,
-                Name = d.Name
+                Name = d.Name,
+                PhoneNumber = d.PhoneNumber
             })
         };
     }
@@ -53,8 +57,10 @@ public static class BranchExtensions
         return items.Select(branch => new BranchResponse
         {
             VanityId = branch.VanityId,
+            ClinicId = branch.Clinic.VanityId,
             Name = branch.Name,
             Address = branch.Address,
+            PhoneNumber = branch.PhoneNumber,
             DepartmentIds = branch.Departments.Select(d => d.VanityId).ToArray()
         });
     }
@@ -73,6 +79,7 @@ public static class BranchExtensions
             VanityId = item.VanityId,
             Name = item.Name,
             Address = item.Address,
+            PhoneNumber = item.PhoneNumber,
             ClinicId = clinic.Id,
         };
     }
@@ -89,6 +96,7 @@ public static class BranchExtensions
 
         branch.Name = item.Name;
         branch.Address = item.Address;
+        branch.PhoneNumber = item.PhoneNumber;
         branch.ClinicId = clinic.Id;
 
         return branch;

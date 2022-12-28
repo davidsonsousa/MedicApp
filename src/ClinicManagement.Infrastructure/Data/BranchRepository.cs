@@ -6,6 +6,15 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
     {
     }
 
+    public async Task<IEnumerable<Branch>> GetAllBranchesWithClinicsAndDepartmentsAsync(CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetAllBranchesWithDepartmentsAsync));
+
+        return await GetValidRecords().Include(b => b.Clinic)
+                                      .Include(b => b.Departments)
+                                      .ToListAsync(cancellationToken);
+    }
+
     public async Task<IEnumerable<Branch>> GetAllBranchesWithDepartmentsAsync(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllBranchesWithDepartmentsAsync));
@@ -14,13 +23,25 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
                                       .ToListAsync(cancellationToken);
     }
 
-    public async Task<Branch?> GetBranchWithDepartmentsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Branch?> GetBranchWithClinicAndDepartmentsByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        Logger.DebugMethodCall(nameof(GetBranchWithDepartmentsByIdAsync));
+        Logger.DebugMethodCall(nameof(GetBranchWithClinicAndDepartmentsByIdAsync));
 
         return await DbContext.Set<Branch>()
                               .Where(q => q.VanityId == id)
+                              .Include(b => b.Clinic)
                               .Include(b => b.Departments)
                               .SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Branch>> GetBranchesWithClinicAndDepartmentsByClinicIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetBranchesWithClinicAndDepartmentsByClinicIdAsync));
+
+        return await DbContext.Set<Branch>()
+                              .Where(q => q.Clinic.VanityId == id)
+                              .Include(b => b.Clinic)
+                              .Include(b => b.Departments)
+                              .ToListAsync(cancellationToken);
     }
 }

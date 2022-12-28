@@ -1,61 +1,71 @@
-﻿@page "/clinic"
+﻿@page "/clinics"
 @inject HttpClient Http
 @inject IClinicManagementApiService ApiService
 @inject ILogger<Index> Logger
 
 <PageTitle>Clinic Management - Clinics</PageTitle>
 
-<h1>Clinics</h1>
-<div class="btn-group" role="group">
-    <a href="clinic/create" role="button" class="btn btn-success" title="New clinic"><i class="fa-solid fa-plus"></i> New clinic</a>
+<div class="row">
+    <div class="col">
+        <h3>Clinics</h3>
+    </div>
+    <div class="col-1">
+        <div class="btn-group mb-3" role="toolbar" aria-label="Toolbar with button groups">
+            <a href="clinic/create" role="button" class="btn btn-success" title="New"><i class="fa-solid fa-plus"></i> New</a>
+        </div>
+    </div>
 </div>
 
-@if (clinics == null)
+@if (clinics is null)
 {
-    <p><em>No clinics found</em></p>
+    <SpinnerComponent MessageLoading="Loading clinics..." MessageNotFound="There are no clinics available at the moment" ShowSpinner="showSpinner" />
 }
 else
 {
-    <table class="table table-hover">
-        <thead class="table-light">
-            <tr>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var clinic in clinics)
-            {
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
                 <tr>
-                    <td>@clinic.Name</td>
-                    <td>
-                        <a href="/clinic/edit/@clinic.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
-                        <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(clinic)">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </td>
+                    <th>Name</th>
+                    <th class="col-1"></th>
                 </tr>
-            }
-        </tbody>
-        <tfoot class="table-light">
-            <tr>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </tfoot>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var clinic in clinics)
+                {
+                    <tr>
+                        <td>@clinic.Name (@("branch".ToQuantity(clinic.BranchIds.Count())))</td>
+                        <td>
+                            <a href="/clinic/edit/@clinic.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                            <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(clinic)">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 }
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Yes" SecondaryButtonText="No" EventCallback="HandleEventCallbackAsync" />
 
-
 @code {
     private IEnumerable<ClinicViewModel>? clinics;
     private ModalComponent? modalComponent;
+    private bool showSpinner;
 
     protected override async Task OnInitializedAsync()
     {
+        showSpinner = true;
         await GetClinicsAsync();
+        showSpinner = false;
     }
 
     private void ShowDeleteModal(ClinicViewModel clinic)
@@ -67,7 +77,7 @@ else
     {
         try
         {
-            clinics = await ApiService.GetItemsAsync<ClinicViewModel>();
+            clinics = await ApiService.GetClinicsAsync<ClinicViewModel>();
         }
         catch (Exception ex)
         {
@@ -80,7 +90,7 @@ else
     {
         try
         {
-            var result = await ApiService.DeleteItemAsync(id);
+            var result = await ApiService.DeleteClinicAsync(id);
 
             if (result)
             {

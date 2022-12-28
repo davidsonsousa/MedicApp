@@ -20,4 +20,6 @@ public class Address : ValueObject<Address>
     [Required]
     [Column(Order = 34)]
     public string ZipCode { get; set; } = string.Empty;
+
+    public bool HasState => !string.IsNullOrWhiteSpace(State);
 }
