@@ -19,7 +19,7 @@ public class BranchService : ServiceBase<Branch>, IBranchService
 
         try
         {
-            var branches = await branchRepository.GetAllBranchesWithDepartmentsAsync(cancellationToken);
+            var branches = await branchRepository.GetAllBranchesWithClinicsAndDepartmentsAsync(cancellationToken);
             Guard.Against.Null(branches, nameof(branches));
 
             result.Value = branches.MapToResponse();

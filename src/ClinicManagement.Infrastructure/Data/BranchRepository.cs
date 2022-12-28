@@ -6,6 +6,15 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
     {
     }
 
+    public async Task<IEnumerable<Branch>> GetAllBranchesWithClinicsAndDepartmentsAsync(CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetAllBranchesWithDepartmentsAsync));
+
+        return await GetValidRecords().Include(b => b.Clinic)
+                                      .Include(b => b.Departments)
+                                      .ToListAsync(cancellationToken);
+    }
+
     public async Task<IEnumerable<Branch>> GetAllBranchesWithDepartmentsAsync(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllBranchesWithDepartmentsAsync));
