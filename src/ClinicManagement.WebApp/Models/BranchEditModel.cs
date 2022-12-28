@@ -14,4 +14,6 @@ public class BranchEditModel
     public Address Address { get; set; } = new();
 
     public PhoneNumber PhoneNumber { get; set; } = new();
+
+    public IEnumerable<DepartmentEditModel> Departments { get; set; } = new List<DepartmentEditModel>();
 }

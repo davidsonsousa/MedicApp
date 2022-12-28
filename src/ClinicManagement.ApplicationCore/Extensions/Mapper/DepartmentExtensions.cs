@@ -67,6 +67,7 @@ public static class DepartmentExtensions
             VanityId = item.VanityId,
             Name = item.Name,
             BranchId = branch.Id,
+            PhoneNumber = item.PhoneNumber
         };
     }
 
@@ -82,6 +83,7 @@ public static class DepartmentExtensions
 
         department.Name = item.Name;
         department.BranchId = branch.Id;
+        department.PhoneNumber = item.PhoneNumber;
 
         return department;
     }

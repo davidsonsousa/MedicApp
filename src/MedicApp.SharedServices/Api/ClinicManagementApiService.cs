@@ -89,6 +89,18 @@ public class ClinicManagementApiService : IClinicManagementApiService
         return await GetItemsAsync<T>("department");
     }
 
+    public async Task<IEnumerable<T>> GetDepartmentsByBranchIdAsync<T>(Guid branchId)
+    {
+        var response = await httpClient.GetFromJsonAsync<IEnumerable<T>>($"{baseUrl}/department/by-branch/{branchId}");
+
+        if (response is null)
+        {
+            throw new HttpRequestException($"Get operation failed. Status code: 404");
+        }
+
+        return response;
+    }
+
     public async Task<bool> InsertDepartmentAsync<T>(T model)
     {
         return await InsertItemAsync("department", model);

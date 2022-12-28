@@ -30,6 +30,8 @@ public interface IClinicManagementApiService
 
     Task<IEnumerable<T>> GetDepartmentsAsync<T>();
 
+    Task<IEnumerable<T>> GetDepartmentsByBranchIdAsync<T>(Guid branchId);
+
     Task<bool> InsertDepartmentAsync<T>(T model);
 
     Task<bool> UpdateDepartmentAsync<T>(T model);

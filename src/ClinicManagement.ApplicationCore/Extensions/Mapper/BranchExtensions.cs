@@ -39,7 +39,8 @@ public static class BranchExtensions
             Departments = item.Departments.Select(d => new DepartmentResponse
             {
                 VanityId = d.VanityId,
-                Name = d.Name
+                Name = d.Name,
+                PhoneNumber = d.PhoneNumber
             })
         };
     }
