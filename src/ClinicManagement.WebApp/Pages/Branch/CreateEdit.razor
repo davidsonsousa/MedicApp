@@ -22,6 +22,37 @@
                     <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
                 </label>
             </div>
+            <div class="row">
+                <label class="form-label">
+                    Phone
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">+</span>
+                        <div class="col-sm-3">
+                            <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
+                        </div>
+                        <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
+                    </div>
+                </label>
+            </div>
+            <div class="row">
+                <label class="form-label">Street <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Street" /></label>
+            </div>
+            <div class="row">
+                <label class="form-label">Zip code <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" /></label>
+            </div>
+            <div class="row">
+                <label class="form-label">City <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.City" /></label>
+            </div>
+            @if (branchEditModel.Address.HasState)
+            {
+                <div class="row">
+                    <label class="form-label">State <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.State" /></label>
+                </div>
+            }
+            <div class="row">
+                <label class="form-label">Country <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Country" /></label>
+            </div>
+
             <button type="submit" class="btn btn-success">Save</button>
         </div>
     </div>
