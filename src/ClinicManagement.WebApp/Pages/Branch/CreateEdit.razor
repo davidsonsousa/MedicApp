@@ -18,10 +18,53 @@
             <DataAnnotationsValidator />
             <div class="row">
                 <label class="form-label">
+                    Clinic
+                    <InputSelect id="clinics" class="form-select" @bind-Value="branchEditModel.ClinicId">
+                        <option>- Choose a clinic -</option>
+                        @foreach (var clinic in clinics)
+                        {
+                            <option value="@clinic.VanityId">@clinic.Name</option>
+                        }
+                    </InputSelect>
+                </label>
+            </div>
+            <div class="row">
+                <label class="form-label">
                     Name
                     <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
                 </label>
             </div>
+            <div class="row">
+                <label class="form-label">
+                    Phone
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">+</span>
+                        <div class="col-sm-3">
+                            <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
+                        </div>
+                        <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
+                    </div>
+                </label>
+            </div>
+            <div class="row">
+                <label class="form-label">Street <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Street" /></label>
+            </div>
+            <div class="row">
+                <label class="form-label">Zip code <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" /></label>
+            </div>
+            <div class="row">
+                <label class="form-label">City <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.City" /></label>
+            </div>
+            @if (branchEditModel.Address.HasState)
+            {
+                <div class="row">
+                    <label class="form-label">State <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.State" /></label>
+                </div>
+            }
+            <div class="row">
+                <label class="form-label">Country <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Country" /></label>
+            </div>
+
             <button type="submit" class="btn btn-success">Save</button>
         </div>
     </div>
@@ -90,6 +133,7 @@
 
 @code {
     private string pageTitle = "New Branch";
+    private IEnumerable<ClinicViewModel> clinics = new List<ClinicViewModel>();
     private BranchEditModel branchEditModel = new();
     private DepartmentEditModel departmentEditModel = new();
     private ModalComponent? modalComponent;
@@ -106,6 +150,8 @@
             pageTitle = "Edit Branch";
             branchEditModel = await ApiService.GetBranchByIdAsync<BranchEditModel>(BranchId.Value);
         }
+
+        clinics = await ApiService.GetClinicsAsync<ClinicViewModel>();
     }
 
     private async Task HandleValidBranchSubmitAsync()

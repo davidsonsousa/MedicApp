@@ -10,7 +10,7 @@ public class ClinicRepository : RepositoryBase<Clinic>, IClinicRepository
     {
         Logger.DebugMethodCall(nameof(GetAllClinicsWithBranchesAsync));
 
-        return await GetValidRecords().Include(c => c.Branches)
+        return await GetValidRecords().Include(c => c.Branches.Where(b => b.IsDeleted == false))
                                       .ToListAsync(cancellationToken);
     }
 
@@ -20,7 +20,7 @@ public class ClinicRepository : RepositoryBase<Clinic>, IClinicRepository
 
         return await DbContext.Set<Clinic>()
                               .Where(q => q.VanityId == id)
-                              .Include(c => c.Branches)
+                              .Include(c => c.Branches.Where(b => b.IsDeleted == false))
                               .SingleOrDefaultAsync(cancellationToken);
     }
 }

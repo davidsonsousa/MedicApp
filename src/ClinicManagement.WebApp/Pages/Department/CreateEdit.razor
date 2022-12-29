@@ -1,29 +1,62 @@
-﻿@page "/departments/create"
-@page "/departments/edit/{DepartmentId:guid}"
+﻿@page "/department/create"
+@page "/department/edit/{DepartmentId:guid}"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IClinicManagementApiService ApiService
 @inject ILogger<CreateEdit> Logger
 
-<PageTitle>@pageTitle</PageTitle>
+<PageTitle>Clinic Management - @pageTitle</PageTitle>
 
-<h1>@pageTitle</h1>
+<h3>@pageTitle</h3>
 
-<EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidSubmitAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidDepartmentSubmitAsync">
+    <div class="row">
+        <div class="col-md-5 col-lg-4 order-md-last">
+            <ValidationSummary />
+        </div>
+        <div class="col-md-7 col-lg-8">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <label class="form-label">
+                    Clinic
+                    <InputSelect id="branches" class="form-select" @bind-Value="departmentEditModel.BranchId">
+                        <option>- Choose a branch -</option>
+                        @foreach (var branch in branches)
+                        {
+                            <option value="@branch.VanityId">@branch.Name</option>
+                        }
+                    </InputSelect>
+                </label>
+            </div>
+            <div class="row">
+                <label class="form-label">
+                    Name
+                    <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
+                </label>
+            </div>
+            <div class="row">
+                <label class="form-label">
+                    Phone
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">+</span>
+                        <div class="col-sm-3">
+                            <InputText id="name" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" />
+                        </div>
+                        <InputText id="name" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" />
+                    </div>
+                </label>
+            </div>
 
-    <div class="mb-3">
-        <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
 </EditForm>
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
 
 @code {
-    private string pageTitle = "Clinic Management - New Department";
+    private string pageTitle = "New Department";
+    private IEnumerable<BranchViewModel> branches = new List<BranchViewModel>();
     private DepartmentEditModel departmentEditModel = new();
     private ModalComponent? modalComponent;
 
@@ -34,12 +67,14 @@
     {
         if (DepartmentId.HasValue)
         {
-            pageTitle = "Clinic Management - Edit Department";
+            pageTitle = "Edit Department";
             departmentEditModel = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(DepartmentId.Value);
         }
+
+        branches = await ApiService.GetBranchesAsync<BranchViewModel>();
     }
 
-    private async Task HandleValidSubmitAsync()
+    private async Task HandleValidDepartmentSubmitAsync()
     {
         try
         {
