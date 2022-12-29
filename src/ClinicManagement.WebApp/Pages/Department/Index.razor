@@ -3,11 +3,17 @@
 @inject IClinicManagementApiService ApiService
 @inject ILogger<Index> Logger
 
-<PageTitle>Department Management - Departments</PageTitle>
+<PageTitle>Clinic Management - Departments</PageTitle>
 
-<h1>Departments</h1>
-<div class="btn-group" role="group">
-    <a href="departments/create" role="button" class="btn btn-success" title="New"><i class="fa-solid fa-plus"></i> New</a>
+<div class="row">
+    <div class="col">
+        <h3>Departments</h3>
+    </div>
+    <div class="col-1">
+        <div class="btn-group mb-3" role="toolbar" aria-label="Toolbar with button groups">
+            <a href="department/create" role="button" class="btn btn-success" title="New"><i class="fa-solid fa-plus"></i> New</a>
+        </div>
+    </div>
 </div>
 
 @if (departments == null)
@@ -16,34 +22,36 @@
 }
 else
 {
-    <table class="table table-hover">
-        <thead class="table-light">
-            <tr>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var department in departments)
-            {
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
                 <tr>
-                    <td>@department.Name</td>
-                    <td>
-                        <a href="/departments/edit/@department.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
-                        <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(department)">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </td>
+                    <th>Name</th>
+                    <th class="col-1"></th>
                 </tr>
-            }
-        </tbody>
-        <tfoot class="table-light">
-            <tr>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </tfoot>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var department in departments)
+                {
+                    <tr>
+                        <td>@department.Name</td>
+                        <td>
+                            <a href="/department/edit/@department.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                            <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(department)">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 }
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Yes" SecondaryButtonText="No" EventCallback="HandleEventCallbackAsync" />
