@@ -11,7 +11,7 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
         Logger.DebugMethodCall(nameof(GetAllBranchesWithDepartmentsAsync));
 
         return await GetValidRecords().Include(b => b.Clinic)
-                                      .Include(b => b.Departments)
+                                      .Include(b => b.Departments.Where(d => d.IsDeleted == false))
                                       .ToListAsync(cancellationToken);
     }
 
@@ -19,7 +19,7 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
     {
         Logger.DebugMethodCall(nameof(GetAllBranchesWithDepartmentsAsync));
 
-        return await GetValidRecords().Include(b => b.Departments)
+        return await GetValidRecords().Include(b => b.Departments.Where(d => d.IsDeleted == false))
                                       .ToListAsync(cancellationToken);
     }
 
@@ -30,7 +30,7 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
         return await DbContext.Set<Branch>()
                               .Where(q => q.VanityId == id)
                               .Include(b => b.Clinic)
-                              .Include(b => b.Departments)
+                              .Include(b => b.Departments.Where(d => d.IsDeleted == false))
                               .SingleOrDefaultAsync(cancellationToken);
     }
 
@@ -41,7 +41,7 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
         return await DbContext.Set<Branch>()
                               .Where(q => q.Clinic.VanityId == id)
                               .Include(b => b.Clinic)
-                              .Include(b => b.Departments)
+                              .Include(b => b.Departments.Where(d => d.IsDeleted == false))
                               .ToListAsync(cancellationToken);
     }
 }
