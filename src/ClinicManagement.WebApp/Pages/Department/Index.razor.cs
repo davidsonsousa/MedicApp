@@ -4,9 +4,13 @@ public partial class Index
 {
     private IEnumerable<DepartmentViewModel>? departments;
     private ModalComponent? modalComponent;
+    private bool showSpinner;
+
     protected async override Task OnInitializedAsync()
     {
+        showSpinner = true;
         await GetDepartmentsAsync();
+        showSpinner = false;
     }
 
     private void ShowDeleteModal(DepartmentViewModel department)

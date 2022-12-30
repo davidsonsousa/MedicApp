@@ -4,9 +4,13 @@ public partial class Index
 {
     private IEnumerable<BranchViewModel>? branches;
     private ModalComponent? modalComponent;
+    private bool showSpinner;
+
     protected async override Task OnInitializedAsync()
     {
+        showSpinner = true;
         await GetBranchesAsync();
+        showSpinner = false;
     }
 
     private void ShowDeleteModal(BranchViewModel branch)
