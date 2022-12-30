@@ -5,23 +5,3 @@
         <button type="button" class="btn-close" aria-label="Close" @onclick="Hide"></button>
     </div>
 }
-
-@code {
-    private bool isVisible = false;
-    private string message = string.Empty;
-    private string alertType = "light";
-
-    public void Show(string message, string alertType)
-    {
-        isVisible = true;
-        this.message = message;
-        this.alertType = alertType;
-
-        this.StateHasChanged();
-    }
-
-    public void Hide()
-    {
-        isVisible = false;
-    }
-}
