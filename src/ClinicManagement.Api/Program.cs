@@ -85,12 +85,18 @@ builder.Host.UseSerilog();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     Log.Debug("DEV API: https://localhost:7002/swagger/index.html");
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    Log.Debug("Running EF migrations");
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ClinicManagementContext>();
+        db.Database.Migrate();
+    }
 }
 
 app.UseHttpsRedirection();
