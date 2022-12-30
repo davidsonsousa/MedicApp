@@ -10,67 +10,67 @@
 <h3>@pageTitle</h3>
 
 <EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidBranchSubmitAsync">
-    <div class="row">
+    <fieldset>
         <div class="col-md-5 col-lg-4 order-md-last">
             <ValidationSummary />
         </div>
         <div class="col-md-7 col-lg-8">
             <DataAnnotationsValidator />
-            <div class="row">
-                <label class="form-label">
-                    Clinic
-                    <InputSelect id="clinics" class="form-select" @bind-Value="branchEditModel.ClinicId">
-                        <option>- Choose a clinic -</option>
-                        @foreach (var clinic in clinics)
-                        {
-                            <option value="@clinic.VanityId">@clinic.Name</option>
-                        }
-                    </InputSelect>
-                </label>
+            <div class="mb-3">
+                <label class="form-label" for="clinics">Clinic</label>
+                <InputSelect id="clinics" class="form-select" @bind-Value="branchEditModel.ClinicId">
+                    <option>- Choose a clinic -</option>
+                    @foreach (var clinic in clinics)
+                    {
+                        <option value="@clinic.VanityId">@clinic.Name</option>
+                    }
+                </InputSelect>
             </div>
-            <div class="row">
-                <label class="form-label">
-                    Name
-                    <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
-                </label>
+            <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
             </div>
-            <div class="row">
-                <label class="form-label">
-                    Phone
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">+</span>
-                        <div class="col-sm-3">
-                            <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
-                        </div>
-                        <InputText id="name" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
+            <div class="mb-3">
+                <label class="form-label" for="countryCode">Phone</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">+</span>
+                    <div class="col-sm-3">
+                        <InputText id="countryCode" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
                     </div>
-                </label>
+                    <InputText id="phoneNumber" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
+                </div>
+
             </div>
-            <div class="row">
-                <label class="form-label">Street <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Street" /></label>
+            <div class="mb-3">
+                <label class="form-label" for="street">Street</label>
+                <InputText id="street" class="form-control" @bind-Value="branchEditModel.Address.Street" />
             </div>
-            <div class="row">
-                <label class="form-label">Zip code <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" /></label>
+            <div class="mb-3">
+                <label class="form-label" for="zipCode">Zip code</label>
+                <InputText id="zipCode" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" />
             </div>
-            <div class="row">
-                <label class="form-label">City <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.City" /></label>
+            <div class="mb-3">
+                <label class="form-label" for="city">City</label>
+                <InputText id="city" class="form-control" @bind-Value="branchEditModel.Address.City" />
             </div>
             @if (branchEditModel.Address.HasState)
             {
-                <div class="row">
-                    <label class="form-label">State <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.State" /></label>
+                <div class="mb-3">
+                    <label class="form-label" for="state">State</label>
+                    <InputText id="state" class="form-control" @bind-Value="branchEditModel.Address.State" />
                 </div>
             }
-            <div class="row">
-                <label class="form-label">Country <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Country" /></label>
+            <div class="mb-3">
+                <label class="form-label" for="country">Country</label>
+                <InputText id="country" class="form-control" @bind-Value="branchEditModel.Address.Country" />
             </div>
 
             <button type="submit" class="btn btn-success">Save</button>
         </div>
-    </div>
+    </fieldset>
 </EditForm>
 
-<div class="row">
+<div class="mb-3">
     @if (BranchId.HasValue)
     {
         <hr class="my-4" />
