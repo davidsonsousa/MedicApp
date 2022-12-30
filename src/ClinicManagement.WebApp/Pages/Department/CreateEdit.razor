@@ -11,90 +11,39 @@
 
 <EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidDepartmentSubmitAsync">
     <div class="row">
-        <div class="col-md-5 col-lg-4 order-md-last">
-            <ValidationSummary />
-        </div>
-        <div class="col-md-7 col-lg-8">
-            <DataAnnotationsValidator />
-            <div class="row">
-                <label class="form-label">
-                    Clinic
-                    <InputSelect id="branches" class="form-select" @bind-Value="departmentEditModel.BranchId">
-                        <option>- Choose a branch -</option>
-                        @foreach (var branch in branches)
-                        {
-                            <option value="@branch.VanityId">@branch.Name</option>
-                        }
-                    </InputSelect>
-                </label>
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="branches">Branch</label>
+                <InputSelect id="branches" class="form-select" @bind-Value="departmentEditModel.BranchId">
+                    <option>- Choose a branch -</option>
+                    @foreach (var branch in branches)
+                    {
+                        <option value="@branch.VanityId">@branch.Name</option>
+                    }
+                </InputSelect>
             </div>
-            <div class="row">
-                <label class="form-label">
-                    Name
-                    <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
-                </label>
+            <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
             </div>
-            <div class="row">
-                <label class="form-label">
-                    Phone
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">+</span>
-                        <div class="col-sm-3">
-                            <InputText id="name" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" />
-                        </div>
-                        <InputText id="name" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" />
+            <div class="mb-3">
+                <label class="form-label" for="countryCode">Phone</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">+</span>
+                    <div class="col-sm-3">
+                        <InputText id="countryCode" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" />
                     </div>
-                </label>
+                    <InputText id="phoneNumber" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" />
+                </div>
             </div>
-
-            <button type="submit" class="btn btn-success">Save</button>
         </div>
+    </div>
+    <ValidationSummary />
+    <DataAnnotationsValidator />
+    <div class="d-grid gap-2 col-1 mx-auto">
+        <button type="submit" class="btn btn-success">Save</button>
     </div>
 </EditForm>
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
 
-@code {
-    private string pageTitle = "New Department";
-    private IEnumerable<BranchViewModel> branches = new List<BranchViewModel>();
-    private DepartmentEditModel departmentEditModel = new();
-    private ModalComponent? modalComponent;
-
-    [Parameter]
-    public Guid? DepartmentId { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (DepartmentId.HasValue)
-        {
-            pageTitle = "Edit Department";
-            departmentEditModel = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(DepartmentId.Value);
-        }
-
-        branches = await ApiService.GetBranchesAsync<BranchViewModel>();
-    }
-
-    private async Task HandleValidDepartmentSubmitAsync()
-    {
-        try
-        {
-            bool result = DepartmentId.HasValue
-                          ? await ApiService.UpdateDepartmentAsync(departmentEditModel)
-                          : await ApiService.InsertDepartmentAsync(departmentEditModel);
-
-            if (result)
-            {
-                departmentEditModel = new();
-                modalComponent?.Show("Department", "Department saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/departments");
-            }
-            else
-            {
-                modalComponent?.Show("Error", "An error occurred when saving the department!", ModalType.OneButtonWithoutAction);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError("Error when saving department: {Message}", ex.Message);
-        }
-    }
-}
