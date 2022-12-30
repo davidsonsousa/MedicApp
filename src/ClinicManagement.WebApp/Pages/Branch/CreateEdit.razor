@@ -10,12 +10,8 @@
 <h3>@pageTitle</h3>
 
 <EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidBranchSubmitAsync">
-    <fieldset>
-        <div class="col-md-5 col-lg-4 order-md-last">
-            <ValidationSummary />
-        </div>
-        <div class="col-md-7 col-lg-8">
-            <DataAnnotationsValidator />
+    <div class="row">
+        <div class="col-6">
             <div class="mb-3">
                 <label class="form-label" for="clinics">Clinic</label>
                 <InputSelect id="clinics" class="form-select" @bind-Value="branchEditModel.ClinicId">
@@ -39,8 +35,9 @@
                     </div>
                     <InputText id="phoneNumber" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
                 </div>
-
             </div>
+        </div>
+        <div class="col-6">
             <div class="mb-3">
                 <label class="form-label" for="street">Street</label>
                 <InputText id="street" class="form-control" @bind-Value="branchEditModel.Address.Street" />
@@ -64,22 +61,25 @@
                 <label class="form-label" for="country">Country</label>
                 <InputText id="country" class="form-control" @bind-Value="branchEditModel.Address.Country" />
             </div>
-
-            <button type="submit" class="btn btn-success">Save</button>
         </div>
-    </fieldset>
+    </div>
+    <ValidationSummary />
+    <DataAnnotationsValidator />
+    <div class="d-grid gap-2 col-1 mx-auto">
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
 </EditForm>
 
-<div class="mb-3">
-    @if (BranchId.HasValue)
-    {
-        <hr class="my-4" />
-        <h3>
-            <span>Departments</span>
-            <button type="button" class="btn btn-primary" disabled="@isEditOpen" @onclick="AddDepartment"><i class="fa-solid fa-plus"></i></button>
-        </h3>
-    }
+@if (BranchId.HasValue)
+{
+    <hr class="my-4" />
+    <h3>
+        <span>Departments</span>
+        <button type="button" class="btn btn-primary" disabled="@isEditOpen" @onclick="AddDepartment"><i class="fa-solid fa-plus"></i></button>
+    </h3>
+}
 
+<div class="row">
     @foreach (var department in branchEditModel.Departments)
     {
         if (departmentId == department.VanityId)
@@ -130,110 +130,3 @@
 
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
-
-@code {
-    private string pageTitle = "New Branch";
-    private IEnumerable<ClinicViewModel> clinics = new List<ClinicViewModel>();
-    private BranchEditModel branchEditModel = new();
-    private DepartmentEditModel departmentEditModel = new();
-    private ModalComponent? modalComponent;
-    private Guid? departmentId;
-    private bool isEditOpen;
-
-    [Parameter]
-    public Guid? BranchId { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (BranchId.HasValue)
-        {
-            pageTitle = "Edit Branch";
-            branchEditModel = await ApiService.GetBranchByIdAsync<BranchEditModel>(BranchId.Value);
-        }
-
-        clinics = await ApiService.GetClinicsAsync<ClinicViewModel>();
-    }
-
-    private async Task HandleValidBranchSubmitAsync()
-    {
-        try
-        {
-            bool result = BranchId.HasValue
-                          ? await ApiService.UpdateBranchAsync(branchEditModel)
-                          : await ApiService.InsertBranchAsync(branchEditModel);
-
-            if (result)
-            {
-                branchEditModel = new();
-                modalComponent?.Show("Branch", "Branch saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/branches");
-            }
-            else
-            {
-                modalComponent?.Show("Error", "An error occurred when saving the branch!", ModalType.OneButtonWithoutAction);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError("Error when saving branch: {Message}", ex.Message);
-        }
-    }
-
-    private async Task HandleValidDepartmentSubmitAsync()
-    {
-        try
-        {
-            if (departmentEditModel.BranchId == Guid.Empty)
-            {
-                departmentEditModel.BranchId = BranchId.Value;
-            }
-
-            var result = departmentId.HasValue
-                         ? await ApiService.UpdateDepartmentAsync(departmentEditModel)
-                         : await ApiService.InsertDepartmentAsync(departmentEditModel);
-
-            if (result)
-            {
-                branchEditModel.Departments = await ApiService.GetDepartmentsByBranchIdAsync<DepartmentEditModel>(BranchId.Value);
-                CloseEditForm();
-            }
-            else
-            {
-                modalComponent?.Show("Error", $"An error occurred when saving the department '{departmentEditModel.Name}'!", ModalType.OneButtonWithoutAction);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError("Error when saving department: {Message}", ex.Message);
-        }
-    }
-
-    private void AddDepartment()
-    {
-        departmentEditModel.BranchId = branchEditModel.VanityId;
-        ((List<DepartmentEditModel>)branchEditModel.Departments).Add(departmentEditModel);
-        departmentId = Guid.Empty;
-        isEditOpen = true;
-    }
-
-    private async Task EditDepartment(Guid? vanityId)
-    {
-        if (vanityId.HasValue)
-        {
-            departmentEditModel = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(vanityId.Value);
-            departmentId = vanityId;
-            isEditOpen = true;
-        }
-    }
-
-    private void CloseEditForm()
-    {
-        if (departmentEditModel.VanityId == Guid.Empty)
-        {
-            ((List<DepartmentEditModel>)branchEditModel.Departments).Remove(departmentEditModel);
-        }
-
-        departmentEditModel = new();
-        departmentId = null;
-        isEditOpen = false;
-    }
-}
