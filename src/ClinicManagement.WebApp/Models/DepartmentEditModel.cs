@@ -11,5 +11,6 @@ public class DepartmentEditModel
     [Required]
     public string Name { get; set; } = string.Empty;
 
+    [Required]
     public PhoneNumber PhoneNumber { get; set; } = new();
 }

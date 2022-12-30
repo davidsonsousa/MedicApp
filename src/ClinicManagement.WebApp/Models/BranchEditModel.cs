@@ -11,8 +11,10 @@ public class BranchEditModel
     [Required]
     public string Name { get; set; } = string.Empty;
 
+    [Required]
     public Address Address { get; set; } = new();
 
+    [Required]
     public PhoneNumber PhoneNumber { get; set; } = new();
 
     public IEnumerable<DepartmentEditModel> Departments { get; set; } = new List<DepartmentEditModel>();
