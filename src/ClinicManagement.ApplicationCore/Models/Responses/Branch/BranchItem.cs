@@ -1,6 +1,6 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Clinic;
+﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Branch;
 
-public class ClinicBranchItem : ResponseBase
+public class BranchItem : ResponseBase
 {
     public string Name { get; set; } = string.Empty;
 

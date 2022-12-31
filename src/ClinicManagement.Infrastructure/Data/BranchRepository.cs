@@ -8,10 +8,12 @@ public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
 
     public async Task<IEnumerable<Branch>> GetAllBranchesWithClinicsAndDepartmentsAsync(CancellationToken cancellationToken = default)
     {
-        Logger.DebugMethodCall(nameof(GetAllBranchesWithDepartmentsAsync));
+        Logger.DebugMethodCall(nameof(GetAllBranchesWithClinicsAndDepartmentsAsync));
 
         return await GetValidRecords().Include(b => b.Clinic)
                                       .Include(b => b.Departments.Where(d => d.IsDeleted == false))
+                                      .OrderBy(b => b.Clinic.Name)
+                                      .ThenBy(b => b.Name)
                                       .ToListAsync(cancellationToken);
     }
 

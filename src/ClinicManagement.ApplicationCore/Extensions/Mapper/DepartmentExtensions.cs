@@ -29,7 +29,13 @@ public static class DepartmentExtensions
         return new DepartmentResponse
         {
             VanityId = item.VanityId,
-            BranchId = item.Branch.VanityId,
+            Branch = new BranchItem
+            {
+                VanityId = item.Branch.VanityId,
+                Name = item.Branch.Name,
+                PhoneNumber = item.Branch.PhoneNumber,
+                Address = item.Branch.Address
+            },
             Name = item.Name,
             PhoneNumber = item.PhoneNumber
         };
@@ -47,24 +53,13 @@ public static class DepartmentExtensions
         return items.Select(department => new DepartmentResponse
         {
             VanityId = department.VanityId,
-            Name = department.Name,
-            PhoneNumber = department.PhoneNumber
-        });
-    }
-
-    /// <summary>
-    /// Maps IEnumerable&lt;Department&gt; to IEnumerable&lt;DepartmentResponse&gt; object with branch
-    /// </summary>
-    /// <param name="items"></param>
-    /// <returns></returns>
-    public static IEnumerable<DepartmentResponse> MapToResponseWithBranch(this IEnumerable<Department>? items)
-    {
-        Guard.Against.Null(items, nameof(items));
-
-        return items.Select(department => new DepartmentResponse
-        {
-            VanityId = department.VanityId,
-            BranchId = department.Branch.VanityId,
+            Branch = new BranchItem
+            {
+                VanityId = department.Branch.VanityId,
+                Name = department.Branch.Name,
+                PhoneNumber = department.Branch.PhoneNumber,
+                Address = department.Branch.Address
+            },
             Name = department.Name,
             PhoneNumber = department.PhoneNumber
         });

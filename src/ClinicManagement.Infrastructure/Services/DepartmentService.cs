@@ -19,7 +19,7 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
 
         try
         {
-            var departments = await departmentRepository.GetAllAsync(cancellationToken);
+            var departments = await departmentRepository.GetAllDepartmentsWithBranchesAsync(cancellationToken);
             Guard.Against.Null(departments, nameof(departments));
 
             result.Value = departments.MapToResponse();
