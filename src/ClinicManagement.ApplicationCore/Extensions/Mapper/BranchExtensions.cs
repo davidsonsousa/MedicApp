@@ -57,7 +57,11 @@ public static class BranchExtensions
         return items.Select(branch => new BranchResponse
         {
             VanityId = branch.VanityId,
-            ClinicId = branch.Clinic.VanityId,
+            Clinic = new ClinicItem
+            {
+                VanityId = branch.Clinic.VanityId,
+                Name = branch.Clinic.Name,
+            },
             Name = branch.Name,
             Address = branch.Address,
             PhoneNumber = branch.PhoneNumber,

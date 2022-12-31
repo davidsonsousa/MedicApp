@@ -2,11 +2,15 @@ namespace ClinicManagement.WebApp.Pages.Department;
 
 public partial class Index
 {
-    private IEnumerable<DepartmentViewModel>? departments;
+    private IEnumerable<IGrouping<string, DepartmentViewModel>>? groupByBranch;
     private ModalComponent? modalComponent;
+    private bool showSpinner;
+
     protected async override Task OnInitializedAsync()
     {
+        showSpinner = true;
         await GetDepartmentsAsync();
+        showSpinner = false;
     }
 
     private void ShowDeleteModal(DepartmentViewModel department)
@@ -18,7 +22,8 @@ public partial class Index
     {
         try
         {
-            departments = await ApiService.GetDepartmentsAsync<DepartmentViewModel>();
+            var departments = await ApiService.GetDepartmentsAsync<DepartmentViewModel>();
+            groupByBranch = departments.GroupBy(b => b.Branch.Name);
         }
         catch (Exception ex)
         {

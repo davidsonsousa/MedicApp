@@ -2,7 +2,7 @@
 
 public class DepartmentResponse : ResponseBase
 {
-    public Guid BranchId { get; set; }
+    public BranchItem Branch { get; set; } = new();
 
     public string Name { get; set; } = string.Empty;
 

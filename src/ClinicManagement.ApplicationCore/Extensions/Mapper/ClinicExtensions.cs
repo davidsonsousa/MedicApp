@@ -30,7 +30,7 @@ public static class ClinicExtensions
         {
             VanityId = item.VanityId,
             Name = item.Name,
-            Branches = item.Branches.Select(b => new ClinicBranchItem
+            Branches = item.Branches.Select(b => new BranchItem
             {
                 VanityId = b.VanityId,
                 Name = b.Name,

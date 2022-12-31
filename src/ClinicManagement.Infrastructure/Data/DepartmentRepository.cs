@@ -6,6 +6,16 @@ public class DepartmentRepository : RepositoryBase<Department>, IDepartmentRepos
     {
     }
 
+    public async Task<IEnumerable<Department>> GetAllDepartmentsWithBranchesAsync(CancellationToken cancellationToken = default)
+    {
+        Logger.DebugMethodCall(nameof(GetAllDepartmentsWithBranchesAsync));
+
+        return await GetValidRecords().Include(d => d.Branch)
+                                      .OrderBy(d => d.Branch.Name)
+                                      .ThenBy(d => d.Name)
+                                      .ToListAsync(cancellationToken);
+    }
+
     public async Task<IEnumerable<Department>> GetDepartmentsWithBranchByBranchIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetDepartmentsWithBranchByBranchIdAsync));

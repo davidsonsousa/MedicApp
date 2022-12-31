@@ -2,6 +2,8 @@
 
 public class BranchViewModel
 {
+    public ClinicViewModel Clinic { get; set; } = new();
+
     public Guid VanityId { get; set; }
 
     public string Name { get; set; } = string.Empty;

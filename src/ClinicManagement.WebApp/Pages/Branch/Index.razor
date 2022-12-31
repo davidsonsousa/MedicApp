@@ -16,9 +16,9 @@
     </div>
 </div>
 
-@if (branches == null)
+@if (groupByClinic == null)
 {
-    <p><em>No branches found</em></p>
+    <SpinnerComponent MessageLoading="Loading branches..." MessageNotFound="There are no branches available at the moment" ShowSpinner="showSpinner" />
 }
 else
 {
@@ -31,17 +31,23 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var branch in branches)
+                @foreach (var group in groupByClinic)
                 {
                     <tr>
-                        <td>@branch.Name (@("department".ToQuantity(branch.DepartmentIds.Count())))</td>
-                        <td>
-                            <a href="/branch/edit/@branch.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
-                            <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(branch)">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
+                        <td colspan="2"><strong>@group.Key</strong></td>
                     </tr>
+                    @foreach (var branch in group)
+                    {
+                        <tr>
+                            <td>@branch.Name (@("department".ToQuantity(branch.DepartmentIds.Count())))</td>
+                            <td>
+                                <a href="/branch/edit/@branch.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                                <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(branch)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
             <tfoot class="table-light">
