@@ -49,6 +49,8 @@ public partial class CreateEdit
     {
         try
         {
+            Guard.Against.Null(BranchId);
+
             if (departmentEditModel.BranchId == Guid.Empty)
             {
                 departmentEditModel.BranchId = BranchId.Value;

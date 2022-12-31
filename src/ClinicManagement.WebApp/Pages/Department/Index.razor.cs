@@ -2,7 +2,7 @@ namespace ClinicManagement.WebApp.Pages.Department;
 
 public partial class Index
 {
-    private IEnumerable<DepartmentViewModel>? departments;
+    private IEnumerable<IGrouping<string, DepartmentViewModel>>? groupByBranch;
     private ModalComponent? modalComponent;
     private bool showSpinner;
 
@@ -22,7 +22,8 @@ public partial class Index
     {
         try
         {
-            departments = await ApiService.GetDepartmentsAsync<DepartmentViewModel>();
+            var departments = await ApiService.GetDepartmentsAsync<DepartmentViewModel>();
+            groupByBranch = departments.GroupBy(b => b.Branch.Name);
         }
         catch (Exception ex)
         {

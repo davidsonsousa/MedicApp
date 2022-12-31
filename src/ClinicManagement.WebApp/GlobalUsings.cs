@@ -1,4 +1,5 @@
 ﻿global using System.ComponentModel.DataAnnotations;
+global using Ardalis.GuardClauses;
 global using ClinicManagement.WebApp;
 global using ClinicManagement.WebApp.Components;
 global using ClinicManagement.WebApp.Models;
