@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Models.Responses.ApointmentPatient;
 
-public class ApointmentPatientListResponse : ListResponseBase<AppointmentPatientItem>
+public class AppointmentPatientListResponse : ListResponseBase<AppointmentPatientItem>
 {
 
 }

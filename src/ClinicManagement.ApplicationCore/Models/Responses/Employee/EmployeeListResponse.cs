@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Employee;
 
-public class EmployeeResponse : ResponseBase<EmployeeDetail>
+public class EmployeeListResponse : ListResponseBase<EmployeeItem>
 {
 
 }

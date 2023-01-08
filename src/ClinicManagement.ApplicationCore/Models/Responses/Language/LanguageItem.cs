@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Language;
 
-public class LanguageDetail
+public class LanguageItem
 {
     public Guid VanityId { get; set; }
 

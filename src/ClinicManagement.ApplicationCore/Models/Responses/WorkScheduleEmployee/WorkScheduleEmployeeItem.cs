@@ -2,7 +2,7 @@
 
 public class WorkScheduleEmployeeItem
 {
-    public Guid VanitId { get; set; }
+    public Guid VanityId { get; set; }
 
     public DateTimeRange DateTimeSchedule { get; set; } = new DateTimeRange();
 
