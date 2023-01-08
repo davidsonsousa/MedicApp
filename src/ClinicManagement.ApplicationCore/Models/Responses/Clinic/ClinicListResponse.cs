@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Clinic;
 
-public class ClinicResponse : ResponseBase<ClinicDetail>
+public class ClinicListResponse : ListResponseBase<ClinicItem>
 {
 
 }

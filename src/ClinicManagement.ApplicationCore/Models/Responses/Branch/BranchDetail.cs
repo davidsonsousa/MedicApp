@@ -1,7 +1,11 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Branch;
+﻿using ClinicManagement.ApplicationCore.Models.Responses.Department;
 
-public class BranchDetailResponse : ResponseBase
+namespace ClinicManagement.ApplicationCore.Models.Responses.Branch;
+
+public class BranchDetail
 {
+    public Guid VanityId { get; set; }
+
     public Guid ClinicId { get; set; }
 
     public string Name { get; set; } = string.Empty;

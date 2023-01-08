@@ -1,4 +1,7 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Employee;
+﻿using ClinicManagement.ApplicationCore.Models.Responses.Department;
+using ClinicManagement.ApplicationCore.Models.Responses.Language;
+
+namespace ClinicManagement.ApplicationCore.Models.Responses.Employee;
 public class EmployeeDetailResponse : RequestBase
 {
     public string Name { get; set; } = string.Empty;

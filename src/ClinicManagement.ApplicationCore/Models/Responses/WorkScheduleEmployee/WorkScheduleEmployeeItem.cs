@@ -1,7 +1,9 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.Responses;
+﻿namespace ClinicManagement.ApplicationCore.Models.Responses.WorkScheduleEmployee;
 
-public class WorkScheduleEmployeeResponse : ResponseBase
+public class WorkScheduleEmployeeItem
 {
+    public Guid VanitId { get; set; }
+
     public DateTimeRange DateTimeSchedule { get; set; } = new DateTimeRange();
 
     public Guid EmployeeId { get; set; }

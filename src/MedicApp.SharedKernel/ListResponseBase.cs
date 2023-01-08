@@ -1,10 +1,12 @@
 ﻿namespace MedicApp.SharedKernel;
 
-public abstract class ResponseBase<T> where T : new()
+public abstract class ListResponseBase<T> where T : class
 {
     public bool HasError { get; set; }
 
-    public T Item { get; set; } = new T();
+    public int Count => Items.Count();
+
+    public IEnumerable<T> Items { get; set; } = new List<T>();
 
     public override string ToString()
     {
