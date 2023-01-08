@@ -3,24 +3,6 @@
 public static class PatientExtensions
 {
     /// <summary>
-    /// Maps a Patient entity to a PatientRequest object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static PatientRequest MapToRequest(this Patient item)
-    {
-        return new PatientRequest
-        {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Surname = item.Surname,
-            Address = item.Address,
-            DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber
-        };
-    }
-
-    /// <summary>
     /// Maps a Patient entity to a PatientResponse object
     /// </summary>
     /// <param name="item"></param>
@@ -31,33 +13,49 @@ public static class PatientExtensions
 
         return new PatientResponse
         {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Surname = item.Surname,
-            Address = item.Address,
-            DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber
+            Item = new PatientDetail
+            {
+                VanityId = item.VanityId,
+                Name = item.Name,
+                Surname = item.Surname,
+                Address = item.Address,
+                DateOfBirth = item.DateOfBirth,
+                PhoneNumber = item.PhoneNumber
+            }
         };
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Patient&gt; to IEnumerable&lt;PatientResponse&gt; object
+    /// Maps a Patient entity to a PatientItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static PatientItem MapToItem(this Patient? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new PatientItem
+        {
+            VanityId = item.VanityId,
+            Name = item.Name,
+            Surname = item.Surname,
+            DateOfBirth = item.DateOfBirth
+        };
+    }
+
+    /// <summary>
+    /// Maps IEnumerable&lt;Patient&gt; to PatientListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<PatientResponse> MapToResponse(this IEnumerable<Patient>? items)
+    public static PatientListResponse MapToListResponse(this IEnumerable<Patient>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(patient => new PatientResponse
+        return new PatientListResponse
         {
-            VanityId = patient.VanityId,
-            Name = patient.Name,
-            Surname = patient.Surname,
-            Address = patient.Address,
-            DateOfBirth = patient.DateOfBirth,
-            PhoneNumber = patient.PhoneNumber
-        });
+            Items = items.Select(p => p.MapToItem())
+        };
     }
 
     /// <summary>
@@ -82,6 +80,7 @@ public static class PatientExtensions
     /// Maps a PatientRequest to an existing Patient entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="patient"></param>
     /// <returns></returns>
     public static Patient MapToEntity(this PatientRequest item, Patient? patient)
     {

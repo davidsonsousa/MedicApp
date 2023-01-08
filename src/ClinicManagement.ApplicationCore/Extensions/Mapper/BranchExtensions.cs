@@ -3,76 +3,72 @@
 public static class BranchExtensions
 {
     /// <summary>
-    /// Maps a Branch entity to a BranchRequest object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static BranchRequest MapToRequest(this Branch item)
-    {
-        return new BranchRequest
-        {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Address = item.Address,
-            PhoneNumber = item.PhoneNumber,
-            ClinicId = item.Clinic.VanityId,
-            SelectedDepartments = item.Departments.Select(b => b.VanityId).ToArray()
-        };
-    }
-
-    /// <summary>
     /// Maps a Branch entity to a BranchResponse object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static BranchDetailResponse MapToResponse(this Branch? item)
+    public static BranchResponse MapToResponse(this Branch? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new BranchDetailResponse
+        return new BranchResponse
         {
-            VanityId = item.VanityId,
-            ClinicId = item.Clinic.VanityId,
-            Name = item.Name,
-            Address = item.Address,
-            PhoneNumber = item.PhoneNumber,
-            Departments = item.Departments.Select(d => new DepartmentResponse
+            HasError = false,
+            Item = new BranchDetail
             {
-                VanityId = d.VanityId,
-                Name = d.Name,
-                PhoneNumber = d.PhoneNumber
-            })
+                VanityId = item.VanityId,
+                ClinicId = item.Clinic.VanityId,
+                Name = item.Name,
+                Address = item.Address,
+                PhoneNumber = item.PhoneNumber,
+                //Departments = item.Departments.Select(d => new DepartmentResponse
+                //{
+                //    VanityId = d.VanityId,
+                //    Name = d.Name,
+                //    PhoneNumber = d.PhoneNumber
+                //})
+            }
         };
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Branch&gt; to IEnumerable&lt;BranchResponse&gt; object
+    /// Maps a Branch entity to a BranchItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static BranchItem MapToItem(this Branch? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new BranchItem
+        {
+            VanityId = item.VanityId,
+            Name = item.Name,
+            DepartmentCount = item.Departments.Count
+        };
+    }
+
+    /// <summary>
+    /// Maps IEnumerable&lt;Branch&gt; to BranchListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<BranchResponse> MapToResponse(this IEnumerable<Branch>? items)
+    public static BranchListResponse MapToListResponse(this IEnumerable<Branch>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(branch => new BranchResponse
+        return new BranchListResponse
         {
-            VanityId = branch.VanityId,
-            Clinic = new ClinicItem
-            {
-                VanityId = branch.Clinic.VanityId,
-                Name = branch.Clinic.Name,
-            },
-            Name = branch.Name,
-            Address = branch.Address,
-            PhoneNumber = branch.PhoneNumber,
-            DepartmentIds = branch.Departments.Select(d => d.VanityId).ToArray()
-        });
+            HasError = false,
+            Items = items.Select(b => b.MapToItem())
+        };
     }
 
     /// <summary>
     /// Maps a BranchRequest to a Branch entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="clinic"></param>
     /// <returns></returns>
     public static Branch MapToEntity(this BranchRequest item, Clinic? clinic)
     {
@@ -92,6 +88,8 @@ public static class BranchExtensions
     /// Maps a BranchRequest to an existing Branch entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="branch"></param>
+    /// <param name="clinic"></param>
     /// <returns></returns>
     public static Branch MapToEntity(this BranchRequest item, Branch? branch, Clinic? clinic)
     {

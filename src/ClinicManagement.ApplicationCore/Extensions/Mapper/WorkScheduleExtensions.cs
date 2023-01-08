@@ -1,25 +1,11 @@
-﻿namespace ClinicManagement.ApplicationCore.Extensions.Mapper;
+﻿using ClinicManagement.ApplicationCore.Models.Responses.WorkScheduleEmployee;
+
+namespace ClinicManagement.ApplicationCore.Extensions.Mapper;
 
 public static class WorkScheduleExtensions
 {
     /// <summary>
-    /// Maps a WorkSchedule entity to a WorkScheduleEditModel object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static WorkScheduleEmployeeRequest MapToRequest(this WorkSchedule item)
-    {
-        return new WorkScheduleEmployeeRequest
-        {
-            VanityId = item.VanityId,
-            DateTimeSchedule = item.DateTimeSchedule,
-            EmployeeId = item.Person.VanityId,
-            DepartmentId = item.Department.VanityId
-        };
-    }
-
-    /// <summary>
-    /// Maps a WorkSchedule entity to a WorkScheduleViewModel object
+    /// Maps a WorkSchedule entity to a WorkScheduleEmployeeResponse object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
@@ -29,6 +15,21 @@ public static class WorkScheduleExtensions
 
         return new WorkScheduleEmployeeResponse
         {
+            Item = item.MapToItem()
+        };
+    }
+
+    /// <summary>
+    /// Maps a WorkSchedule entity to a WorkScheduleEmployeeItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static WorkScheduleEmployeeItem MapToItem(this WorkSchedule? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new WorkScheduleEmployeeItem
+        {
             VanityId = item.VanityId,
             DateTimeSchedule = item.DateTimeSchedule,
             EmployeeId = item.Person.VanityId,
@@ -37,28 +38,26 @@ public static class WorkScheduleExtensions
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;WorkSchedule&gt; to IEnumerable&lt;WorkScheduleViewModel&gt; object
+    /// Maps IEnumerable&lt;WorkSchedule&gt; to WorkScheduleEmployeeListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<WorkScheduleEmployeeResponse> MapToResponse(this IEnumerable<WorkSchedule>? items)
+    public static WorkScheduleEmployeeListResponse MapToListResponse(this IEnumerable<WorkSchedule>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(workSchedule => new WorkScheduleEmployeeResponse
+        return new WorkScheduleEmployeeListResponse
         {
-            VanityId = workSchedule.VanityId,
-            DateTimeSchedule = workSchedule.DateTimeSchedule,
-            EmployeeId = workSchedule.Person.VanityId,
-            DepartmentId = workSchedule.Department.VanityId
-        });
-
+            Items = items.Select(wse => wse.MapToItem())
+        };
     }
 
     /// <summary>
     /// Maps a WorkScheduleEditModel to a WorkSchedule entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="person"></param>
+    /// <param name="department"></param>
     /// <returns></returns>
     public static WorkSchedule MapToEntity(this WorkScheduleEmployeeRequest item, Person? person, Department? department)
     {
@@ -78,6 +77,7 @@ public static class WorkScheduleExtensions
     /// Maps a WorkScheduleEditModel to an existing WorkSchedule entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="workSchedule"></param>
     /// <returns></returns>
     public static WorkSchedule MapToEntity(this WorkScheduleEmployeeRequest item, WorkSchedule? workSchedule)
     {

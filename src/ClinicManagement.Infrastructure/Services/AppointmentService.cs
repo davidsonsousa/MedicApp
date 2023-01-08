@@ -15,14 +15,14 @@ public class AppointmentService : ServiceBase<Appointment>, IAppointmentService
     public async Task<IResult> GetAllAppointments(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllAppointments));
-        var result = new Result<IEnumerable<AppointmentPatientResponse>>();
+        var result = new Result<AppointmentPatientListResponse>();
 
         try
         {
             var appointments = await appointmentRepository.GetAppointmentsWithPatientAsync(cancellationToken);
             Guard.Against.Null(appointments, nameof(appointments));
 
-            result.Value = appointments.MapToResponse();
+            result.Value = appointments.MapToListResponse();
         }
         catch (Exception ex)
         {

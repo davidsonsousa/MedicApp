@@ -18,14 +18,14 @@ public class WorkScheduleService : ServiceBase<WorkSchedule>, IWorkScheduleServi
     public async Task<IResult> GetAllWorkSchedules(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllWorkSchedules));
-        var result = new Result<IEnumerable<WorkScheduleEmployeeResponse>>();
+        var result = new Result<WorkScheduleEmployeeListResponse>();
 
         try
         {
             var workSchedules = await workScheduleRepository.GetWorkSchedulesWithEmployeeAndDepartmentAsync(cancellationToken);
             Guard.Against.Null(workSchedules, nameof(workSchedules));
 
-            result.Value = workSchedules.MapToResponse();
+            result.Value = workSchedules.MapToListResponse();
         }
         catch (Exception ex)
         {

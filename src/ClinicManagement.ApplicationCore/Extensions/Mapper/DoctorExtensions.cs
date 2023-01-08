@@ -3,65 +3,61 @@
 public static class DoctorExtensions
 {
     /// <summary>
-    /// Maps a Doctor entity to a DoctorRequest object
+    /// Maps a Doctor entity to a EmployeeResponse object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static DoctorRequest MapToRequest(this Doctor item)
-    {
-        return new DoctorRequest
-        {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Surname = item.Surname,
-            Address = item.Address,
-            DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber
-        };
-    }
-
-    /// <summary>
-    /// Maps a Doctor entity to a DoctorResponse object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static EmployeeDetailResponse MapToResponse(this Doctor? item)
+    public static EmployeeResponse MapToResponse(this Doctor? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new EmployeeDetailResponse
+        return new EmployeeResponse
         {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Surname = item.Surname,
-            Address = item.Address,
-            DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber,
-            Departments = item.Departments.MapToResponse(),
-            Languages = item.Languages.MapToResponse()
+            Item = new EmployeeDetail
+            {
+                VanityId = item.VanityId,
+                Name = item.Name,
+                Surname = item.Surname,
+                Address = item.Address,
+                DateOfBirth = item.DateOfBirth,
+                PhoneNumber = item.PhoneNumber,
+                Departments = item.Departments.Select(d => d.MapToItem()),
+                Languages = item.Languages.Select(l => l.MapToItem())
+            }
         };
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Doctor&gt; to IEnumerable&lt;DoctorResponse&gt; object
+    /// Maps a Doctor entity to a EmployeeItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static EmployeeItem MapToItem(this Doctor? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new EmployeeItem
+        {
+            VanityId = item.VanityId,
+            Name = item.Name,
+            Surname = item.Surname,
+            DateOfBirth = item.DateOfBirth
+        };
+    }
+
+    /// <summary>
+    /// Maps IEnumerable&lt;Doctor&gt; to EmployeeListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<EmployeeResponse> MapToResponse(this IEnumerable<Doctor>? items)
+    public static EmployeeListResponse MapToListResponse(this IEnumerable<Doctor>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(doctor => new EmployeeResponse
+        return new EmployeeListResponse
         {
-            VanityId = doctor.VanityId,
-            Name = doctor.Name,
-            Surname = doctor.Surname,
-            Address = doctor.Address,
-            DateOfBirth = doctor.DateOfBirth,
-            PhoneNumber = doctor.PhoneNumber,
-            DepartmentIds = doctor.Departments.Select(d => d.VanityId),
-            LanguageIds = doctor.Languages.Select(l => l.VanityId),
-        });
+            Items = items.Select(e => e.MapToItem())
+        };
     }
 
     /// <summary>
@@ -86,6 +82,7 @@ public static class DoctorExtensions
     /// Maps a DoctorRequest to an existing Doctor entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="doctor"></param>
     /// <returns></returns>
     public static Doctor MapToEntity(this DoctorRequest item, Doctor? doctor)
     {

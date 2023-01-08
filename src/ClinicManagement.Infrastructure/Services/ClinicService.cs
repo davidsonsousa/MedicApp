@@ -12,14 +12,14 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
     public async Task<IResult> GetAllClinics(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllClinics));
-        var result = new Result<IEnumerable<ClinicResponse>>();
+        var result = new Result<ClinicListResponse>();
 
         try
         {
             var clinics = await clinicRepository.GetAllClinicsWithBranchesAsync(cancellationToken);
             Guard.Against.Null(clinics, nameof(clinics));
 
-            result.Value = clinics.MapToResponse();
+            result.Value = clinics.MapToListResponse();
         }
         catch (Exception ex)
         {
@@ -33,7 +33,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
     public async Task<IResult> GetClinicById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(GetClinicById), id);
-        var result = new Result<ClinicDetailResponse>();
+        var result = new Result<ClinicDetail>();
 
         try
         {

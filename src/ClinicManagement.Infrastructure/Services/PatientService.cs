@@ -20,14 +20,14 @@ public class PatientService : ServiceBase<Patient>, IPatientService
     public async Task<IResult> GetAllPatients(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllPatients));
-        var result = new Result<IEnumerable<PatientResponse>>();
+        var result = new Result<PatientListResponse>();
 
         try
         {
             var patients = await Repository.GetAllAsync(cancellationToken);
             Guard.Against.Null(patients, nameof(patients));
 
-            result.Value = patients.MapToResponse();
+            result.Value = patients.MapToListResponse();
         }
         catch (Exception ex)
         {
@@ -41,14 +41,14 @@ public class PatientService : ServiceBase<Patient>, IPatientService
     public async Task<IResult> GetAllPatientAppointments(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllPatientAppointments));
-        var result = new Result<IEnumerable<AppointmentPatientResponse>>();
+        var result = new Result<AppointmentPatientListResponse>();
 
         try
         {
             var appointments = await appointmentRepository.GetAppointmentsWithPatientAsync(cancellationToken);
             Guard.Against.Null(appointments, nameof(appointments));
 
-            result.Value = appointments.MapToResponse();
+            result.Value = appointments.MapToListResponse();
         }
         catch (Exception ex)
         {

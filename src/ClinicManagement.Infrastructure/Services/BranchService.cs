@@ -15,14 +15,14 @@ public class BranchService : ServiceBase<Branch>, IBranchService
     public async Task<IResult> GetAllBranches(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllBranches));
-        var result = new Result<IEnumerable<BranchResponse>>();
+        var result = new Result<BranchListResponse>();
 
         try
         {
             var branches = await branchRepository.GetAllBranchesWithClinicsAndDepartmentsAsync(cancellationToken);
             Guard.Against.Null(branches, nameof(branches));
 
-            result.Value = branches.MapToResponse();
+            result.Value = branches.MapToListResponse();
         }
         catch (Exception ex)
         {
@@ -36,7 +36,7 @@ public class BranchService : ServiceBase<Branch>, IBranchService
     public async Task<IResult> GetBranchById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(BranchService), nameof(GetBranchById), id);
-        var result = new Result<BranchDetailResponse>();
+        var result = new Result<BranchResponse>();
 
         try
         {
@@ -57,14 +57,14 @@ public class BranchService : ServiceBase<Branch>, IBranchService
     public async Task<IResult> GetBranchesByClinicId(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(BranchService), nameof(GetBranchesByClinicId), id);
-        var result = new Result<IEnumerable<BranchResponse>>();
+        var result = new Result<BranchListResponse>();
 
         try
         {
             var branches = await branchRepository.GetBranchesWithClinicAndDepartmentsByClinicIdAsync(id, cancellationToken);
             Guard.Against.Null(branches, nameof(branches));
 
-            result.Value = branches.MapToResponse();
+            result.Value = branches.MapToListResponse();
         }
         catch (Exception ex)
         {

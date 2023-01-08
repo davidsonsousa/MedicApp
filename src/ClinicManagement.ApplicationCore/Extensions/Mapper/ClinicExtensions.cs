@@ -3,59 +3,59 @@
 public static class ClinicExtensions
 {
     /// <summary>
-    /// Maps a Clinic entity to a ClinicEditModel object
+    /// Maps a Clinic entity to a ClinicDetail object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static ClinicRequest MapToRequest(this Clinic item)
-    {
-        return new ClinicRequest
-        {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            SelectedBranches = item.Branches.Select(b => b.VanityId).ToArray()
-        };
-    }
-
-    /// <summary>
-    /// Maps a Clinic entity to a ClinicViewModel object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static ClinicDetailResponse MapToResponse(this Clinic? item)
+    public static ClinicDetail MapToResponse(this Clinic? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new ClinicDetailResponse
+        return new ClinicDetail
         {
             VanityId = item.VanityId,
             Name = item.Name,
-            Branches = item.Branches.Select(b => new BranchItem
-            {
-                VanityId = b.VanityId,
-                Name = b.Name,
-                Address = b.Address,
-                PhoneNumber = b.PhoneNumber,
-            })
+            //Branches = item.Branches.Select(b => new BranchItem
+            //{
+            //    VanityId = b.VanityId,
+            //    Name = b.Name,
+            //    Address = b.Address,
+            //    PhoneNumber = b.PhoneNumber,
+            //})
         };
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Clinic&gt; to IEnumerable&lt;ClinicViewModel&gt; object
+    /// Maps a Clinic entity to a ClinicItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static ClinicItem MapToItem(this Clinic? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new ClinicItem
+        {
+            VanityId = item.VanityId,
+            Name = item.Name,
+            BranchCount = item.Branches.Count
+        };
+    }
+
+    /// <summary>
+    /// Maps IEnumerable&lt;Clinic&gt; to ClinicListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<ClinicResponse> MapToResponse(this IEnumerable<Clinic>? items)
+    public static ClinicListResponse MapToListResponse(this IEnumerable<Clinic>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(clinic => new ClinicResponse
+        return new ClinicListResponse
         {
-            VanityId = clinic.VanityId,
-            Name = clinic.Name,
-            BranchIds = clinic.Branches.Select(b => b.VanityId).ToArray()
-        });
-
+            HasError = false,
+            Items = items.Select(clinic => clinic.MapToItem())
+        };
     }
 
     /// <summary>
@@ -76,6 +76,7 @@ public static class ClinicExtensions
     /// Maps a ClinicEditModel to an existing Clinic entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="clinic"></param>
     /// <returns></returns>
     public static Clinic MapToEntity(this ClinicRequest item, Clinic? clinic)
     {
