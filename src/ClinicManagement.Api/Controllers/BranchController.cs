@@ -21,14 +21,7 @@ public class BranchController : ControllerBase
     {
         var result = await branchService.GetAllBranches(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<BranchResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<BranchListResponse>());
     }
 
     /// <summary>
@@ -42,7 +35,7 @@ public class BranchController : ControllerBase
     {
         var result = await branchService.GetBranchById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<BranchDetailResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<BranchResponse>());
     }
 
     /// <summary>
@@ -56,7 +49,7 @@ public class BranchController : ControllerBase
     {
         var result = await branchService.GetBranchesByClinicId(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<IEnumerable<BranchResponse>>());
+        return result.HasError ? NotFound() : Ok(result.As<BranchListResponse>());
     }
 
     /// <summary>

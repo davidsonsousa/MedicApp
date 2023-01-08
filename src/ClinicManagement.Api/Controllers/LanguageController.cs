@@ -21,14 +21,7 @@ public class LanguageController : ControllerBase
     {
         var result = await languageService.GetAllLanguages(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<LanguageResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<LanguageListResponse>());
     }
 
     /// <summary>

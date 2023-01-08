@@ -21,14 +21,7 @@ public class ClinicController : ControllerBase
     {
         var result = await clinicService.GetAllClinics(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<ClinicResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<ClinicListResponse>());
     }
 
     /// <summary>
@@ -42,7 +35,7 @@ public class ClinicController : ControllerBase
     {
         var result = await clinicService.GetClinicById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<ClinicDetailResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<ClinicDetail>());
     }
 
     /// <summary>
