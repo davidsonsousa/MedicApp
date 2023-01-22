@@ -2,7 +2,7 @@
 
 public abstract class ResponseBase<T> where T : new()
 {
-    public bool HasError { get; set; }
+    public bool HasError { get; set; } = false;
 
     public T Item { get; set; } = new T();
 
