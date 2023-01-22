@@ -16,7 +16,7 @@
     </div>
 </div>
 
-@if (groupByBranch == null)
+@if (apiResponse == null)
 {
     <SpinnerComponent MessageLoading="Loading departments..." MessageNotFound="There are no departments available at the moment" ShowSpinner="showSpinner" />
 }
@@ -31,23 +31,17 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var group in groupByBranch)
+                @foreach (var department in apiResponse.Items)
                 {
                     <tr>
-                        <td colspan="2"><strong>@group.Key</strong></td>
+                        <td>@department.Name</td>
+                        <td>
+                            <a href="/department/edit/@department.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                            <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(department)">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
                     </tr>
-                    @foreach (var department in group)
-                    {
-                        <tr>
-                            <td>@department.Name</td>
-                            <td>
-                                <a href="/department/edit/@department.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
-                                <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(department)">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    }
                 }
             </tbody>
             <tfoot class="table-light">

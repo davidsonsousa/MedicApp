@@ -2,7 +2,7 @@ namespace ClinicManagement.WebApp.Pages.Branch;
 
 public partial class Index
 {
-    private IEnumerable<IGrouping<string, BranchViewModel>>? groupByClinic;
+    private ApiResponseListModel<BranchViewModel>? apiResponse;
     private ModalComponent? modalComponent;
     private bool showSpinner;
 
@@ -22,8 +22,7 @@ public partial class Index
     {
         try
         {
-            var branches = await ApiService.GetBranchesAsync<BranchViewModel>();
-            groupByClinic = branches.GroupBy(b => b.Clinic.Name);
+            apiResponse = await ApiService.GetBranchesAsync<BranchViewModel>();
         }
         catch (Exception ex)
         {
@@ -38,7 +37,7 @@ public partial class Index
         try
         {
             var result = await ApiService.DeleteBranchAsync(id);
-            if (result)
+            if (!result.HasError)
             {
                 await GetBranchesAsync();
                 modalComponent?.Show("Confirmation", "The branch was successfully deleted.", ModalType.OneButtonWithoutAction);

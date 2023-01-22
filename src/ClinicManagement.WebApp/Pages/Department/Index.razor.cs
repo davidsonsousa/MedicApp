@@ -2,7 +2,7 @@ namespace ClinicManagement.WebApp.Pages.Department;
 
 public partial class Index
 {
-    private IEnumerable<IGrouping<string, DepartmentViewModel>>? groupByBranch;
+    private ApiResponseListModel<DepartmentViewModel> apiResponse = new();
     private ModalComponent? modalComponent;
     private bool showSpinner;
 
@@ -22,8 +22,7 @@ public partial class Index
     {
         try
         {
-            var departments = await ApiService.GetDepartmentsAsync<DepartmentViewModel>();
-            groupByBranch = departments.GroupBy(b => b.Branch.Name);
+            apiResponse = await ApiService.GetDepartmentsAsync<DepartmentViewModel>();
         }
         catch (Exception ex)
         {
@@ -38,7 +37,7 @@ public partial class Index
         try
         {
             var result = await ApiService.DeleteDepartmentAsync(id);
-            if (result)
+            if (!result.HasError)
             {
                 await GetDepartmentsAsync();
                 modalComponent?.Show("Confirmation", "The department was successfully deleted.", ModalType.OneButtonWithoutAction);

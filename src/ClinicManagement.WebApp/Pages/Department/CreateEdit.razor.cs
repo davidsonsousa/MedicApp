@@ -6,7 +6,7 @@ public partial class CreateEdit
     public Guid? DepartmentId { get; set; }
 
     private string pageTitle = "New Department";
-    private IEnumerable<BranchViewModel> branches = new List<BranchViewModel>();
+    private ApiResponseListModel<BranchViewModel> apiResponse = new();
     private DepartmentEditModel departmentEditModel = new();
     private ModalComponent? modalComponent;
 
@@ -15,10 +15,11 @@ public partial class CreateEdit
         if (DepartmentId.HasValue)
         {
             pageTitle = "Edit Department";
-            departmentEditModel = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(DepartmentId.Value);
+            var apiResponseItem = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(DepartmentId.Value);
+            departmentEditModel = apiResponseItem.Item!;
         }
 
-        branches = await ApiService.GetBranchesAsync<BranchViewModel>();
+        apiResponse = await ApiService.GetBranchesAsync<BranchViewModel>();
     }
 
     private async Task HandleValidDepartmentSubmitAsync()
@@ -26,7 +27,7 @@ public partial class CreateEdit
         try
         {
             var result = DepartmentId.HasValue ? await ApiService.UpdateDepartmentAsync(departmentEditModel) : await ApiService.InsertDepartmentAsync(departmentEditModel);
-            if (result)
+            if (!result.HasError)
             {
                 departmentEditModel = new();
                 modalComponent?.Show("Department", "Department saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/departments");

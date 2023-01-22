@@ -16,7 +16,7 @@
                 <label class="form-label" for="branches">Branch</label>
                 <InputSelect id="branches" class="form-select" @bind-Value="departmentEditModel.BranchId">
                     <option>- Choose a branch -</option>
-                    @foreach (var branch in branches)
+                    @foreach (var branch in apiResponse.Items)
                     {
                         <option value="@branch.VanityId">@branch.Name</option>
                     }

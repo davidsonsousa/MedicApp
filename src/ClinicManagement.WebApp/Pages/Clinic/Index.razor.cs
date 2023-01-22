@@ -2,7 +2,7 @@ namespace ClinicManagement.WebApp.Pages.Clinic;
 
 public partial class Index
 {
-    private IEnumerable<ClinicViewModel>? clinics;
+    private ApiResponseListModel<ClinicViewModel> apiResponse = new();
     private ModalComponent? modalComponent;
     private bool showSpinner;
 
@@ -22,7 +22,7 @@ public partial class Index
     {
         try
         {
-            clinics = await ApiService.GetClinicsAsync<ClinicViewModel>();
+            apiResponse = await ApiService.GetClinicsAsync<ClinicViewModel>();
         }
         catch (Exception ex)
         {
@@ -37,7 +37,7 @@ public partial class Index
         try
         {
             var result = await ApiService.DeleteClinicAsync(id);
-            if (result)
+            if (!result.HasError)
             {
                 await GetClinicsAsync();
                 modalComponent?.Show("Confirmation", "The clinic was successfully deleted.", ModalType.OneButtonWithoutAction);

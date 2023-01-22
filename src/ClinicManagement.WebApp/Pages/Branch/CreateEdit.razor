@@ -16,7 +16,7 @@
                 <label class="form-label" for="clinics">Clinic</label>
                 <InputSelect id="clinics" class="form-select" @bind-Value="branchEditModel.ClinicId">
                     <option>- Choose a clinic -</option>
-                    @foreach (var clinic in clinics)
+                    @foreach (var clinic in apiResponseList.Items)
                     {
                         <option value="@clinic.VanityId">@clinic.Name</option>
                     }

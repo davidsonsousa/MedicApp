@@ -16,7 +16,7 @@
     </div>
 </div>
 
-@if (clinics is null)
+@if (apiResponse is null)
 {
     <SpinnerComponent MessageLoading="Loading clinics..." MessageNotFound="There are no clinics available at the moment" ShowSpinner="showSpinner" />
 }
@@ -31,7 +31,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var clinic in clinics)
+                @foreach (var clinic in apiResponse.Items)
                 {
                     <tr>
                         <td>@clinic.Name (@("branch".ToQuantity(clinic.BranchIds.Count())))</td>
