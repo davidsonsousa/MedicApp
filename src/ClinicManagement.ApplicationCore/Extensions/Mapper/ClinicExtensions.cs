@@ -3,25 +3,29 @@
 public static class ClinicExtensions
 {
     /// <summary>
-    /// Maps a Clinic entity to a ClinicDetail object
+    /// Maps a Clinic entity to a ClinicResponse object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static ClinicDetail MapToResponse(this Clinic? item)
+    public static ClinicResponse MapToResponse(this Clinic? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new ClinicDetail
+        return new ClinicResponse
         {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            //Branches = item.Branches.Select(b => new BranchItem
-            //{
-            //    VanityId = b.VanityId,
-            //    Name = b.Name,
-            //    Address = b.Address,
-            //    PhoneNumber = b.PhoneNumber,
-            //})
+            HasError = false,
+            Item = new ClinicDetail
+            {
+                VanityId = item.VanityId,
+                Name = item.Name,
+                //Branches = item.Branches.Select(b => new BranchItem
+                //{
+                //    VanityId = b.VanityId,
+                //    Name = b.Name,
+                //    Address = b.Address,
+                //    PhoneNumber = b.PhoneNumber,
+                //})
+            }
         };
     }
 

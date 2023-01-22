@@ -33,7 +33,7 @@ public class ClinicService : ServiceBase<Clinic>, IClinicService
     public async Task<IResult> GetClinicById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(ClinicService), nameof(GetClinicById), id);
-        var result = new Result<ClinicDetail>();
+        var result = new Result<ClinicResponse>();
 
         try
         {
