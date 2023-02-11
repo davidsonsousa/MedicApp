@@ -17,7 +17,8 @@ public partial class CreateEdit
         if (ClinicId.HasValue)
         {
             pageTitle = "Edit Clinic";
-            clinicEditModel = await ApiService.GetClinicByIdAsync<ClinicEditModel>(ClinicId.Value);
+            var apiResponseItem = await ApiService.GetClinicByIdAsync<ClinicEditModel>(ClinicId.Value);
+            clinicEditModel = apiResponseItem.Item!;
         }
     }
 
@@ -26,7 +27,7 @@ public partial class CreateEdit
         try
         {
             var result = ClinicId.HasValue ? await ApiService.UpdateClinicAsync(clinicEditModel) : await ApiService.InsertClinicAsync(clinicEditModel);
-            if (result)
+            if (!result.HasError)
             {
                 clinicEditModel = new();
                 modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/clinics");
@@ -54,9 +55,10 @@ public partial class CreateEdit
             }
 
             var result = branchId.HasValue ? await ApiService.UpdateBranchAsync(branchEditModel) : await ApiService.InsertBranchAsync(branchEditModel);
-            if (result)
+            if (!result.HasError)
             {
-                clinicEditModel.Branches = await ApiService.GetBranchesByClinicIdAsync<BranchEditModel>(ClinicId.Value);
+                var apiResponse = await ApiService.GetBranchesByClinicIdAsync<BranchEditModel>(ClinicId.Value);
+                clinicEditModel.Branches = apiResponse.Items;
                 CloseEditForm();
             }
             else
@@ -82,7 +84,8 @@ public partial class CreateEdit
     {
         if (vanityId.HasValue)
         {
-            branchEditModel = await ApiService.GetBranchByIdAsync<BranchEditModel>(vanityId.Value);
+            var apiResponseItem = await ApiService.GetBranchByIdAsync<BranchEditModel>(vanityId.Value);
+            branchEditModel = apiResponseItem.Item!;
             branchId = vanityId;
             isEditOpen = true;
         }

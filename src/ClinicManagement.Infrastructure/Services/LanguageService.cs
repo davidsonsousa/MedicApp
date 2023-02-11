@@ -11,14 +11,14 @@ public class LanguageService : ServiceBase<Language>, ILanguageService
     public async Task<IResult> GetAllLanguages(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllLanguages));
-        var result = new Result<IEnumerable<LanguageResponse>>();
+        var result = new Result<LanguageListResponse>();
 
         try
         {
             var languages = await Repository.GetAllAsync(cancellationToken);
             Guard.Against.Null(languages, nameof(languages));
 
-            result.Value = languages.MapToResponse();
+            result.Value = languages.MapToListResponse();
         }
         catch (Exception ex)
         {
@@ -28,7 +28,6 @@ public class LanguageService : ServiceBase<Language>, ILanguageService
 
         return result;
     }
-
 
     public async Task<IResult> GetLanguageById(Guid id, CancellationToken cancellationToken = default)
     {

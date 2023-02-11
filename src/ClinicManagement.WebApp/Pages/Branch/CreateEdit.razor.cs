@@ -6,7 +6,7 @@ public partial class CreateEdit
     public Guid? BranchId { get; set; }
 
     private string pageTitle = "New Branch";
-    private IEnumerable<ClinicViewModel> clinics = new List<ClinicViewModel>();
+    private ApiResponseListModel<ClinicViewModel> apiResponseList = new();
     private BranchEditModel branchEditModel = new();
     private DepartmentEditModel departmentEditModel = new();
     private ModalComponent? modalComponent;
@@ -18,10 +18,11 @@ public partial class CreateEdit
         if (BranchId.HasValue)
         {
             pageTitle = "Edit Branch";
-            branchEditModel = await ApiService.GetBranchByIdAsync<BranchEditModel>(BranchId.Value);
+            var apiResponseItem = await ApiService.GetBranchByIdAsync<BranchEditModel>(BranchId.Value);
+            branchEditModel = apiResponseItem.Item!;
         }
 
-        clinics = await ApiService.GetClinicsAsync<ClinicViewModel>();
+        apiResponseList = await ApiService.GetClinicsAsync<ClinicViewModel>();
     }
 
     private async Task HandleValidBranchSubmitAsync()
@@ -29,7 +30,7 @@ public partial class CreateEdit
         try
         {
             var result = BranchId.HasValue ? await ApiService.UpdateBranchAsync(branchEditModel) : await ApiService.InsertBranchAsync(branchEditModel);
-            if (result)
+            if (!result.HasError)
             {
                 branchEditModel = new();
                 modalComponent?.Show("Branch", "Branch saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/branches");
@@ -57,9 +58,10 @@ public partial class CreateEdit
             }
 
             var result = departmentId.HasValue ? await ApiService.UpdateDepartmentAsync(departmentEditModel) : await ApiService.InsertDepartmentAsync(departmentEditModel);
-            if (result)
+            if (!result.HasError)
             {
-                branchEditModel.Departments = await ApiService.GetDepartmentsByBranchIdAsync<DepartmentEditModel>(BranchId.Value);
+                var apiResponse = await ApiService.GetDepartmentsByBranchIdAsync<DepartmentEditModel>(BranchId.Value);
+                branchEditModel.Departments = apiResponse.Items;
                 CloseEditForm();
             }
             else
@@ -85,7 +87,8 @@ public partial class CreateEdit
     {
         if (vanityId.HasValue)
         {
-            departmentEditModel = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(vanityId.Value);
+            var apiResponseItem = await ApiService.GetDepartmentByIdAsync<DepartmentEditModel>(vanityId.Value);
+            departmentEditModel = apiResponseItem.Item!;
             departmentId = vanityId;
             isEditOpen = true;
         }

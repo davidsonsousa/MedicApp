@@ -1,4 +1,6 @@
-﻿namespace ClinicManagement.Api.Controllers;
+﻿using ClinicManagement.ApplicationCore.Models.Responses.ApointmentPatient;
+
+namespace ClinicManagement.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -23,14 +25,7 @@ public class PatientController : ControllerBase
     {
         var result = await patientService.GetAllPatients(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<PatientResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<PatientListResponse>());
     }
 
     /// <summary>
@@ -43,14 +38,7 @@ public class PatientController : ControllerBase
     {
         var result = await appointmentService.GetAllAppointments(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<WorkScheduleEmployeeResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<AppointmentPatientListResponse>());
     }
 
     /// <summary>
@@ -78,7 +66,7 @@ public class PatientController : ControllerBase
     {
         var result = await appointmentService.GetAppointmentById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<WorkScheduleEmployeeResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<AppointmentPatientResponse>());
     }
 
     /// <summary>

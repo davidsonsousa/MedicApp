@@ -39,8 +39,8 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
-                .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
+builder.Services.AddControllers();
+builder.Services.AddDateOnlyTimeOnlyStringConverters();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

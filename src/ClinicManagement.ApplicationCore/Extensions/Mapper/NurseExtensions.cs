@@ -3,65 +3,61 @@
 public static class NurseExtensions
 {
     /// <summary>
-    /// Maps a Nurse entity to a NurseRequest object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static NurseRequest MapToRequest(this Nurse item)
-    {
-        return new NurseRequest
-        {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Surname = item.Surname,
-            Address = item.Address,
-            DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber
-        };
-    }
-
-    /// <summary>
     /// Maps a Nurse entity to a EmployeeResponse object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static EmployeeDetailResponse MapToResponse(this Nurse? item)
+    public static EmployeeResponse MapToResponse(this Nurse? item)
     {
         Guard.Against.Null(item, nameof(item));
 
-        return new EmployeeDetailResponse
+        return new EmployeeResponse
         {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Surname = item.Surname,
-            Address = item.Address,
-            DateOfBirth = item.DateOfBirth,
-            PhoneNumber = item.PhoneNumber,
-            Departments = item.Departments.MapToResponse(),
-            Languages = item.Languages.MapToResponse()
+            Item = new EmployeeDetail
+            {
+                VanityId = item.VanityId,
+                Name = item.Name,
+                Surname = item.Surname,
+                Address = item.Address,
+                DateOfBirth = item.DateOfBirth,
+                PhoneNumber = item.PhoneNumber,
+                Departments = item.Departments.Select(d => d.MapToItem()),
+                Languages = item.Languages.Select(l => l.MapToItem())
+            }
         };
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Nurse&gt; to IEnumerable&lt;EmployeeResponse&gt; object
+    /// Maps a Nurse entity to a EmployeeItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static EmployeeItem MapToItem(this Nurse? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new EmployeeItem
+        {
+            VanityId = item.VanityId,
+            Name = item.Name,
+            Surname = item.Surname,
+            DateOfBirth = item.DateOfBirth
+        };
+    }
+
+    /// <summary>
+    /// Maps IEnumerable&lt;Nurse&gt; to EmployeeListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<EmployeeResponse> MapToResponse(this IEnumerable<Nurse>? items)
+    public static EmployeeListResponse MapToListResponse(this IEnumerable<Nurse>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(nurse => new EmployeeResponse
+        return new EmployeeListResponse
         {
-            VanityId = nurse.VanityId,
-            Name = nurse.Name,
-            Surname = nurse.Surname,
-            Address = nurse.Address,
-            DateOfBirth = nurse.DateOfBirth,
-            PhoneNumber = nurse.PhoneNumber,
-            DepartmentIds = nurse.Departments.Select(d => d.VanityId),
-            LanguageIds = nurse.Languages.Select(l => l.VanityId),
-        });
+            Items = items.Select(e => e.MapToItem())
+        };
     }
 
     /// <summary>
@@ -86,6 +82,7 @@ public static class NurseExtensions
     /// Maps a NurseRequest to an existing Nurse entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="nurse"></param>
     /// <returns></returns>
     public static Nurse MapToEntity(this NurseRequest item, Nurse? nurse)
     {

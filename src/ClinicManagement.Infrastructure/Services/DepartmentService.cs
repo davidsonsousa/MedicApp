@@ -15,14 +15,14 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
     public async Task<IResult> GetAllDepartments(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllDepartments));
-        var result = new Result<IEnumerable<DepartmentResponse>>();
+        var result = new Result<DepartmentListResponse>();
 
         try
         {
             var departments = await departmentRepository.GetAllDepartmentsWithBranchesAsync(cancellationToken);
             Guard.Against.Null(departments, nameof(departments));
 
-            result.Value = departments.MapToResponse();
+            result.Value = departments.MapToListResponse();
         }
         catch (Exception ex)
         {
@@ -57,14 +57,14 @@ public class DepartmentService : ServiceBase<Department>, IDepartmentService
     public async Task<IResult> GetDepartmentsByBranchId(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(DepartmentService), nameof(GetDepartmentsByBranchId), id);
-        var result = new Result<IEnumerable<DepartmentResponse>>();
+        var result = new Result<DepartmentListResponse>();
 
         try
         {
             var departments = await departmentRepository.GetDepartmentsWithBranchByBranchIdAsync(id, cancellationToken);
             Guard.Against.Null(departments, nameof(departments));
 
-            result.Value = departments.MapToResponse();
+            result.Value = departments.MapToListResponse();
         }
         catch (Exception ex)
         {

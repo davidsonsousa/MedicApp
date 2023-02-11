@@ -21,14 +21,7 @@ public class DepartmentController : ControllerBase
     {
         var result = await departmentService.GetAllDepartments(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<DepartmentResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<DepartmentListResponse>());
     }
 
     /// <summary>
@@ -56,7 +49,7 @@ public class DepartmentController : ControllerBase
     {
         var result = await departmentService.GetDepartmentsByBranchId(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<IEnumerable<DepartmentResponse>>());
+        return result.HasError ? NotFound() : Ok(result.As<DepartmentListResponse>());
     }
 
     /// <summary>

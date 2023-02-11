@@ -25,14 +25,7 @@ public class EmployeeController : ControllerBase
     {
         var result = await doctorService.GetAllDoctors(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<EmployeeResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<EmployeeListResponse>());
     }
 
     /// <summary>
@@ -45,14 +38,7 @@ public class EmployeeController : ControllerBase
     {
         var result = await doctorService.GetAllDoctorWorkSchedules(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<WorkScheduleEmployeeResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<WorkScheduleEmployeeListResponse>());
     }
 
     /// <summary>
@@ -61,18 +47,11 @@ public class EmployeeController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns>List of nurses</returns>
     [HttpGet("nurses")]
-    public async Task<IActionResult> GetNurseAsync(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetNursesAsync(CancellationToken cancellationToken)
     {
         var result = await nurseService.GetAllNurses(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<EmployeeResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<EmployeeListResponse>());
     }
 
     /// <summary>
@@ -85,14 +64,7 @@ public class EmployeeController : ControllerBase
     {
         var result = await nurseService.GetAllNurseWorkSchedules(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<WorkScheduleEmployeeResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<WorkScheduleEmployeeListResponse>());
     }
 
     /// <summary>
@@ -105,14 +77,7 @@ public class EmployeeController : ControllerBase
     {
         var result = await workScheduleService.GetAllWorkSchedules(cancellationToken);
 
-        if (result.HasError)
-        {
-            return NotFound();
-        }
-
-        var items = result.As<IEnumerable<WorkScheduleEmployeeResponse>>();
-
-        return !items.Any() ? NotFound() : Ok(items);
+        return result.HasError ? NotFound() : Ok(result.As<WorkScheduleEmployeeListResponse>());
     }
 
     /// <summary>
@@ -122,11 +87,11 @@ public class EmployeeController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("doctor/{id}")]
-    public async Task<IActionResult> GetDoctorsAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDoctorAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await doctorService.GetDoctorById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<EmployeeDetailResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<EmployeeResponse>());
     }
 
     /// <summary>
@@ -140,7 +105,7 @@ public class EmployeeController : ControllerBase
     {
         var result = await nurseService.GetNurseById(id, cancellationToken);
 
-        return result.HasError ? NotFound() : Ok(result.As<EmployeeDetailResponse>());
+        return result.HasError ? NotFound() : Ok(result.As<EmployeeResponse>());
     }
 
     /// <summary>

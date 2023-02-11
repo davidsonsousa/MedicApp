@@ -1,7 +1,9 @@
-﻿namespace ClinicManagement.ApplicationCore.Models.Requests;
+﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Patient;
 
-public class PatientResponse : RequestBase
+public class PatientDetail
 {
+    public Guid VanityId { get; set; }
+
     public string Name { get; set; } = string.Empty;
 
     public string Surname { get; set; } = string.Empty;

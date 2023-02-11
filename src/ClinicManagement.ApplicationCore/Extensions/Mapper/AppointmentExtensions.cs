@@ -1,24 +1,11 @@
-﻿namespace ClinicManagement.ApplicationCore.Extensions.Mapper;
+﻿using ClinicManagement.ApplicationCore.Models.Responses.ApointmentPatient;
+
+namespace ClinicManagement.ApplicationCore.Extensions.Mapper;
 
 public static class AppointmentExtensions
 {
     /// <summary>
-    /// Maps a Appointment entity to a AppointmentEditModel object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static AppointmentPatientRequest MapToRequest(this Appointment item)
-    {
-        return new AppointmentPatientRequest
-        {
-            VanityId = item.VanityId,
-            DateTimeSchedule = item.DateTimeSchedule,
-            PersonId = item.Person.VanityId
-        };
-    }
-
-    /// <summary>
-    /// Maps a Appointment entity to a AppointmentViewModel object
+    /// Maps a Appointment entity to a AppointmentPatientResponse object
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
@@ -28,6 +15,21 @@ public static class AppointmentExtensions
 
         return new AppointmentPatientResponse
         {
+            Item = item.MapToItem()
+        };
+    }
+
+    /// <summary>
+    /// Maps a Appointment entity to a AppointmentPatientItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static AppointmentPatientItem MapToItem(this Appointment? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new AppointmentPatientItem
+        {
             VanityId = item.VanityId,
             DateTimeSchedule = item.DateTimeSchedule,
             PersonId = item.Person.VanityId
@@ -35,27 +37,25 @@ public static class AppointmentExtensions
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Appointment&gt; to IEnumerable&lt;AppointmentViewModel&gt; object
+    /// Maps IEnumerable&lt;Appointment&gt; to AppointmentPatientListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<AppointmentPatientResponse> MapToResponse(this IEnumerable<Appointment>? items)
+    public static AppointmentPatientListResponse MapToListResponse(this IEnumerable<Appointment>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(appointment => new AppointmentPatientResponse
+        return new AppointmentPatientListResponse
         {
-            VanityId = appointment.VanityId,
-            DateTimeSchedule = appointment.DateTimeSchedule,
-            PersonId = appointment.Person.VanityId
-        });
-
+            Items = items.Select(ap => ap.MapToItem())
+        };
     }
 
     /// <summary>
-    /// Maps a AppointmentEditModel to a Appointment entity
+    /// Maps a AppointmentPatientRequest to a Appointment entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="person"></param>
     /// <returns></returns>
     public static Appointment MapToEntity(this AppointmentPatientRequest item, Person? person)
     {
@@ -70,9 +70,10 @@ public static class AppointmentExtensions
     }
 
     /// <summary>
-    /// Maps a AppointmentEditModel to an existing Appointment entity
+    /// Maps a AppointmentPatientRequest to an existing Appointment entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="appointment"></param>
     /// <returns></returns>
     public static Appointment MapToEntity(this AppointmentPatientRequest item, Appointment? appointment)
     {

@@ -20,14 +20,14 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
     public async Task<IResult> GetAllDoctors(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllDoctors));
-        var result = new Result<IEnumerable<EmployeeResponse>>();
+        var result = new Result<EmployeeListResponse>();
 
         try
         {
             var doctors = await doctorRepository.GetAllEmployeesWithDepartmentsAndLanguageAsync(cancellationToken);
             Guard.Against.Null(doctors, nameof(doctors));
 
-            result.Value = doctors.MapToResponse();
+            result.Value = doctors.MapToListResponse();
         }
         catch (Exception ex)
         {
@@ -41,14 +41,14 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
     public async Task<IResult> GetAllDoctorWorkSchedules(CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(GetAllDoctorWorkSchedules));
-        var result = new Result<IEnumerable<WorkScheduleEmployeeResponse>>();
+        var result = new Result<WorkScheduleEmployeeListResponse>();
 
         try
         {
             var workSchedules = await workScheduleRepository.GetWorkSchedulesWithEmployeeAndDepartmentByEmployeeTypeAsync(Constants.Discriminator.Doctor, cancellationToken);
             Guard.Against.Null(workSchedules, nameof(workSchedules));
 
-            result.Value = workSchedules.MapToResponse();
+            result.Value = workSchedules.MapToListResponse();
         }
         catch (Exception ex)
         {
@@ -62,7 +62,7 @@ public class DoctorService : ServiceBase<Doctor>, IDoctorService
     public async Task<IResult> GetDoctorById(Guid id, CancellationToken cancellationToken = default)
     {
         Logger.DebugMethodCall(nameof(DoctorService), nameof(GetDoctorById), id);
-        var result = new Result<EmployeeDetailResponse>();
+        var result = new Result<EmployeeResponse>();
 
         try
         {

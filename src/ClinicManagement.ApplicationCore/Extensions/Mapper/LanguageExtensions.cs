@@ -3,21 +3,6 @@
 public static class LanguageExtensions
 {
     /// <summary>
-    /// Maps a Language entity to a LanguageRequest object
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public static LanguageRequest MapToRequest(this Language item)
-    {
-        return new LanguageRequest
-        {
-            VanityId = item.VanityId,
-            Name = item.Name,
-            Code = item.Code
-        };
-    }
-
-    /// <summary>
     /// Maps a Language entity to a LanguageResponse object
     /// </summary>
     /// <param name="item"></param>
@@ -28,6 +13,26 @@ public static class LanguageExtensions
 
         return new LanguageResponse
         {
+            Item = new LanguageItem
+            {
+                VanityId = item.VanityId,
+                Name = item.Name,
+                Code = item.Code
+            }
+        };
+    }
+
+    /// <summary>
+    /// Maps a Language entity to a LanguageItem object
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public static LanguageItem MapToItem(this Language? item)
+    {
+        Guard.Against.Null(item, nameof(item));
+
+        return new LanguageItem
+        {
             VanityId = item.VanityId,
             Name = item.Name,
             Code = item.Code
@@ -35,20 +40,18 @@ public static class LanguageExtensions
     }
 
     /// <summary>
-    /// Maps IEnumerable&lt;Language&gt; to IEnumerable&lt;LanguageResponse&gt; object
+    /// Maps IEnumerable&lt;Language&gt; to LanguageListResponse object
     /// </summary>
     /// <param name="items"></param>
     /// <returns></returns>
-    public static IEnumerable<LanguageResponse> MapToResponse(this IEnumerable<Language>? items)
+    public static LanguageListResponse MapToListResponse(this IEnumerable<Language>? items)
     {
         Guard.Against.Null(items, nameof(items));
 
-        return items.Select(language => new LanguageResponse
+        return new LanguageListResponse
         {
-            VanityId = language.VanityId,
-            Name = language.Name,
-            Code = language.Code
-        });
+            Items = items.Select(l => l.MapToItem())
+        };
     }
 
     /// <summary>
@@ -70,6 +73,7 @@ public static class LanguageExtensions
     /// Maps a LanguageRequest to an existing Language entity
     /// </summary>
     /// <param name="item"></param>
+    /// <param name="language"></param>
     /// <returns></returns>
     public static Language MapToEntity(this LanguageRequest item, Language? language)
     {
