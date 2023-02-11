@@ -13,7 +13,13 @@ public static class DepartmentExtensions
 
         return new DepartmentResponse
         {
-            Item = item.MapToItem()
+            Item = new DepartmentDetail
+            {
+                BranchId = item.Branch.VanityId,
+                VanityId = item.VanityId,
+                Name = item.Name,
+                PhoneNumber = item.PhoneNumber
+            }
         };
     }
 
