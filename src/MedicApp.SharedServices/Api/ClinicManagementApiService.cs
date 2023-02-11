@@ -162,6 +162,31 @@ public class ClinicManagementApiService : IClinicManagementApiService
                : throw new HttpRequestException($"Put operation failed. Status code: {response.StatusCode}");
     }
 
+    public async Task<ApiResponseModel> DeleteLanguageAsync(Guid id)
+    {
+        return await DeleteItemAsync("language", id);
+    }
+
+    public async Task<ApiResponseItemModel<T>> GetLanguageByIdAsync<T>(Guid id)
+    {
+        return await GetItemByIdAsync<T>("language", id);
+    }
+
+    public async Task<ApiResponseListModel<T>> GetLanguagesAsync<T>()
+    {
+        return await GetItemsAsync<T>("language");
+    }
+
+    public async Task<ApiResponseModel> InsertLanguageAsync<T>(T model)
+    {
+        return await InsertItemAsync("language", model);
+    }
+
+    public async Task<ApiResponseModel> UpdateLanguageAsync<T>(T model)
+    {
+        return await UpdateItemAsync("language", model);
+    }
+
     //private async Task<string> PrepareClient()
     //{
     //    var accessToken = await tokenAcquisition.GetAccessTokenForUserAsync(new[] { userApiScope });

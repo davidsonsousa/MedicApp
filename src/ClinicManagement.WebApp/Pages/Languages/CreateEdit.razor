@@ -1,0 +1,32 @@
+﻿@page "/language/create"
+@page "/language/edit/{LanguageId:guid}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IClinicManagementApiService ApiService
+@inject ILogger<CreateEdit> Logger
+
+<PageTitle>Clinic Management - @pageTitle</PageTitle>
+
+<h3>@pageTitle</h3>
+
+<EditForm Model="@languageEditModel" OnValidSubmit="@HandleValidLanguageSubmitAsync">
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <InputText id="name" class="form-control" @bind-Value="languageEditModel.Name" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="name">Code</label>
+                <InputText id="code" class="form-control" @bind-Value="languageEditModel.Code" />
+            </div>
+        </div>
+    </div>
+    <ValidationSummary />
+    <DataAnnotationsValidator />
+    <div class="d-grid gap-2 col-1 mx-auto">
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+</EditForm>
+
+<ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />

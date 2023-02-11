@@ -35,4 +35,14 @@ public interface IClinicManagementApiService
     Task<ApiResponseModel> InsertDepartmentAsync<T>(T model);
 
     Task<ApiResponseModel> UpdateDepartmentAsync<T>(T model);
+
+    Task<ApiResponseModel> DeleteLanguageAsync(Guid id);
+
+    Task<ApiResponseItemModel<T>> GetLanguageByIdAsync<T>(Guid id);
+
+    Task<ApiResponseListModel<T>> GetLanguagesAsync<T>();
+
+    Task<ApiResponseModel> InsertLanguageAsync<T>(T model);
+
+    Task<ApiResponseModel> UpdateLanguageAsync<T>(T model);
 }
