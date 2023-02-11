@@ -30,11 +30,11 @@ public partial class CreateEdit
             if (!result.HasError)
             {
                 clinicEditModel = new();
-                modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/clinics");
+                modalComponent?.Show("Clinic", "Clinic saved successfully!", ModalType.OkButtonWithRedirectToUrl, redirectUrl: "/clinics");
             }
             else
             {
-                modalComponent?.Show("Error", "An error occurred when saving the clinic!", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", "An error occurred when saving the clinic!", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)
@@ -63,7 +63,7 @@ public partial class CreateEdit
             }
             else
             {
-                modalComponent?.Show("Error", $"An error occurred when saving the branch '{branchEditModel.Name}'!", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", $"An error occurred when saving the branch '{branchEditModel.Name}'!", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)

@@ -40,11 +40,11 @@ public partial class Index
             if (!result.HasError)
             {
                 await GetClinicsAsync();
-                modalComponent?.Show("Confirmation", "The clinic was successfully deleted.", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Confirmation", "The clinic was successfully deleted.", ModalType.OkButtonWithoutAction);
             }
             else
             {
-                modalComponent?.Show("Error", "An error occurred when deleting the clinic.", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", "An error occurred when deleting the clinic.", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)

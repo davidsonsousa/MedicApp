@@ -6,8 +6,8 @@ public partial class CreateEdit
     public Guid? DepartmentId { get; set; }
 
     private string pageTitle = "New Department";
-    private ApiResponseListModel<BranchViewModel> apiResponse = new();
     private DepartmentEditModel departmentEditModel = new();
+    private ApiResponseListModel<BranchViewModel> apiResponse = new();
     private ModalComponent? modalComponent;
 
     protected async override Task OnInitializedAsync()
@@ -30,11 +30,11 @@ public partial class CreateEdit
             if (!result.HasError)
             {
                 departmentEditModel = new();
-                modalComponent?.Show("Department", "Department saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/departments");
+                modalComponent?.Show("Department", "Department saved successfully!", ModalType.OkButtonWithRedirectToUrl, redirectUrl: "/departments");
             }
             else
             {
-                modalComponent?.Show("Error", "An error occurred when saving the department!", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", "An error occurred when saving the department!", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)

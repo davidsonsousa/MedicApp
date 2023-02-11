@@ -33,11 +33,11 @@ public partial class CreateEdit
             if (!result.HasError)
             {
                 branchEditModel = new();
-                modalComponent?.Show("Branch", "Branch saved successfully!", ModalType.OneButtonWithRedirectToUrl, redirectUrl: "/branches");
+                modalComponent?.Show("Branch", "Branch saved successfully!", ModalType.OkButtonWithRedirectToUrl, redirectUrl: "/branches");
             }
             else
             {
-                modalComponent?.Show("Error", "An error occurred when saving the branch!", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", "An error occurred when saving the branch!", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)
@@ -66,7 +66,7 @@ public partial class CreateEdit
             }
             else
             {
-                modalComponent?.Show("Error", $"An error occurred when saving the department '{departmentEditModel.Name}'!", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", $"An error occurred when saving the department '{departmentEditModel.Name}'!", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)

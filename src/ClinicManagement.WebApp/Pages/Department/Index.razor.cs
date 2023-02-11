@@ -40,11 +40,11 @@ public partial class Index
             if (!result.HasError)
             {
                 await GetDepartmentsAsync();
-                modalComponent?.Show("Confirmation", "The department was successfully deleted.", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Confirmation", "The department was successfully deleted.", ModalType.OkButtonWithoutAction);
             }
             else
             {
-                modalComponent?.Show("Error", "An error occurred when deleting the department.", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", "An error occurred when deleting the department.", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)

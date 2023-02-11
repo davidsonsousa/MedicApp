@@ -19,15 +19,12 @@
                             <button type="button" class="btn btn-secondary" @onclick="Hide">@SecondaryButtonText</button>
                             <button type="button" class="btn btn-success" @onclick="ExecuteActionAsync">@PrimaryButtonText</button>
                             break;
-                        case ModalType.OneButtonWithAction:
-                            <button type="button" class="btn btn-success" @onclick="ExecuteActionAsync">@PrimaryButtonText</button>
+                        case ModalType.OkButtonWithRedirectToUrl:
+                            <button type="button" class="btn btn-primary" @onclick="RedirectToUrl">OK</button>
                             break;
-                        case ModalType.OneButtonWithRedirectToUrl:
-                            <button type="button" class="btn btn-success" @onclick="RedirectToUrl">@PrimaryButtonText</button>
-                            break;
-                        case ModalType.OneButtonWithoutAction:
+                        case ModalType.OkButtonWithoutAction:
                         default:
-                            <button type="button" class="btn btn-primary" @onclick="Hide">@PrimaryButtonText</button>
+                            <button type="button" class="btn btn-primary" @onclick="Hide">OK</button>
                             break;
                     }
                 </div>
