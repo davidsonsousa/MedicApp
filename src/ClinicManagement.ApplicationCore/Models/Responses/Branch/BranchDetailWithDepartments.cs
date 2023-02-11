@@ -1,6 +1,6 @@
 ﻿namespace ClinicManagement.ApplicationCore.Models.Responses.Branch;
 
-public class BranchDetail
+public class BranchDetailWithDepartments
 {
     public Guid VanityId { get; set; }
 
@@ -11,4 +11,6 @@ public class BranchDetail
     public Address Address { get; set; } = new();
 
     public PhoneNumber PhoneNumber { get; set; } = new();
+
+    public IEnumerable<DepartmentDetail> Departments { get; set; } = new List<DepartmentDetail>();
 }

@@ -6,5 +6,5 @@ public class BranchViewModel
 
     public string Name { get; set; } = string.Empty;
 
-    public IEnumerable<Guid> DepartmentIds { get; set; } = new List<Guid>();
+    public int DepartmentCount { get; set; }
 }

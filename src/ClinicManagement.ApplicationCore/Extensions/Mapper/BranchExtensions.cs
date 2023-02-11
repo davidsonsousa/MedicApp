@@ -14,19 +14,19 @@ public static class BranchExtensions
         return new BranchResponse
         {
             HasError = false,
-            Item = new BranchDetail
+            Item = new BranchDetailWithDepartments
             {
                 VanityId = item.VanityId,
                 ClinicId = item.Clinic.VanityId,
                 Name = item.Name,
                 Address = item.Address,
                 PhoneNumber = item.PhoneNumber,
-                //Departments = item.Departments.Select(d => new DepartmentResponse
-                //{
-                //    VanityId = d.VanityId,
-                //    Name = d.Name,
-                //    PhoneNumber = d.PhoneNumber
-                //})
+                Departments = item.Departments.Select(d => new DepartmentDetail
+                {
+                    VanityId = d.VanityId,
+                    Name = d.Name,
+                    PhoneNumber = d.PhoneNumber
+                })
             }
         };
     }
