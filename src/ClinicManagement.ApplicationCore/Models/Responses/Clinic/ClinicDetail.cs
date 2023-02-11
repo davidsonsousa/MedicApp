@@ -6,5 +6,5 @@ public class ClinicDetail
 
     public string Name { get; set; } = string.Empty;
 
-    public IEnumerable<BranchItem> Branches { get; set; } = new List<BranchItem>();
+    public IEnumerable<BranchDetail> Branches { get; set; } = new List<BranchDetail>();
 }

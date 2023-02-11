@@ -34,7 +34,7 @@ else
                 @foreach (var clinic in apiResponse.Items)
                 {
                     <tr>
-                        <td>@clinic.Name (@("branch".ToQuantity(clinic.BranchIds.Count())))</td>
+                        <td>@clinic.Name (@("branch".ToQuantity(clinic.BranchCount)))</td>
                         <td>
                             <a href="/clinic/edit/@clinic.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
                             <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(clinic)">

@@ -18,13 +18,13 @@ public static class ClinicExtensions
             {
                 VanityId = item.VanityId,
                 Name = item.Name,
-                //Branches = item.Branches.Select(b => new BranchItem
-                //{
-                //    VanityId = b.VanityId,
-                //    Name = b.Name,
-                //    Address = b.Address,
-                //    PhoneNumber = b.PhoneNumber,
-                //})
+                Branches = item.Branches.Select(b => new BranchDetail
+                {
+                    VanityId = b.VanityId,
+                    Name = b.Name,
+                    Address = b.Address,
+                    PhoneNumber = b.PhoneNumber,
+                })
             }
         };
     }
