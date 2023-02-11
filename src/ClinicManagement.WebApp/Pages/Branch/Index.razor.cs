@@ -40,11 +40,11 @@ public partial class Index
             if (!result.HasError)
             {
                 await GetBranchesAsync();
-                modalComponent?.Show("Confirmation", "The branch was successfully deleted.", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Confirmation", "The branch was successfully deleted.", ModalType.OkButtonWithoutAction);
             }
             else
             {
-                modalComponent?.Show("Error", "An error occurred when deleting the branch.", ModalType.OneButtonWithoutAction);
+                modalComponent?.Show("Error", "An error occurred when deleting the branch.", ModalType.OkButtonWithoutAction);
             }
         }
         catch (Exception ex)

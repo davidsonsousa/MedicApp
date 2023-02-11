@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClinicManagement.Api", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClinicManagement.WebApp", "src\ClinicManagement.WebApp\ClinicManagement.WebApp.csproj", "{DACEABF1-A5D4-4594-A79B-F9BBDF9AC5B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicApp.SharedServices", "src\MedicApp.SharedServices\MedicApp.SharedServices.csproj", "{FC95CC28-0E79-498F-AA80-BE563D693CE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicApp.SharedServices", "src\MedicApp.SharedServices\MedicApp.SharedServices.csproj", "{FC95CC28-0E79-498F-AA80-BE563D693CE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

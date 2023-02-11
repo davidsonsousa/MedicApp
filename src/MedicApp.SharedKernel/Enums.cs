@@ -3,7 +3,6 @@
 public enum ModalType
 {
     TwoButtons,
-    OneButtonWithAction,
-    OneButtonWithRedirectToUrl,
-    OneButtonWithoutAction
+    OkButtonWithRedirectToUrl,
+    OkButtonWithoutAction
 }
