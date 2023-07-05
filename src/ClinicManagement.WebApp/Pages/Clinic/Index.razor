@@ -36,7 +36,7 @@ else
                     <tr>
                         <td>@clinic.Name (@("branch".ToQuantity(clinic.BranchCount)))</td>
                         <td>
-                            <a href="/clinic/edit/@clinic.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                            <a href="/clinics/edit/@clinic.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
                             <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(clinic)">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>

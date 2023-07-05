@@ -1,5 +1,5 @@
-﻿@page "/branch/create"
-@page "/branch/edit/{BranchId:guid}"
+﻿@page "/branches/create"
+@page "/branches/edit/{BranchId:guid}"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IClinicManagementApiService ApiService
@@ -115,7 +115,7 @@
         {
             <div class="col-3">
                 <div class="card">
-                    <h5 class="card-header"><a href="/department/edit/@department.VanityId">@department.Name</a></h5>
+                    <h5 class="card-header"><a href="/departments/edit/@department.VanityId">@department.Name</a></h5>
                     <div class="card-body">
                         <ul class="list-unstyled">
                             <li>Phone: +@department.PhoneNumber.CountryCode @department.PhoneNumber.Number</li>
