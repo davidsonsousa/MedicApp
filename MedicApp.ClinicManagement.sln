@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClinicManagement.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClinicManagement.Api", "src\ClinicManagement.Api\ClinicManagement.Api.csproj", "{8405A85A-7625-4D41-8FC4-BB05DE89E4F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClinicManagement.WebApp", "src\ClinicManagement.WebApp\ClinicManagement.WebApp.csproj", "{DACEABF1-A5D4-4594-A79B-F9BBDF9AC5B5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicApp.SharedServices", "src\MedicApp.SharedServices\MedicApp.SharedServices.csproj", "{FC95CC28-0E79-498F-AA80-BE563D693CE8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{78262F94-A422-468D-9425-22DEBC7F8A83}"
@@ -24,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClinicManagement.WebApp", "src\ClinicManagement.WebApp\ClinicManagement.WebApp.csproj", "{84BB955A-7874-4ADB-AB79-69770395E921}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +47,14 @@ Global
 		{8405A85A-7625-4D41-8FC4-BB05DE89E4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8405A85A-7625-4D41-8FC4-BB05DE89E4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8405A85A-7625-4D41-8FC4-BB05DE89E4F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DACEABF1-A5D4-4594-A79B-F9BBDF9AC5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DACEABF1-A5D4-4594-A79B-F9BBDF9AC5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DACEABF1-A5D4-4594-A79B-F9BBDF9AC5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DACEABF1-A5D4-4594-A79B-F9BBDF9AC5B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FC95CC28-0E79-498F-AA80-BE563D693CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC95CC28-0E79-498F-AA80-BE563D693CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC95CC28-0E79-498F-AA80-BE563D693CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC95CC28-0E79-498F-AA80-BE563D693CE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84BB955A-7874-4ADB-AB79-69770395E921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84BB955A-7874-4ADB-AB79-69770395E921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84BB955A-7874-4ADB-AB79-69770395E921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84BB955A-7874-4ADB-AB79-69770395E921}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
