@@ -1,0 +1,7 @@
+﻿/** Custom styles for the application **/
+.sidebar-nav .nav-link {
+    background: #fff;
+}
+    .sidebar-nav .nav-link.active {
+        background: #f6f9ff;
+    }
