@@ -7,126 +7,169 @@
 
 <PageTitle>Clinic Management - @pageTitle</PageTitle>
 
-<h3>@pageTitle</h3>
-
-<EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidBranchSubmitAsync">
-    <div class="row">
-        <div class="col-6">
-            <div class="mb-3">
-                <label class="form-label" for="clinics">Clinic</label>
-                <InputSelect id="clinics" class="form-select" @bind-Value="branchEditModel.ClinicId">
-                    <option>- Choose a clinic -</option>
-                    @foreach (var clinic in apiResponseList.Items)
-                    {
-                        <option value="@clinic.VanityId">@clinic.Name</option>
-                    }
-                </InputSelect>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="name">Name</label>
-                <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="countryCode">Phone</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">+</span>
-                    <div class="col-sm-3">
-                        <InputText id="countryCode" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
-                    </div>
-                    <InputText id="phoneNumber" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="mb-3">
-                <label class="form-label" for="street">Street</label>
-                <InputText id="street" class="form-control" @bind-Value="branchEditModel.Address.Street" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="zipCode">Zip code</label>
-                <InputText id="zipCode" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="city">City</label>
-                <InputText id="city" class="form-control" @bind-Value="branchEditModel.Address.City" />
-            </div>
-            @if (branchEditModel.Address.HasState)
-            {
-                <div class="mb-3">
-                    <label class="form-label" for="state">State</label>
-                    <InputText id="state" class="form-control" @bind-Value="branchEditModel.Address.State" />
-                </div>
-            }
-            <div class="mb-3">
-                <label class="form-label" for="country">Country</label>
-                <InputText id="country" class="form-control" @bind-Value="branchEditModel.Address.Country" />
-            </div>
-        </div>
-    </div>
-    <ValidationSummary />
-    <DataAnnotationsValidator />
-    <div class="d-grid gap-2 col-1 mx-auto">
-        <button type="submit" class="btn btn-success">Save</button>
-    </div>
-</EditForm>
-
-@if (BranchId.HasValue)
-{
-    <hr class="my-4" />
-    <h3>
-        <span>Departments</span>
-        <button type="button" class="btn btn-primary" disabled="@isEditOpen" @onclick="AddDepartment"><i class="fa-solid fa-plus"></i></button>
-    </h3>
-}
-
-<div class="row">
-    @foreach (var department in branchEditModel.Departments)
-    {
-        if (departmentId == department.VanityId)
-        {
-            <div class="col-3">
-                <div class="card">
-                    <EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidDepartmentSubmitAsync">
-                        <DataAnnotationsValidator />
-                        <div class="card-header">
-                            <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li>
-                                    Phone
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon1">+</span>
-                                        <div class="col-sm-3">
-                                            <InputText id="name" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" />
-                                        </div>
-                                        <InputText id="name" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" />
-                                    </div>
-                                </li>
-                            </ul>
-                            <button type="submit" class="w-50 btn btn-success">Save</button>
-                            <button type="button" class="btn btn-danger" @onclick="CloseEditForm">Cancel</button>
-                        </div>
-                    </EditForm>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="col-3">
-                <div class="card">
-                    <h5 class="card-header"><a href="/departments/edit/@department.VanityId">@department.Name</a></h5>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li>Phone: +@department.PhoneNumber.CountryCode @department.PhoneNumber.Number</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-primary" disabled="@isEditOpen" @onclick="() => EditDepartment(department.VanityId)">Edit</button>
-                    </div>
-                </div>
-            </div>
-        }
-    }
+<div class="pagetitle">
+    <h1>@pageTitle</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">Clinics</li>
+            <li class="breadcrumb-item active">@pageTitle</li>
+        </ol>
+    </nav>
 </div>
 
+<section class="section">
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@pageTitle</h5>
+                <EditForm Model="@branchEditModel" OnValidSubmit="@HandleValidBranchSubmitAsync" class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputSelect id="clinic-name" class="form-select" @bind-Value="branchEditModel.ClinicId" placeholder="Clinic">
+                                <option>- Choose a clinic -</option>
+                                @foreach (var clinic in apiResponseList.Items)
+                                {
+                                    <option value="@clinic.VanityId">@clinic.Name</option>
+                                }
+                            </InputSelect>
+                            <label for="clinic-name">Clinic</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="branch-name" class="form-control" @bind-Value="branchEditModel.Name" placeholder="Name" />
+                            <label for="branch-name">Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">+</span>
+                            <div class="col-sm-3">
+                                <div class="form-floating ">
+                                    <InputText id="country-code" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" placeholder="Code" />
+                                    <label for="country-code">Code</label>
+                                </div>
+                            </div>
+                            <div class="form-floating">
+                                <InputText id="phone" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" placeholder="Phone" />
+                                <label for="phone">Phone</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="street" class="form-control" @bind-Value="branchEditModel.Address.Street" placeholder="Street" />
+                            <label for="street">Street</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="zip-code" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" placeholder="Zip code" />
+                            <label for="zip-code">Zip code</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="city" class="form-control" @bind-Value="branchEditModel.Address.City" placeholder="City" />
+                            <label for="city">City</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="state" class="form-control" @bind-Value="branchEditModel.Address.State" placeholder="State" />
+                            <label for="state">State</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="country" class="form-control" @bind-Value="branchEditModel.Address.Country" placeholder="Country" />
+                            <label for="country">Country</label>
+                        </div>
+                    </div>
+
+                    <ValidationSummary />
+                    <DataAnnotationsValidator />
+                    <div class="d-grid gap-2 col-1 mx-auto">
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+    @if (BranchId.HasValue)
+    {
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Departments
+                        <button type="button" class="btn btn-primary btn-sm" disabled="@isEditOpen" @onclick="AddDepartment"><i class="bi bi-plus-lg"></i></button>
+                    </h5>
+                    <div class="row">
+                        @foreach (var department in branchEditModel.Departments)
+                        {
+                            if (departmentId == department.VanityId)
+                            {
+                                <div class="col-3">
+                                    <div class="card">
+                                        <EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidDepartmentSubmitAsync">
+                                            <DataAnnotationsValidator />
+                                            <div class="card-body">
+                                                <div class="col-md-12 mt-3 mb-3">
+                                                    <div class="form-floating">
+                                                        <InputText id="department-name" class="form-control" @bind-Value="departmentEditModel.Name" placeholder="Name" />
+                                                        <label for="department-name">Name</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="input-group mb-3">
+                                                        <span class="input-group-text" id="basic-addon1">+</span>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-floating ">
+                                                                <InputText id="country-code" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" placeholder="Code" />
+                                                                <label for="country-code">Code</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-floating">
+                                                            <InputText id="phone" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" placeholder="Phone" />
+                                                            <label for="phone">Phone</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <button type="submit" class="w-50 btn btn-success">Save</button>
+                                                    <button type="button" class="btn btn-danger" @onclick="CloseEditForm">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </EditForm>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><a href="/branches/edit/@department.VanityId">@department.Name</a></h5>
+                                            <div class="row mb-3">
+                                                <div class="col-lg-4 col-md-4 label">Phone</div>
+                                                <div class="col-lg-8 col-md-8">+@department.PhoneNumber.CountryCode @department.PhoneNumber.Number</div>
+                                            </div>
+                                            <div class="row">
+                                                <button type="button" class="w-100 btn btn-primary" disabled="@isEditOpen" @onclick="() => EditDepartment(department.VanityId)">Edit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
