@@ -11,8 +11,8 @@
     <h1>@pageTitle</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item">Clinics</li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="departments">Departments</a></li>
             <li class="breadcrumb-item active">@pageTitle</li>
         </ol>
     </nav>
@@ -70,42 +70,4 @@
     </div>
 </section>
 
-
-<EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidDepartmentSubmitAsync">
-    <div class="row">
-        <div class="col-6">
-            <div class="mb-3">
-                <label class="form-label" for="branches">Branch</label>
-                <InputSelect id="branches" class="form-select" @bind-Value="departmentEditModel.BranchId">
-                    <option>- Choose a branch -</option>
-                    @foreach (var branch in apiResponse.Items)
-                    {
-                        <option value="@branch.VanityId">@branch.Name</option>
-                    }
-                </InputSelect>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="name">Name</label>
-                <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="countryCode">Phone</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">+</span>
-                    <div class="col-sm-3">
-                        <InputText id="countryCode" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" />
-                    </div>
-                    <InputText id="phoneNumber" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" />
-                </div>
-            </div>
-        </div>
-    </div>
-    <ValidationSummary />
-    <DataAnnotationsValidator />
-    <div class="d-grid gap-2 col-1 mx-auto">
-        <button type="submit" class="btn btn-success">Save</button>
-    </div>
-</EditForm>
-
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
-
