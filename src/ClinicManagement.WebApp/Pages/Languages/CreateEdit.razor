@@ -7,26 +7,46 @@
 
 <PageTitle>Clinic Management - @pageTitle</PageTitle>
 
-<h3>@pageTitle</h3>
+<div class="pagetitle">
+    <h1>@pageTitle</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="languages">Languages</a></li>
+            <li class="breadcrumb-item active">@pageTitle</li>
+        </ol>
+    </nav>
+</div>
 
-<EditForm Model="@languageEditModel" OnValidSubmit="@HandleValidLanguageSubmitAsync">
+<section class="section">
     <div class="row">
-        <div class="col-6">
-            <div class="mb-3">
-                <label class="form-label" for="name">Name</label>
-                <InputText id="name" class="form-control" @bind-Value="languageEditModel.Name" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="name">Code</label>
-                <InputText id="code" class="form-control" @bind-Value="languageEditModel.Code" />
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@pageTitle</h5>
+                <EditForm Model="@languageEditModel" OnValidSubmit="@HandleValidLanguageSubmitAsync" class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="name" class="form-control" @bind-Value="languageEditModel.Name" placeholder="Name" />
+                            <label for="name">Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="code" class="form-control" @bind-Value="languageEditModel.Code" placeholder="Code" />
+                            <label for="code">Code</label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <ValidationSummary />
+                        <DataAnnotationsValidator />
+                        <div class="d-grid gap-2 col-1 mx-auto">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </EditForm>
             </div>
         </div>
     </div>
-    <ValidationSummary />
-    <DataAnnotationsValidator />
-    <div class="d-grid gap-2 col-1 mx-auto">
-        <button type="submit" class="btn btn-success">Save</button>
-    </div>
-</EditForm>
-
+</section>
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
