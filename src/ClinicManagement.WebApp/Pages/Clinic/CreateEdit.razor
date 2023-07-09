@@ -57,8 +57,8 @@
                                         <div class="card-body">
                                             <div class="col-md-12">
                                                 <div class="form-floating">
-                                                    <InputText id="name" class="form-control" @bind-Value="branchEditModel.Name" />
-                                                    <label for="name">Name</label>
+                                                    <InputText id="branch-name" class="form-control" @bind-Value="branchEditModel.Name" placeholder="Name" />
+                                                    <label for="branch-name">Name</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -66,44 +66,44 @@
                                                     <span class="input-group-text" id="basic-addon1">+</span>
                                                     <div class="col-sm-3">
                                                         <div class="form-floating ">
-                                                            <InputText id="country-code" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" />
+                                                            <InputText id="country-code" class="form-control" @bind-Value="branchEditModel.PhoneNumber.CountryCode" placeholder="Code" />
                                                             <label for="country-code">Code</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-floating">
-                                                        <InputText id="phone" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" />
+                                                        <InputText id="phone" class="form-control" @bind-Value="branchEditModel.PhoneNumber.Number" placeholder="Phone" />
                                                         <label for="phone">Phone</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating">
-                                                    <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Street" />
-                                                    <label for="name">Street</label>
+                                                    <InputText id="street" class="form-control" @bind-Value="branchEditModel.Address.Street" placeholder="Street" />
+                                                    <label for="street">Street</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating">
-                                                    <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" />
-                                                    <label for="name">Zip code</label>
+                                                    <InputText id="zip-code" class="form-control" @bind-Value="branchEditModel.Address.ZipCode" placeholder="Zip code" />
+                                                    <label for="zip-code">Zip code</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating">
-                                                    <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.City" />
-                                                    <label for="name">City</label>
+                                                    <InputText id="city" class="form-control" @bind-Value="branchEditModel.Address.City" placeholder="City" />
+                                                    <label for="city">City</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating">
-                                                    <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.State" />
-                                                    <label for="name">State</label>
+                                                    <InputText id="state" class="form-control" @bind-Value="branchEditModel.Address.State" placeholder="State" />
+                                                    <label for="state">State</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating">
-                                                    <InputText id="name" class="form-control" @bind-Value="branchEditModel.Address.Country" />
-                                                    <label for="name">Country</label>
+                                                    <InputText id="country" class="form-control" @bind-Value="branchEditModel.Address.Country" placeholder="Country" />
+                                                    <label for="country">Country</label>
                                                 </div>
                                             </div>
                                             <div class="text-center mt-3">
