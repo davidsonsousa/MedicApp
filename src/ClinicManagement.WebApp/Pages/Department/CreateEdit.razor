@@ -1,5 +1,5 @@
-﻿@page "/department/create"
-@page "/department/edit/{DepartmentId:guid}"
+﻿@page "/departments/create"
+@page "/departments/edit/{DepartmentId:guid}"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IClinicManagementApiService ApiService
@@ -7,43 +7,67 @@
 
 <PageTitle>Clinic Management - @pageTitle</PageTitle>
 
-<h3>@pageTitle</h3>
-
-<EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidDepartmentSubmitAsync">
+<div class="pagetitle">
+    <h1>@pageTitle</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="departments">Departments</a></li>
+            <li class="breadcrumb-item active">@pageTitle</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
     <div class="row">
-        <div class="col-6">
-            <div class="mb-3">
-                <label class="form-label" for="branches">Branch</label>
-                <InputSelect id="branches" class="form-select" @bind-Value="departmentEditModel.BranchId">
-                    <option>- Choose a branch -</option>
-                    @foreach (var branch in apiResponse.Items)
-                    {
-                        <option value="@branch.VanityId">@branch.Name</option>
-                    }
-                </InputSelect>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="name">Name</label>
-                <InputText id="name" class="form-control" @bind-Value="departmentEditModel.Name" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="countryCode">Phone</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">+</span>
-                    <div class="col-sm-3">
-                        <InputText id="countryCode" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" />
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@pageTitle</h5>
+                <EditForm Model="@departmentEditModel" OnValidSubmit="@HandleValidDepartmentSubmitAsync" class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputSelect id="branch-name" class="form-select" @bind-Value="departmentEditModel.BranchId" placeholder="Branch">
+                                <option>- Choose a branch -</option>
+                                @foreach (var branch in apiResponse.Items)
+                                {
+                                    <option value="@branch.VanityId">@branch.Name</option>
+                                }
+                            </InputSelect>
+                            <label for="branch-name">Branch</label>
+                        </div>
                     </div>
-                    <InputText id="phoneNumber" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" />
-                </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <InputText id="branch-name" class="form-control" @bind-Value="departmentEditModel.Name" placeholder="Name" />
+                            <label for="branch-name">Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">+</span>
+                            <div class="col-sm-3">
+                                <div class="form-floating ">
+                                    <InputText id="country-code" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.CountryCode" placeholder="Code" />
+                                    <label for="country-code">Code</label>
+                                </div>
+                            </div>
+                            <div class="form-floating">
+                                <InputText id="phone" class="form-control" @bind-Value="departmentEditModel.PhoneNumber.Number" placeholder="Phone" />
+                                <label for="phone">Phone</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <ValidationSummary />
+                        <DataAnnotationsValidator />
+                        <div class="d-grid gap-2 col-1 mx-auto">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </EditForm>
             </div>
         </div>
     </div>
-    <ValidationSummary />
-    <DataAnnotationsValidator />
-    <div class="d-grid gap-2 col-1 mx-auto">
-        <button type="submit" class="btn btn-success">Save</button>
-    </div>
-</EditForm>
+</section>
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Ok" />
-

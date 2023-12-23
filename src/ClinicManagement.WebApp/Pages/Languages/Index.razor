@@ -5,54 +5,65 @@
 
 <PageTitle>Clinic Management - Languages</PageTitle>
 
-<div class="row">
-    <div class="col">
-        <h3>Languages</h3>
-    </div>
-    <div class="col-1">
-        <div class="btn-group mb-3" role="toolbar" aria-label="Toolbar with button groups">
-            <a href="language/create" role="button" class="btn btn-success" title="New"><i class="fa-solid fa-plus"></i> New</a>
-        </div>
-    </div>
+<div class="pagetitle">
+    <h1>Languages</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Languages</li>
+        </ol>
+    </nav>
 </div>
 
-@if (apiResponse is null)
-{
-    <SpinnerComponent MessageLoading="Loading languages..." MessageNotFound="There are no languages available at the moment" ShowSpinner="showSpinner" />
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Name</th>
-                    <th class="col-1"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var language in apiResponse.Items)
-                {
-                    <tr>
-                        <td>@language.Name (@language.Code)</td>
-                        <td>
-                            <a href="/language/edit/@language.VanityId" role="button" class="btn btn-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
-                            <button type="button" class="btn btn-danger" @onclick="() => ShowDeleteModal(language)">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot class="table-light">
-                <tr>
-                    <th>Name</th>
-                    <th></th>
-                </tr>
-            </tfoot>
-        </table>
+<section class="section">
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-1">
+            <div class="btn-group mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                <a href="languages/create" role="button" class="btn btn-success" title="New"><i class="bi bi-plus-lg"></i> New</a>
+            </div>
+        </div>
     </div>
-}
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">List of languages</h5>
+                @if (apiResponse == null)
+                {
+                    <SpinnerComponent MessageLoading="Loading languages..." MessageNotFound="There are no languages available at the moment" ShowSpinner="showSpinner" />
+                }
+                else
+                {
+                    <table class="table datatable table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col" class="col-1">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var (language, index) in apiResponse.Items.Select((language, index) => (language, index + 1)))
+                            {
+                                <tr>
+                                    <td scope="row">@index</td>
+                                    <td>@language.Name (@language.Code)</td>
+                                    <td>
+                                        <a href="/languages/edit/@language.VanityId" role="button" class="btn btn-secondary btn-sm" title="Edit"><i class="bi bi-pencil"></i></a>
+                                        <button type="button" class="btn btn-danger btn-sm" @onclick="() => ShowDeleteModal(language)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</section>
 
 <ModalComponent @ref="modalComponent" PrimaryButtonText="Yes" SecondaryButtonText="No" EventCallback="HandleEventCallbackAsync" />
 

@@ -1,9 +1,9 @@
 ﻿@inherits LayoutComponentBase
+<LayoutHeader />
+<LayoutSidebar />
 
-<div class="container">
-    <LayoutHeader />
+<main id="main" class="main">
+    @Body
+</main>
 
-    <main>
-        @Body
-    </main>
-</div>
+<LayoutFooter />
